@@ -104,8 +104,7 @@ export function Patient() {
       </div>
 
       {/* Medical Timeline */}
-      <div className="bg-white shadow-sm rounded-lg p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Medical Timeline</h3>
+      <div className="bg-white shadow-sm rounded-lg">
         <MedicalTimeline records={records} />
       </div>
     </div>

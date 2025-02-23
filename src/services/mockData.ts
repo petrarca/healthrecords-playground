@@ -1,115 +1,141 @@
 import { Patient, MedicalRecord } from '../types/types';
 
-export interface Patient {
-  id: string;
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  insuranceProvider: string;
-}
-
-export interface MedicalRecord {
-  id: string;
-  patientId: string;
-  date: string;
-  type: string;
-  title: string;
-  description: string;
-  provider: string;
-}
-
 export const mockPatients: Record<string, Patient> = {
-  'P123456': {
-    id: 'P123456',
+  '4711': {
+    id: '4711',
     firstName: 'John',
     lastName: 'Doe',
-    dateOfBirth: '1980-05-15',
-    insuranceProvider: 'Blue Cross'
+    dateOfBirth: new Date('1980-05-15'),
+    sex: 'M',
+    bloodType: 'O+',
+    height: '180cm',
+    weight: '70kg',
+    allergies: ['Penicillin'],
+    primaryPhysician: 'Dr. Sarah Wilson',
+    insuranceProvider: 'Blue Cross',
+    insuranceNumber: 'BC123456'
   },
-  'P234567': {
-    id: 'P234567',
+  '4712': {
+    id: '4712',
     firstName: 'Jane',
     lastName: 'Smith',
-    dateOfBirth: '1992-08-22',
-    insuranceProvider: 'Aetna'
+    dateOfBirth: new Date('1992-08-22'),
+    sex: 'F',
+    bloodType: 'A+',
+    height: '165cm',
+    weight: '58kg',
+    allergies: ['None'],
+    primaryPhysician: 'Dr. Emily Chen',
+    insuranceProvider: 'Aetna',
+    insuranceNumber: 'AE234567'
   },
-  'P345678': {
-    id: 'P345678',
+  '4713': {
+    id: '4713',
     firstName: 'Robert',
     lastName: 'Johnson',
-    dateOfBirth: '1975-12-03',
-    insuranceProvider: 'United Healthcare'
+    dateOfBirth: new Date('1975-12-03'),
+    sex: 'M',
+    bloodType: 'B-',
+    height: '175cm',
+    weight: '82kg',
+    allergies: ['Sulfa drugs'],
+    primaryPhysician: 'Dr. James Wilson',
+    insuranceProvider: 'United Healthcare',
+    insuranceNumber: 'UH345678'
   }
 };
 
 export const mockMedicalRecords: Record<string, MedicalRecord[]> = {
-  'P123456': [
+  '4711': [
     {
       id: 'M1',
-      patientId: 'P123456',
-      date: '2025-02-15T09:30:00',
-      type: 'Consultation',
+      patientId: '4711',
+      date: new Date('2025-02-15T09:30:00'),
+      type: 'vital_signs',
       title: 'Annual Check-up',
       description: 'Regular health check-up. Blood pressure normal. Weight stable.',
-      provider: 'Dr. Sarah Wilson'
+      details: {
+        'bloodPressure': '120/80',
+        'weight': '70',
+        'temperature': '36.6'
+      }
     },
     {
       id: 'M2',
-      patientId: 'P123456',
-      date: '2025-02-15T10:15:00',
-      type: 'Lab Test',
+      patientId: '4711',
+      date: new Date('2025-02-15T10:15:00'),
+      type: 'lab_result',
       title: 'Blood Work Results',
       description: 'Complete blood count and metabolic panel. All results within normal range.',
-      provider: 'Quest Diagnostics'
+      details: {
+        'wbc': '7.2',
+        'rbc': '4.8',
+        'platelets': '250'
+      }
     },
     {
       id: 'M3',
-      patientId: 'P123456',
-      date: '2025-01-10T14:20:00',
-      type: 'Vaccination',
-      title: 'Flu Shot',
-      description: 'Annual influenza vaccination administered.',
-      provider: 'Dr. Sarah Wilson'
+      patientId: '4711',
+      date: new Date('2025-01-10T14:20:00'),
+      type: 'vital_signs',
+      title: 'Vital Signs Check',
+      description: 'Routine vital signs monitoring during clinic visit.',
+      details: {
+        'heartRate': '72',
+        'spO2': '98',
+        'respiratoryRate': '16'
+      }
     }
   ],
-  'P234567': [
+  '4712': [
     {
       id: 'M4',
-      patientId: 'P234567',
-      date: '2025-02-20T11:00:00',
-      type: 'Procedure',
-      title: 'Dental Cleaning',
-      description: 'Routine dental cleaning and examination. No cavities found.',
-      provider: 'Dr. Michael Brown'
+      patientId: '4712',
+      date: new Date('2025-02-20T11:00:00'),
+      type: 'complaint',
+      title: 'Lower Back Pain',
+      description: 'Patient reports persistent lower back pain, particularly when bending or sitting for long periods.',
+      details: {
+        'painLevel': '6',
+        'duration': '14',
+        'location': 'Lower lumbar'
+      }
     },
     {
       id: 'M5',
-      patientId: 'P234567',
-      date: '2025-01-05T15:30:00',
-      type: 'Consultation',
+      patientId: '4712',
+      date: new Date('2025-01-05T15:30:00'),
+      type: 'diagnosis',
       title: 'Follow-up Visit',
-      description: 'Follow-up for previous treatment. Recovery progressing well.',
-      provider: 'Dr. Emily Chen'
+      description: 'Follow-up for previous treatment. Recovery progressing well.'
     }
   ],
-  'P345678': [
+  '4713': [
     {
       id: 'M6',
-      patientId: 'P345678',
-      date: '2025-02-10T13:45:00',
-      type: 'Lab Test',
+      patientId: '4713',
+      date: new Date('2025-02-10T13:45:00'),
+      type: 'lab_result',
       title: 'Lipid Panel',
       description: 'Cholesterol and triglycerides screening. Results show normal levels.',
-      provider: 'LabCorp'
+      details: {
+        'totalCholesterol': '180',
+        'hdl': '55',
+        'ldl': '110'
+      }
     },
     {
       id: 'M7',
-      patientId: 'P345678',
-      date: '2025-01-20T09:00:00',
-      type: 'Procedure',
-      title: 'Physical Therapy',
-      description: 'Lower back rehabilitation exercises and assessment.',
-      provider: 'Dr. James Wilson'
+      patientId: '4713',
+      date: new Date('2025-01-20T09:00:00'),
+      type: 'complaint',
+      title: 'Shoulder Discomfort',
+      description: 'Patient experiencing right shoulder discomfort during overhead movements.',
+      details: {
+        'painLevel': '4',
+        'movement': 'Limited',
+        'side': 'Right'
+      }
     }
   ]
 };
