@@ -95,32 +95,6 @@
       }
     },
     {
-      "id": "REC002",
-      "patientId": "4711",
-      "date": "2024-07-20T10:15:00",
-      "type": "diagnosis",
-      "title": "Annual Physical",
-      "description": "Annual check-up shows good progress. Cholesterol levels improved.",
-      "details": {
-        "diagnosis": "Hypertension, High Cholesterol",
-        "bloodPressure": "130/85",
-        "cholesterol": "185"
-      }
-    },
-    {
-      "id": "REC003",
-      "patientId": "4712",
-      "date": "2025-02-10T14:20:00",
-      "type": "diagnosis",
-      "title": "Emergency Visit - Allergic Reaction",
-      "description": "Patient experienced anaphylaxis after latex exposure. Administered epinephrine.",
-      "details": {
-        "allergen": "Latex",
-        "treatment": "Epinephrine injection, Prednisone 20mg",
-        "severity": "Severe"
-      }
-    },
-    {
       "id": "REC107",
       "patientId": "4712",
       "date": "2025-02-10T14:20:00",
@@ -211,19 +185,6 @@
         "heartRate": "70",
         "temperature": "98.4",
         "weight": "133"
-      }
-    },
-    {
-      "id": "REC004",
-      "patientId": "4713",
-      "date": "2025-01-30T11:00:00",
-      "type": "diagnosis",
-      "title": "Arthritis Management",
-      "description": "Joint pain in hands and knees. Prescribed new anti-inflammatory.",
-      "details": {
-        "diagnosis": "Arthritis",
-        "treatment": "Meloxicam 15mg",
-        "painLevel": "6/10"
       }
     },
     {
