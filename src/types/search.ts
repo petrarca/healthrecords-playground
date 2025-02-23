@@ -3,17 +3,17 @@ export enum SearchResultType {
   LANDING = 'LANDING'
 }
 
-export interface SearchResult {
+export interface SearchResult<T = unknown> {
   id: string;
   title: string;
   subtitle?: string;
   type: SearchResultType;
-  data: any;
+  data: T;
 }
 
-export interface SearchProvider {
+export interface SearchProvider<T = unknown> {
   type: SearchResultType;
-  search: (query: string) => Promise<SearchResult[]>;
+  search: (query: string) => Promise<SearchResult<T>[]>;
   getDisplayName: () => string;
   getIcon: () => string;
 }

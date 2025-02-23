@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Shell } from './components/Shell';
 import { LandingPage } from './components/LandingPage';
 import { Patient } from './components/patient/Patient';

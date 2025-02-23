@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { MedicalRecord } from '../../types/types';
 import { TimelineFilters } from './TimelineFilters';
 import { TimelineYearSelector } from './TimelineYearSelector';
@@ -99,10 +99,14 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
     return selectedDate.substring(0, 7); // YYYY-MM
   }, [selectedDate]);
 
-  const allTypes = ['diagnosis', 'lab_result', 'complaint', 'vital_signs', 'medication'] as const;
+  const allTypes = useMemo(() => 
+    ['diagnosis', 'lab_result', 'complaint', 'vital_signs', 'medication'] as const,
+    []
+  );
+
   const allSelected = useMemo(() => 
     allTypes.every(type => activeFilters.has(type)), 
-    [activeFilters]
+    [activeFilters, allTypes]
   );
 
   const toggleAllFilters = () => {

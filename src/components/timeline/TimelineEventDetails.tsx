@@ -1,7 +1,7 @@
 import React from 'react';
 import { MedicalRecord } from '../../types/types';
 import { TimelineIcon } from './TimelineIcon';
-import { getEventTypeName } from './TimelineEventCard';
+import { getEventTypeName } from '../../lib/recordUtils';
 
 interface TimelineEventDetailsProps {
   record: MedicalRecord | null;

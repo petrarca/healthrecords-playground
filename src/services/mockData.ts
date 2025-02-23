@@ -1,6 +1,14 @@
 import { Patient } from '../types/patient';
 import { MedicalRecord } from '../types/medicalRecord';
 
+interface PatientData extends Omit<Patient, 'dateOfBirth'> {
+  dateOfBirth: string;
+}
+
+interface MedicalRecordData extends Omit<MedicalRecord, 'date'> {
+  date: string;
+}
+
 export class MockDataService {
   private patients: Patient[] = [];
   private medicalRecords: MedicalRecord[] = [];
@@ -21,7 +29,7 @@ export class MockDataService {
       }
       const patientsData = await patientsResponse.json();
       
-      this.patients = patientsData.patients.map((patient: any) => ({
+      this.patients = patientsData.patients.map((patient: PatientData) => ({
         ...patient,
         dateOfBirth: new Date(patient.dateOfBirth),
         allergies: Array.isArray(patient.allergies) ? patient.allergies : []
@@ -36,7 +44,7 @@ export class MockDataService {
       }
       const recordsData = await recordsResponse.json();
       
-      this.medicalRecords = recordsData.records.map((record: any) => ({
+      this.medicalRecords = recordsData.records.map((record: MedicalRecordData) => ({
         ...record,
         date: new Date(record.date),
         details: record.details || {}

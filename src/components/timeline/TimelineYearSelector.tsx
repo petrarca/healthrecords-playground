@@ -25,7 +25,7 @@ export const TimelineYearSelector: React.FC<TimelineYearSelectorProps> = ({
   const monthsByYear = React.useMemo(() => {
     const yearMap = new Map<number, string[]>();
     Array.from(recordsByMonth.keys()).forEach(monthKey => {
-      const [year, month] = monthKey.split('-');
+      const [year] = monthKey.split('-');
       const yearNum = parseInt(year);
       if (!yearMap.has(yearNum)) {
         yearMap.set(yearNum, []);
