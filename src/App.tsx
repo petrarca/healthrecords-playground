@@ -1,4 +1,21 @@
 import { MedicalTimeline, type MedicalRecord } from './components/MedicalTimeline';
+import { PatientHeader, type Patient } from './components/PatientHeader';
+import { Shell } from './components/Shell';
+
+const samplePatient: Patient = {
+  id: "P123456",
+  firstName: "John",
+  lastName: "Doe",
+  dateOfBirth: new Date("1980-05-15"),
+  sex: "M",
+  bloodType: "O+",
+  height: "180 cm",
+  weight: "75 kg",
+  allergies: ["Penicillin", "Pollen"],
+  primaryPhysician: "Dr. Sarah Johnson",
+  insuranceProvider: "HealthCare Plus",
+  insuranceNumber: "HC987654321"
+};
 
 const sampleMedicalRecords: MedicalRecord[] = [
   // 2025 Records
@@ -309,12 +326,14 @@ const sampleMedicalRecords: MedicalRecord[] = [
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="mx-auto max-w-[1600px] px-4">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Medical Timeline</h1>
-        <MedicalTimeline records={sampleMedicalRecords} />
+    <Shell>
+      <div className="space-y-5">
+        <PatientHeader patient={samplePatient} />
+        <div className="bg-white shadow rounded-lg border border-gray-100 overflow-hidden">
+          <MedicalTimeline records={sampleMedicalRecords} />
+        </div>
       </div>
-    </div>
+    </Shell>
   );
 }
 
