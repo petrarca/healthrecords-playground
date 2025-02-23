@@ -63,14 +63,32 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
           <div className="flex items-center gap-6">
             {/* Physical Measurements */}
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1">
-                <span className="text-xs font-medium text-gray-900">{patient.height}</span>
-                <span className="text-xs text-gray-500">height</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-xs font-medium text-gray-900">{patient.weight}</span>
-                <span className="text-xs text-gray-500">weight</span>
-              </div>
+              {(patient.height || patient.weight) && (
+                <div className="flex items-center gap-4">
+                  {patient.height && (
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs font-medium text-gray-900">
+                        {(() => {
+                          const match = patient.height.match(/(\d+)\[(\w+)\]/);
+                          return match ? `${match[1]} ${match[2]}` : '';
+                        })()}
+                      </span>
+                      <span className="text-xs text-gray-500">height</span>
+                    </div>
+                  )}
+                  {patient.weight && (
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs font-medium text-gray-900">
+                        {(() => {
+                          const match = patient.weight.match(/(\d+)\[(\w+)\]/);
+                          return match ? `${match[1]} ${match[2]}` : '';
+                        })()}
+                      </span>
+                      <span className="text-xs text-gray-500">weight</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Divider */}
