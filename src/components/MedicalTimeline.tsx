@@ -1,13 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-
-export interface MedicalRecord {
-  id: string;
-  date: Date;
-  type: 'diagnosis' | 'lab_result' | 'complaint' | 'vital_signs';
-  title: string;
-  description: string;
-  details?: Record<string, string | number>;
-}
+import { MedicalRecord } from '../types/types';
 
 interface TimelineIconProps {
   type: MedicalRecord['type'];
@@ -250,7 +242,9 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
                     onClick={() => setSelectedYear(selectedYear === year ? null : year)}
                     className={`
                       relative z-10 flex items-center w-full px-2 py-2 group
-                      ${selectedYear === year ? 'mb-2' : ''}
+                      ${selectedYear === year ? 
+                        'mb-2' : ''
+                      }
                     `}
                   >
                     <div className={`
