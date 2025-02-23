@@ -1,22 +1,13 @@
 import React from 'react';
 import { Patient } from '../../types/types';
+import { calculateAge } from '../../lib/dateUtils';
 
 interface PatientHeaderProps {
   patient: Patient;
 }
 
-const calculateAge = (birthDate: Date): number => {
-  const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDiff = today.getMonth() - birthDate.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
-  return age;
-};
-
 export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
-  const age = calculateAge(patient.dateOfBirth);
+  const age = calculateAge(new Date(patient.dateOfBirth));
   
   return (
     <div className="bg-white shadow-sm">

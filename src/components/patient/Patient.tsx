@@ -4,10 +4,11 @@ import { Patient as PatientType, MedicalRecord } from '../../types/types';
 import { MedicalTimeline } from '../timeline/MedicalTimeline';
 import { PatientHeader } from './PatientHeader';
 import { PatientDemographics } from './PatientDemographics';
+import { PatientSummary } from './PatientSummary';
 import { patientService } from '../../services/patientService';
 import { medicalRecordService } from '../../services/medicalRecordService';
 
-type TabType = 'timeline' | 'demographics';
+type TabType = 'timeline' | 'demographics' | 'summary';
 
 export function Patient() {
   const { id } = useParams<{ id: string }>();
@@ -17,7 +18,7 @@ export function Patient() {
   const [records, setRecords] = useState<MedicalRecord[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<TabType>('timeline');
+  const [activeTab, setActiveTab] = useState<TabType>('summary');
 
   useEffect(() => {
     async function loadData() {
@@ -43,14 +44,16 @@ export function Patient() {
         setPatient(patientData);
         setRecords(patientRecords);
 
-        // If we're at the patient root, redirect to timeline
+        // If we're at the patient root, redirect to summary
         if (location.pathname === `/patient/${id}`) {
-          navigate(`/patient/${id}/timeline`, { replace: true });
+          navigate(`/patient/${id}/summary`, { replace: true });
         }
 
         // Set active tab based on URL
         if (location.pathname.includes('/demographics')) {
           setActiveTab('demographics');
+        } else if (location.pathname.includes('/summary')) {
+          setActiveTab('summary');
         } else {
           setActiveTab('timeline');
         }
@@ -94,47 +97,55 @@ export function Patient() {
     <div className="h-full flex flex-col">
       <PatientHeader patient={patient} />
       
-      {/* Tabs */}
-      <div className="px-1 sm:px-2 border-b border-gray-200">
-        <div className="flex space-x-8">
-          <button
-            onClick={() => handleTabChange('timeline')}
-            className={`py-4 px-1 inline-flex items-center border-b-2 font-medium text-sm ${
-              activeTab === 'timeline'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            <svg className="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Timeline
-          </button>
-          <button
-            onClick={() => handleTabChange('demographics')}
-            className={`py-4 px-1 inline-flex items-center border-b-2 font-medium text-sm ${
-              activeTab === 'demographics'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            <svg className="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            Demographics
-          </button>
+      <div className="mt-6">
+        <div className="border-b border-gray-200">
+          <nav className="-mb-px flex space-x-8">
+            <button
+              onClick={() => handleTabChange('summary')}
+              className={`${
+                activeTab === 'summary'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+              } whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium`}
+            >
+              Summary
+            </button>
+            <button
+              onClick={() => handleTabChange('timeline')}
+              className={`${
+                activeTab === 'timeline'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+              } whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium`}
+            >
+              Timeline
+            </button>
+            <button
+              onClick={() => handleTabChange('demographics')}
+              className={`${
+                activeTab === 'demographics'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+              } whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium`}
+            >
+              Demographics
+            </button>
+          </nav>
         </div>
-      </div>
 
-      {/* Tab Content */}
-      <div className="flex-1 overflow-auto">
-        {activeTab === 'timeline' ? (
-          <MedicalTimeline records={records} />
-        ) : (
-          <PatientDemographics patient={patient} />
-        )}
+        <div className="mt-6 px-4">
+          {activeTab === 'summary' && (
+            <div className="w-1/2">
+              <PatientSummary patient={patient} />
+            </div>
+          )}
+          {activeTab === 'timeline' && (
+            <MedicalTimeline records={records} />
+          )}
+          {activeTab === 'demographics' && (
+            <PatientDemographics patient={patient} />
+          )}
+        </div>
       </div>
     </div>
   );
