@@ -1,7 +1,8 @@
 import React from 'react';
 import { Search } from './Search';
 import { UserMenu } from './UserMenu';
-import { SearchResult } from '../types/search';
+import { SearchResult, SearchResultType } from '../types/search';
+import { navigationService } from '../services/navigationService';
 
 interface ShellHeaderProps {
   onSearchResult: (result: SearchResult) => void;
@@ -23,7 +24,10 @@ export const ShellHeader: React.FC<ShellHeaderProps> = ({
           {/* Left side - Logo/Brand */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center shadow-md hover:shadow-lg hover:from-blue-700 hover:to-indigo-800 transition-all duration-200">
+              <div 
+                onClick={() => navigationService.navigateTo(SearchResultType.LANDING, '')}
+                className="h-9 w-9 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center shadow-md hover:shadow-lg hover:from-blue-700 hover:to-indigo-800 transition-all duration-200 cursor-pointer"
+              >
                 <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} 
                     d="M12 4v.01M8 8h.01M12 8h.01M16 8h.01M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01" 

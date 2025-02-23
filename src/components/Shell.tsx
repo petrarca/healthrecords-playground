@@ -26,7 +26,7 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
       />
       
       {/* Main Content */}
-      <main className={`max-w-[1600px] mx-auto px-2 sm:px-4 py-6 transition-all duration-300 ${
+      <main className={`max-w-[1600px] mx-auto px-1 sm:px-2 py-6 transition-all duration-300 ${
         isChatOpen ? 'mr-96' : ''
       }`}>
         {children}

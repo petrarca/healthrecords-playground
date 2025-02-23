@@ -1,5 +1,6 @@
 export enum SearchResultType {
-  PATIENT = 'PATIENT'
+  PATIENT = 'PATIENT',
+  LANDING = 'LANDING'
 }
 
 export interface SearchResult {

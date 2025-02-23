@@ -18,6 +18,9 @@ class NavigationService {
       case SearchResultType.PATIENT:
         this.navigate(`/patient/${id}/timeline`);
         break;
+      case SearchResultType.LANDING:
+        this.navigate('/');
+        break;
       default:
         console.error('Unknown result type:', type);
     }
