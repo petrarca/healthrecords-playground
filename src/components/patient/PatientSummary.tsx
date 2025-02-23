@@ -1,4 +1,3 @@
-import React from 'react';
 import { Patient } from '../../types/types';
 import { calculateAge } from '../../lib/dateUtils';
 

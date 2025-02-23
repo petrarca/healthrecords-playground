@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export enum SearchResultType {
   PATIENT = 'PATIENT',
   LANDING = 'LANDING'
@@ -15,5 +17,5 @@ export interface SearchProvider<T = unknown> {
   type: SearchResultType;
   search: (query: string) => Promise<SearchResult<T>[]>;
   getDisplayName: () => string;
-  getIcon: () => string;
+  getIcon: () => ReactNode;
 }

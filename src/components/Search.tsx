@@ -1,19 +1,18 @@
 /** @jsxImportSource react */
 import React, { useState, useCallback, useRef, useEffect } from "react"
 import { SearchResult, SearchResultType } from "../types/search"
-import { searchService, SearchOptions } from "../services/searchService"
+import { searchService } from "../services/searchService"
 import { Dropdown } from "./ui/dropdown"
 
 const searchTypeOptions = [
   { 
-    value: 'ALL' as const, 
+    value: SearchResultType.PATIENT,
     label: 'All',
-    icon: '🔍'
-  },
-  { 
-    value: SearchResultType.PATIENT, 
-    label: 'Patients',
-    icon: '👤'
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    )
   }
 ];
 
@@ -25,16 +24,16 @@ interface SearchProps {
 }
 
 export function Search({ onResultSelect, className = '' }: SearchProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchType, setSearchType] = useState<SearchOptions['type']>('ALL');
-  const [results, setResults] = useState<SearchResult[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchType, setSearchType] = useState<SearchResultType>(SearchResultType.PATIENT);
   const [isSearching, setIsSearching] = useState(false);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const selectedItemRef = useRef<HTMLDivElement>(null);
 
-  const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
     setSearchTerm(value);
     
     if (!value.trim()) {
@@ -67,7 +66,7 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
   }, [searchType]);
 
   const handleTypeChange = useCallback((value: string) => {
-    setSearchType(value as SearchOptions['type']);
+    setSearchType(value as SearchResultType);
     setResults([]);
     setIsSearching(false);
     setSelectedIndex(-1);
@@ -180,14 +179,14 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
         >
           {results.length > 0 ? (
             <div className="max-h-[400px] overflow-y-auto">
-              {results.reduce((acc: JSX.Element[], result, index) => {
+              {results.reduce((acc: React.ReactNode[], result, index) => {
                 const provider = searchService.getProviderByType(result.type);
                 
                 // Add header if this is the first result of its type
                 if (!results.slice(0, index).find(r => r.type === result.type)) {
                   acc.push(
                     <div key={`header-${result.type}`} className="px-4 py-2 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
-                      <span className="text-lg">{provider?.getIcon()}</span>
+                      <span className="text-lg">{provider?.getIcon() || ''}</span>
                       <span className="font-medium text-sm text-gray-700">
                         {provider?.getDisplayName()}
                       </span>

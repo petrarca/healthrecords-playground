@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Patient as PatientType, MedicalRecord } from '../../types/types';
 import { MedicalTimeline } from '../timeline/MedicalTimeline';
@@ -41,8 +41,12 @@ export function Patient() {
         console.log('Loaded patient:', patientData);
         console.log('Loaded records:', patientRecords.length);
         
-        setPatient(patientData);
-        setRecords(patientRecords);
+        if (patientData) {
+          setPatient(patientData);
+          setRecords(patientRecords);
+        } else {
+          setError('Patient not found');
+        }
 
         // If we're at the patient root, redirect to summary
         if (location.pathname === `/patient/${id}`) {

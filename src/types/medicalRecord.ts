@@ -6,4 +6,7 @@ export interface MedicalRecord {
   title: string;
   description: string;
   details?: Record<string, string | number>;
+  provider?: string;
+  location?: string;
+  values?: Record<string, unknown>;
 }

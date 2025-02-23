@@ -70,7 +70,7 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({ reco
                 <span className="text-xs text-gray-500 capitalize">
                   {key.replace('_', ' ')}
                 </span>
-                <span className="text-sm text-gray-900">{value}</span>
+                <span className="text-sm text-gray-900">{String(value)}</span>
               </div>
             ))}
           </div>
