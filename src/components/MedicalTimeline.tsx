@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 
 export interface MedicalRecord {
   id: string;
@@ -94,6 +94,17 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
     new Set(['diagnosis', 'lab_result', 'complaint', 'vital_signs'])
   );
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedYear, setSelectedYear] = useState<number>(() => {
+    // Initialize with the most recent year
+    return Math.max(...Object.keys(records.reduce((groups, record) => {
+      const date = record.date.toISOString().split('T')[0];
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(record);
+      return groups;
+    }, {} as Record<string, MedicalRecord[]>)).map(date => new Date(date).getFullYear()));
+  });
   const timelineRef = useRef<HTMLDivElement>(null);
 
   // Count records by type
@@ -117,6 +128,34 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
     }, {} as Record<string, MedicalRecord[]>);
   }, [records, activeFilters]);
 
+  // Group dates by year and month
+  const datesByYearAndMonth = useMemo(() => {
+    const years: Record<number, Record<string, string[]>> = {};
+    
+    Object.keys(groupedByDate).forEach(date => {
+      const dateObj = new Date(date);
+      const year = dateObj.getFullYear();
+      const month = dateObj.toLocaleDateString(undefined, { month: 'long' });
+      const monthYear = `${month} ${year}`;
+      
+      if (!years[year]) {
+        years[year] = {};
+      }
+      if (!years[year][monthYear]) {
+        years[year][monthYear] = [];
+      }
+      years[year][monthYear].push(date);
+    });
+
+    return years;
+  }, [groupedByDate]);
+
+  const years = useMemo(() => {
+    return Object.keys(datesByYearAndMonth)
+      .map(Number)
+      .sort((a, b) => b - a); // Sort years in descending order
+  }, [datesByYearAndMonth]);
+
   const sortedDates = Object.keys(groupedByDate).sort();
 
   const toggleFilter = (type: MedicalRecord['type']) => {
@@ -131,159 +170,202 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
     });
   };
 
-  const scrollToDate = (date: string) => {
+  const scrollToDate = useCallback((date: string) => {
+    setSelectedDate(date);
     const element = document.getElementById(`date-${date}`);
     if (element && timelineRef.current) {
-      setSelectedDate(date);
       timelineRef.current.scrollTo({
-        top: element.offsetTop - 80,
+        top: element.offsetTop - 16,
         behavior: 'smooth'
       });
     }
-  };
+  }, []);
 
-  // Group dates by month and year
-  const datesByMonth = useMemo(() => {
-    return sortedDates.reduce((groups, date) => {
-      const monthYear = new Date(date).toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'long'
-      });
-      if (!groups[monthYear]) {
-        groups[monthYear] = [];
-      }
-      groups[monthYear].push(date);
-      return groups;
-    }, {} as Record<string, string[]>);
-  }, [sortedDates]);
+  useEffect(() => {
+    if (selectedRecord) {
+      const dateStr = selectedRecord.date.toISOString().split('T')[0];
+      setSelectedDate(dateStr);
+    }
+  }, [selectedRecord]);
 
   return (
-    <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="flex flex-col h-screen">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-200">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Medical Timeline</h2>
-          <div className="text-sm text-gray-500">
-            {Object.keys(groupedByDate).length} dates • {
-              Object.values(groupedByDate).reduce((sum, records) => sum + records.length, 0)
-            } events
+      <div className="flex-none bg-white border-b border-gray-200">
+        <div className="px-6 py-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Medical Timeline</h2>
+            <div className="text-sm text-gray-500">
+              {Object.keys(groupedByDate).length} dates • {
+                Object.values(groupedByDate).reduce((sum, records) => sum + records.length, 0)
+              } events
+            </div>
           </div>
-        </div>
-        <div className="flex gap-2">
-          {(['diagnosis', 'lab_result', 'complaint', 'vital_signs'] as const).map(type => (
-            <FilterButton
-              key={type}
-              type={type}
-              active={activeFilters.has(type)}
-              onClick={() => toggleFilter(type)}
-              count={recordCounts[type] || 0}
-            />
-          ))}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                setActiveFilters(new Set(['diagnosis', 'lab_result', 'complaint', 'vital_signs']));
+                setSelectedDate(null);
+                if (timelineRef.current) {
+                  timelineRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium transition-colors duration-150 flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Show All
+            </button>
+            <div className="h-6 w-px bg-gray-200 mx-1"></div>
+            {(['diagnosis', 'lab_result', 'complaint', 'vital_signs'] as const).map(type => (
+              <FilterButton
+                key={type}
+                type={type}
+                active={activeFilters.has(type)}
+                onClick={() => toggleFilter(type)}
+                count={recordCounts[type] || 0}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="flex h-[600px]">
+      {/* Main container */}
+      <div className="flex flex-1 min-h-0">
         {/* Date Selector */}
-        <div className="w-1/6 border-r border-gray-200 bg-white">
+        <div className="w-48 border-r border-gray-200 bg-white">
           <div className="p-4 border-b border-gray-200">
             <h3 className="text-sm font-medium text-gray-900">Quick Navigation</h3>
-            <p className="text-xs text-gray-500 mt-1">Select a date to view events</p>
           </div>
-          <div className="overflow-y-auto h-[calc(600px-65px)]">
-            <div className="space-y-1 p-2">
-              {Object.entries(datesByMonth).map(([monthYear, dates]) => (
-                <div key={monthYear} className="mb-4">
-                  <div className="px-3 mb-2">
-                    <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider">
-                      {monthYear}
-                    </h4>
-                  </div>
-                  <div>
-                    {dates.map(date => {
-                      const eventCount = groupedByDate[date].length;
-                      const hasMultipleTypes = new Set(
-                        groupedByDate[date].map(record => record.type)
-                      ).size > 1;
-                      
-                      return (
-                        <button
-                          key={date}
-                          onClick={() => scrollToDate(date)}
-                          className={`
-                            w-full flex items-center gap-2 px-3 py-2 rounded-md
-                            transition-all duration-150 group
-                            ${selectedDate === date ? 
-                              'bg-blue-50 hover:bg-blue-100' : 
-                              'hover:bg-gray-50'
-                            }
-                          `}
-                        >
-                          <div className={`
-                            w-8 h-8 rounded-lg flex items-center justify-center
-                            ${selectedDate === date ?
-                              'bg-blue-100 text-blue-700' :
-                              'bg-gray-50 text-gray-700'
-                            }
-                          `}>
-                            <div className="text-center">
-                              <div className="text-xs font-medium">
-                                {new Date(date).toLocaleDateString(undefined, {
-                                  day: 'numeric'
-                                })}
-                              </div>
-                              <div className="text-[10px] uppercase">
-                                {new Date(date).toLocaleDateString(undefined, {
-                                  weekday: 'short'
-                                })}
-                              </div>
-                            </div>
+          <div className="overflow-y-auto h-[calc(100%-65px)]">
+            <div className="relative p-2">
+              {/* Vertical timeline line */}
+              <div className="absolute left-6 top-4 bottom-4 w-px bg-gray-200" />
+
+              {years.map(year => (
+                <div key={year} className="relative">
+                  {/* Year button with circle */}
+                  <button
+                    onClick={() => setSelectedYear(selectedYear === year ? null : year)}
+                    className={`
+                      relative z-10 flex items-center w-full px-2 py-2 group
+                      ${selectedYear === year ? 'mb-2' : ''}
+                    `}
+                  >
+                    <div className={`
+                      w-6 h-6 rounded-full flex items-center justify-center
+                      transition-colors duration-150
+                      ${selectedYear === year ? 
+                        'bg-blue-500 text-white ring-4 ring-blue-50' : 
+                        'bg-white border-2 border-gray-300 group-hover:border-gray-400'
+                      }
+                    `}>
+                      <div className="w-2 h-2 rounded-full bg-current" />
+                    </div>
+                    <span className={`
+                      ml-3 text-sm
+                      ${selectedYear === year ?
+                        'font-medium text-blue-600' :
+                        'text-gray-600 group-hover:text-gray-900'
+                      }
+                    `}>
+                      {year}
+                    </span>
+                    <div className="ml-auto flex items-center">
+                      <span className="text-xs text-gray-500">
+                        {Object.values(datesByYearAndMonth[year] || {})
+                          .reduce((sum, dates) => sum + dates.length, 0)} dates
+                      </span>
+                      {selectedYear === year ? (
+                        <svg className="w-4 h-4 ml-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      ) : (
+                        <svg className="w-4 h-4 ml-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      )}
+                    </div>
+                  </button>
+
+                  {/* Expandable dates for selected year */}
+                  {selectedYear === year && datesByYearAndMonth[year] && (
+                    <div className="ml-8 mb-4">
+                      {Object.entries(datesByYearAndMonth[year]).map(([monthYear, dates]) => (
+                        <div key={monthYear} className="mb-3">
+                          <div className="px-3 mb-1">
+                            <h4 className="text-xs font-semibold text-gray-900">
+                              {monthYear.split(' ')[0]} {/* Show only month name */}
+                            </h4>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1">
-                              {hasMultipleTypes && (
-                                <div className="flex -space-x-1">
-                                  {Array.from(new Set(groupedByDate[date].map(record => record.type)))
-                                    .slice(0, 3)
-                                    .map(type => (
-                                      <div key={type} className="w-2 h-2 rounded-full ring-1 ring-white"
-                                        style={{
-                                          backgroundColor: type === 'diagnosis' ? '#E53E3E' :
-                                            type === 'lab_result' ? '#3182CE' :
-                                            type === 'complaint' ? '#D69E2E' :
-                                            '#38A169'
-                                        }}
-                                      />
-                                    ))
-                                  }
-                                </div>
-                              )}
-                              <span className={`
-                                text-xs truncate
-                                ${selectedDate === date ?
-                                  'text-blue-700 font-medium' :
-                                  'text-gray-600'
-                                }
-                              `}>
-                                {eventCount} {eventCount === 1 ? 'event' : 'events'}
-                              </span>
-                            </div>
+                          <div className="space-y-1">
+                            {dates.map(date => {
+                              const eventCount = groupedByDate[date].length;
+                              const hasMultipleTypes = new Set(
+                                groupedByDate[date].map(record => record.type)
+                              ).size > 1;
+                              
+                              return (
+                                <button
+                                  key={date}
+                                  onClick={() => scrollToDate(date)}
+                                  className={`
+                                    w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-left
+                                    transition-all duration-150
+                                    ${selectedDate === date ? 
+                                      'bg-blue-50 hover:bg-blue-100' : 
+                                      'hover:bg-gray-50'
+                                    }
+                                  `}
+                                >
+                                  <div className={`
+                                    text-sm font-medium
+                                    ${selectedDate === date ?
+                                      'text-blue-700' :
+                                      'text-gray-700'
+                                    }
+                                  `}>
+                                    {new Date(date).getDate()}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-1">
+                                      {hasMultipleTypes && (
+                                        <div className="flex -space-x-1">
+                                          {Array.from(new Set(groupedByDate[date].map(record => record.type)))
+                                            .slice(0, 3)
+                                            .map(type => (
+                                              <div key={type} className="w-2 h-2 rounded-full ring-1 ring-white"
+                                                style={{
+                                                  backgroundColor: type === 'diagnosis' ? '#E53E3E' :
+                                                    type === 'lab_result' ? '#3182CE' :
+                                                    type === 'complaint' ? '#D69E2E' :
+                                                    '#38A169'
+                                                }}
+                                              />
+                                            ))
+                                          }
+                                        </div>
+                                      )}
+                                      <span className={`
+                                        text-xs truncate
+                                        ${selectedDate === date ?
+                                          'text-blue-700' :
+                                          'text-gray-600'
+                                        }
+                                      `}>
+                                        {eventCount} {eventCount === 1 ? 'event' : 'events'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </button>
+                              );
+                            })}
                           </div>
-                          <div className={`
-                            w-6 h-6 rounded-full flex items-center justify-center
-                            opacity-0 group-hover:opacity-100 transition-opacity
-                            ${selectedDate === date ?
-                              'bg-blue-100 text-blue-700' :
-                              'bg-gray-100 text-gray-600'
-                            }
-                          `}>
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -293,7 +375,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
         {/* Timeline */}
         <div 
           ref={timelineRef}
-          className="w-1/2 overflow-y-auto border-r border-gray-200 bg-gray-50"
+          className="flex-1 overflow-y-auto border-r border-gray-200 bg-gray-50"
         >
           <div className="p-4 space-y-6">
             {sortedDates.map((date, dateIndex) => (
@@ -353,7 +435,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
         </div>
 
         {/* Details Panel */}
-        <div className="w-1/3 bg-gray-50">
+        <div className="w-72 bg-gray-50">
           {selectedRecord ? (
             <div className="h-full flex flex-col">
               {/* Details Header */}
