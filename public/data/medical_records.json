@@ -1,0 +1,546 @@
+{
+  "records": [
+    {
+      "id": "REC001",
+      "patientId": "4711",
+      "date": "2025-01-15T09:30:00",
+      "type": "vital_signs",
+      "title": "Routine Follow-up",
+      "description": "BP 128/82. Current medication regimen effective. Continue current dosage.",
+      "details": {
+        "bloodPressure": "128/82",
+        "heartRate": "72",
+        "temperature": "98.6",
+        "medications": "Lisinopril 10mg, Atorvastatin 20mg"
+      }
+    },
+    {
+      "id": "REC101",
+      "patientId": "4711",
+      "date": "2024-10-15T10:00:00",
+      "type": "lab_result",
+      "title": "Lipid Panel Results",
+      "description": "Cholesterol levels showing improvement with statin therapy.",
+      "details": {
+        "totalCholesterol": "190",
+        "LDL": "110",
+        "HDL": "45",
+        "triglycerides": "175"
+      }
+    },
+    {
+      "id": "REC102",
+      "patientId": "4711",
+      "date": "2024-07-20T10:15:00",
+      "type": "diagnosis",
+      "title": "Annual Physical",
+      "description": "Annual check-up shows good progress. Cholesterol levels improved.",
+      "details": {
+        "diagnosis": "Hypertension, High Cholesterol",
+        "bloodPressure": "130/85",
+        "cholesterol": "185"
+      }
+    },
+    {
+      "id": "REC103",
+      "patientId": "4711",
+      "date": "2024-04-12T14:30:00",
+      "type": "complaint",
+      "title": "Headache and Dizziness",
+      "description": "Patient reports occasional headaches and dizziness. BP slightly elevated.",
+      "details": {
+        "symptoms": "Headache, dizziness",
+        "bloodPressure": "142/88",
+        "frequency": "2-3 times per week"
+      }
+    },
+    {
+      "id": "REC104",
+      "patientId": "4711",
+      "date": "2024-01-05T09:15:00",
+      "type": "vital_signs",
+      "title": "BP Check",
+      "description": "Blood pressure elevated. Increasing Lisinopril dosage.",
+      "details": {
+        "bloodPressure": "145/92",
+        "heartRate": "78",
+        "temperature": "98.4"
+      }
+    },
+    {
+      "id": "REC105",
+      "patientId": "4711",
+      "date": "2023-10-20T11:30:00",
+      "type": "lab_result",
+      "title": "Comprehensive Metabolic Panel",
+      "description": "All values within normal range except slightly elevated cholesterol.",
+      "details": {
+        "glucose": "98",
+        "creatinine": "1.0",
+        "potassium": "4.2",
+        "sodium": "140"
+      }
+    },
+    {
+      "id": "REC106",
+      "patientId": "4711",
+      "date": "2023-07-15T10:00:00",
+      "type": "diagnosis",
+      "title": "Annual Physical",
+      "description": "Initial diagnosis of hypertension. Starting medication.",
+      "details": {
+        "diagnosis": "Hypertension",
+        "bloodPressure": "148/94",
+        "treatment": "Starting Lisinopril 5mg"
+      }
+    },
+    {
+      "id": "REC002",
+      "patientId": "4711",
+      "date": "2024-07-20T10:15:00",
+      "type": "diagnosis",
+      "title": "Annual Physical",
+      "description": "Annual check-up shows good progress. Cholesterol levels improved.",
+      "details": {
+        "diagnosis": "Hypertension, High Cholesterol",
+        "bloodPressure": "130/85",
+        "cholesterol": "185"
+      }
+    },
+    {
+      "id": "REC003",
+      "patientId": "4712",
+      "date": "2025-02-10T14:20:00",
+      "type": "diagnosis",
+      "title": "Emergency Visit - Allergic Reaction",
+      "description": "Patient experienced anaphylaxis after latex exposure. Administered epinephrine.",
+      "details": {
+        "allergen": "Latex",
+        "treatment": "Epinephrine injection, Prednisone 20mg",
+        "severity": "Severe"
+      }
+    },
+    {
+      "id": "REC107",
+      "patientId": "4712",
+      "date": "2025-02-10T14:20:00",
+      "type": "diagnosis",
+      "title": "Emergency Visit - Allergic Reaction",
+      "description": "Patient experienced anaphylaxis after latex exposure. Administered epinephrine.",
+      "details": {
+        "allergen": "Latex",
+        "treatment": "Epinephrine injection, Prednisone 20mg",
+        "severity": "Severe"
+      }
+    },
+    {
+      "id": "REC108",
+      "patientId": "4712",
+      "date": "2024-11-05T15:45:00",
+      "type": "vital_signs",
+      "title": "Allergy Follow-up",
+      "description": "Review of allergy management plan. No recent reactions.",
+      "details": {
+        "bloodPressure": "118/75",
+        "heartRate": "72",
+        "temperature": "98.6",
+        "weight": "135"
+      }
+    },
+    {
+      "id": "REC109",
+      "patientId": "4712",
+      "date": "2024-08-20T09:30:00",
+      "type": "lab_result",
+      "title": "Allergy Panel Results",
+      "description": "Confirmed allergies to latex and various pollens.",
+      "details": {
+        "latex_IGE": "High",
+        "pollen_IGE": "Elevated",
+        "dust_IGE": "Normal"
+      }
+    },
+    {
+      "id": "REC110",
+      "patientId": "4712",
+      "date": "2024-05-15T13:20:00",
+      "type": "complaint",
+      "title": "Seasonal Allergies",
+      "description": "Increased allergy symptoms during spring season.",
+      "details": {
+        "symptoms": "Sneezing, itchy eyes, congestion",
+        "severity": "Moderate",
+        "triggers": "Tree pollen"
+      }
+    },
+    {
+      "id": "REC111",
+      "patientId": "4712",
+      "date": "2024-02-10T10:15:00",
+      "type": "diagnosis",
+      "title": "Annual Physical",
+      "description": "Routine check-up. Allergy management plan reviewed and updated.",
+      "details": {
+        "diagnosis": "Severe Allergies",
+        "plan": "Continue antihistamines, avoid triggers",
+        "status": "Well-controlled"
+      }
+    },
+    {
+      "id": "REC112",
+      "patientId": "4712",
+      "date": "2023-09-30T16:00:00",
+      "type": "diagnosis",
+      "title": "Emergency Visit",
+      "description": "Moderate allergic reaction to unknown trigger.",
+      "details": {
+        "symptoms": "Hives, wheezing",
+        "treatment": "Antihistamines, oral steroids",
+        "severity": "Moderate"
+      }
+    },
+    {
+      "id": "REC113",
+      "patientId": "4712",
+      "date": "2023-06-15T11:30:00",
+      "type": "vital_signs",
+      "title": "Follow-up Visit",
+      "description": "Routine allergy check-up. Symptoms well-controlled.",
+      "details": {
+        "bloodPressure": "120/78",
+        "heartRate": "70",
+        "temperature": "98.4",
+        "weight": "133"
+      }
+    },
+    {
+      "id": "REC004",
+      "patientId": "4713",
+      "date": "2025-01-30T11:00:00",
+      "type": "diagnosis",
+      "title": "Arthritis Management",
+      "description": "Joint pain in hands and knees. Prescribed new anti-inflammatory.",
+      "details": {
+        "diagnosis": "Arthritis",
+        "treatment": "Meloxicam 15mg",
+        "painLevel": "6/10"
+      }
+    },
+    {
+      "id": "REC114",
+      "patientId": "4713",
+      "date": "2025-01-30T11:00:00",
+      "type": "diagnosis",
+      "title": "Arthritis Management",
+      "description": "Joint pain in hands and knees. Prescribed new anti-inflammatory.",
+      "details": {
+        "diagnosis": "Arthritis",
+        "treatment": "Meloxicam 15mg",
+        "painLevel": "6/10"
+      }
+    },
+    {
+      "id": "REC115",
+      "patientId": "4713",
+      "date": "2024-11-15T14:45:00",
+      "type": "vital_signs",
+      "title": "BP and Joint Check",
+      "description": "Blood pressure stable. Joint pain increased with cold weather.",
+      "details": {
+        "bloodPressure": "132/84",
+        "heartRate": "74",
+        "temperature": "98.6",
+        "painLevel": "7/10"
+      }
+    },
+    {
+      "id": "REC116",
+      "patientId": "4713",
+      "date": "2024-08-20T10:30:00",
+      "type": "lab_result",
+      "title": "Rheumatoid Factor Test",
+      "description": "RF and anti-CCP antibodies negative. Consistent with osteoarthritis.",
+      "details": {
+        "RF": "Negative",
+        "antiCCP": "Negative",
+        "ESR": "22",
+        "CRP": "2.5"
+      }
+    },
+    {
+      "id": "REC117",
+      "patientId": "4713",
+      "date": "2024-05-10T09:15:00",
+      "type": "complaint",
+      "title": "Increased Joint Pain",
+      "description": "Reports increased pain in knees after starting new exercise routine.",
+      "details": {
+        "symptoms": "Knee pain, stiffness",
+        "painLevel": "8/10",
+        "triggers": "Exercise, weather changes"
+      }
+    },
+    {
+      "id": "REC118",
+      "patientId": "4713",
+      "date": "2024-02-15T13:30:00",
+      "type": "diagnosis",
+      "title": "Annual Physical",
+      "description": "Yearly check-up. Arthritis symptoms progressing slowly.",
+      "details": {
+        "diagnosis": "Osteoarthritis, Hypertension",
+        "bloodPressure": "135/88",
+        "treatment": "Continue current medications"
+      }
+    },
+    {
+      "id": "REC119",
+      "patientId": "4713",
+      "date": "2023-11-20T15:00:00",
+      "type": "vital_signs",
+      "title": "Follow-up Visit",
+      "description": "Regular check of BP and joint function.",
+      "details": {
+        "bloodPressure": "130/82",
+        "heartRate": "76",
+        "temperature": "98.4",
+        "painLevel": "5/10"
+      }
+    },
+    {
+      "id": "REC120",
+      "patientId": "4713",
+      "date": "2023-08-05T11:45:00",
+      "type": "lab_result",
+      "title": "Comprehensive Panel",
+      "description": "Routine blood work to monitor medication effects.",
+      "details": {
+        "creatinine": "1.1",
+        "ALT": "25",
+        "AST": "28",
+        "uricAcid": "5.8"
+      }
+    },
+    {
+      "id": "REC005",
+      "patientId": "4714",
+      "date": "2025-02-15T15:45:00",
+      "type": "vital_signs",
+      "title": "Asthma Follow-up",
+      "description": "Increased frequency of rescue inhaler use. Adjusting maintenance medication.",
+      "details": {
+        "peakFlow": "350",
+        "medications": "Fluticasone/Salmeterol inhaler, Albuterol inhaler",
+        "frequency": "Daily maintenance, rescue as needed"
+      }
+    },
+    {
+      "id": "REC006",
+      "patientId": "4715",
+      "date": "2025-02-01T13:30:00",
+      "type": "lab_result",
+      "title": "Diabetes Check",
+      "description": "A1C slightly elevated. Adjusting medication dosage.",
+      "details": {
+        "A1C": "7.2",
+        "bloodSugar": "156",
+        "medications": "Metformin 1000mg, Glipizide 5mg"
+      }
+    },
+    {
+      "id": "REC007",
+      "patientId": "4716",
+      "date": "2025-02-20T16:15:00",
+      "type": "complaint",
+      "title": "Migraine Episode",
+      "description": "Severe migraine with aura. IV medications administered.",
+      "details": {
+        "painLevel": "9/10",
+        "symptoms": "Aura, nausea",
+        "treatment": "Sumatriptan injection, Ondansetron 4mg"
+      }
+    },
+    {
+      "id": "REC008",
+      "patientId": "4717",
+      "date": "2025-02-05T10:30:00",
+      "type": "diagnosis",
+      "title": "Cardiology Follow-up",
+      "description": "Stress test shows stable condition. Continuing current treatment plan.",
+      "details": {
+        "diagnosis": "Coronary Artery Disease - Stable",
+        "medications": "Metoprolol 25mg, Aspirin 81mg",
+        "stressTest": "Normal"
+      }
+    },
+    {
+      "id": "REC009",
+      "patientId": "4718",
+      "date": "2025-02-18T14:00:00",
+      "type": "lab_result",
+      "title": "Thyroid Function Test",
+      "description": "TSH levels normalized with current medication.",
+      "details": {
+        "TSH": "2.5",
+        "T4": "1.2",
+        "medication": "Levothyroxine 100mcg"
+      }
+    },
+    {
+      "id": "REC010",
+      "patientId": "4719",
+      "date": "2025-02-12T20:00:00",
+      "type": "diagnosis",
+      "title": "Sleep Study Results",
+      "description": "CPAP pressure adjusted. Patient reports improved sleep quality.",
+      "details": {
+        "AHI": "12.5",
+        "oxygenSaturation": "96",
+        "cpapPressure": "10 cmH2O"
+      }
+    },
+    {
+      "id": "REC011",
+      "patientId": "4720",
+      "date": "2025-02-08T00:00:00",
+      "type": "diagnosis",
+      "title": "Psychiatry Follow-up",
+      "description": "Symptoms improving with current treatment plan. Continue therapy.",
+      "details": {
+        "diagnosis": "Depression, Fibromyalgia",
+        "medications": "Duloxetine 60mg, Pregabalin 150mg",
+        "symptoms": "Improved mood, reduced pain"
+      }
+    },
+    {
+      "id": "REC012",
+      "patientId": "4721",
+      "date": "2025-01-25T00:00:00",
+      "type": "diagnosis",
+      "title": "Osteoporosis Follow-up",
+      "description": "DEXA scan shows improvement. Continue current treatment.",
+      "details": {
+        "diagnosis": "Osteoporosis",
+        "medications": "Alendronate 70mg weekly, Calcium + Vitamin D",
+        "boneDensity": "Improved"
+      }
+    },
+    {
+      "id": "REC013",
+      "patientId": "4722",
+      "date": "2025-02-14T00:00:00",
+      "type": "diagnosis",
+      "title": "Rheumatology Follow-up",
+      "description": "Joint swelling decreased. Maintaining current treatment plan.",
+      "details": {
+        "diagnosis": "Rheumatoid Arthritis",
+        "medications": "Methotrexate 15mg weekly, Folic acid 1mg",
+        "symptoms": "Reduced joint pain"
+      }
+    },
+    {
+      "id": "REC014",
+      "patientId": "4723",
+      "date": "2025-02-03T00:00:00",
+      "type": "diagnosis",
+      "title": "Nephrology Follow-up",
+      "description": "Creatinine stable. Dietary compliance good.",
+      "details": {
+        "diagnosis": "Chronic Kidney Disease Stage 3",
+        "medications": "Lisinopril 20mg, Sodium bicarbonate",
+        "creatinine": "1.2"
+      }
+    },
+    {
+      "id": "REC015",
+      "patientId": "4724",
+      "date": "2025-02-16T00:00:00",
+      "type": "diagnosis",
+      "title": "Gastroenterology Follow-up",
+      "description": "Maintaining strict gluten-free diet. Symptoms well controlled.",
+      "details": {
+        "diagnosis": "Celiac Disease",
+        "medications": "Vitamin D supplement, Iron supplement",
+        "symptoms": "Improved digestion"
+      }
+    },
+    {
+      "id": "REC016",
+      "patientId": "4725",
+      "date": "2025-02-07T00:00:00",
+      "type": "diagnosis",
+      "title": "Dermatology Follow-up",
+      "description": "Skin lesions improving with current treatment.",
+      "details": {
+        "diagnosis": "Psoriasis",
+        "medications": "Adalimumab injection, Topical corticosteroid",
+        "symptoms": "Reduced skin lesions"
+      }
+    },
+    {
+      "id": "REC017",
+      "patientId": "4726",
+      "date": "2025-02-19T00:00:00",
+      "type": "diagnosis",
+      "title": "Gynecology Follow-up",
+      "description": "Pain well managed with current treatment plan.",
+      "details": {
+        "diagnosis": "Endometriosis",
+        "medications": "Leuprolide injection, Norethindrone 5mg",
+        "symptoms": "Reduced pelvic pain"
+      }
+    },
+    {
+      "id": "REC018",
+      "patientId": "4727",
+      "date": "2025-02-11T00:00:00",
+      "type": "diagnosis",
+      "title": "Pulmonology Follow-up",
+      "description": "Breathing improved with current regimen.",
+      "details": {
+        "diagnosis": "COPD with Emphysema",
+        "medications": "Tiotropium inhaler, Albuterol inhaler",
+        "symptoms": "Improved breathing"
+      }
+    },
+    {
+      "id": "REC019",
+      "patientId": "4728",
+      "date": "2025-02-13T00:00:00",
+      "type": "diagnosis",
+      "title": "Neurology Follow-up",
+      "description": "MRI stable. Continuing current treatment plan.",
+      "details": {
+        "diagnosis": "Multiple Sclerosis",
+        "medications": "Dimethyl fumarate, Baclofen 10mg",
+        "symptoms": "Stable"
+      }
+    },
+    {
+      "id": "REC020",
+      "patientId": "4729",
+      "date": "2025-02-17T00:00:00",
+      "type": "diagnosis",
+      "title": "Neurology Follow-up",
+      "description": "Tremor well controlled. Adjusting medication timing.",
+      "details": {
+        "diagnosis": "Parkinson's Disease",
+        "medications": "Carbidopa/Levodopa 25/100mg, Pramipexole 0.5mg",
+        "symptoms": "Improved tremor control"
+      }
+    },
+    {
+      "id": "REC021",
+      "patientId": "4730",
+      "date": "2025-02-09T00:00:00",
+      "type": "diagnosis",
+      "title": "Rheumatology Follow-up",
+      "description": "Disease activity stable. Maintaining current medications.",
+      "details": {
+        "diagnosis": "Lupus",
+        "medications": "Hydroxychloroquine 200mg, Prednisone 5mg",
+        "symptoms": "Stable"
+      }
+    }
+  ]
+}

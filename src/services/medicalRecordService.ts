@@ -1,19 +1,55 @@
-import { MedicalRecord } from '../types';
-import { mockMedicalRecords } from './mockData';
+import { MedicalRecord } from '../types/types';
+import { mockDataService } from './mockData';
 
-export class MedicalRecordService {
-  static async getPatientRecords(patientId: string): Promise<MedicalRecord[]> {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+class MedicalRecordService {
+  private records: MedicalRecord[] = [];
+  private initialized = false;
+
+  private async initialize() {
+    if (this.initialized) return;
+    this.records = await mockDataService.getMedicalRecords();
+    this.initialized = true;
+  }
+
+  async getPatientRecords(patientId: string): Promise<MedicalRecord[]> {
+    await this.initialize();
+    return this.records
+      .filter(record => record.patientId === patientId)
+      .sort((a, b) => b.date.getTime() - a.date.getTime());
+  }
+
+  async getAllRecords(): Promise<MedicalRecord[]> {
+    await this.initialize();
+    return this.records;
+  }
+
+  async searchRecords(query: string): Promise<MedicalRecord[]> {
+    await this.initialize();
     
-    const records = mockMedicalRecords[patientId];
-    if (!records) {
+    if (!query || query.trim() === '') {
       return [];
     }
+
+    // Special case for "*" to return all records
+    if (query.trim() === '*') {
+      return this.records;
+    }
+
+    const searchTerms = query.toLowerCase().trim().split(' ').filter(term => term.length > 0);
     
-    return records.map(record => ({
-      ...record,
-      date: new Date(record.date) // Ensure date is properly instantiated
-    }));
+    return this.records.filter(record => {
+      const searchableText = [
+        record.id,
+        record.patientId,
+        record.type,
+        record.title,
+        record.description,
+        JSON.stringify(record.details)
+      ].filter(Boolean).join(' ').toLowerCase();
+
+      return searchTerms.every(term => searchableText.includes(term));
+    });
   }
 }
+
+export const medicalRecordService = new MedicalRecordService();

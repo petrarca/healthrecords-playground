@@ -14,5 +14,5 @@ export interface SearchProvider {
   type: SearchResultType;
   search: (query: string) => Promise<SearchResult[]>;
   getDisplayName: () => string;
-  getIcon: () => JSX.Element;
+  getIcon: () => string;
 }

@@ -1,37 +1,75 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { mockPatients, mockMedicalRecords } from '../services/mockData';
-import { Patient as PatientType } from '../services/mockData';
+import { Patient as PatientType, MedicalRecord } from '../types/types';
 import { MedicalTimeline } from './MedicalTimeline';
 import { PatientHeader } from './PatientHeader';
+import { patientService } from '../services/patientService';
+import { medicalRecordService } from '../services/medicalRecordService';
 
 export function Patient() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
   const [patient, setPatient] = useState<PatientType | null>(null);
+  const [records, setRecords] = useState<MedicalRecord[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) {
-      setError('No patient ID provided');
-      return;
+    async function loadData() {
+      if (!id) {
+        setError('No patient ID provided');
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        console.log('Loading patient data for ID:', id);
+        const [patientData, patientRecords] = await Promise.all([
+          patientService.getPatient(id),
+          medicalRecordService.getPatientRecords(id)
+        ]);
+        
+        console.log('Loaded patient:', patientData);
+        console.log('Loaded records:', patientRecords.length);
+        
+        setPatient(patientData);
+        setRecords(patientRecords);
+
+        // If we're at the patient root, redirect to timeline
+        if (location.pathname === `/patient/${id}`) {
+          navigate(`/patient/${id}/timeline`, { replace: true });
+        }
+      } catch (error) {
+        console.error('Error loading patient data:', error);
+        setError(error instanceof Error ? error.message : 'Failed to load patient data');
+        setPatient(null);
+        setRecords([]);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    const patientData = mockPatients[id];
-    if (!patientData) {
-      setError(`Patient with ID ${id} not found`);
-      return;
-    }
-
-    setPatient(patientData);
-    setError(null);
-
-    // If we're at the patient root, redirect to timeline
-    if (location.pathname === `/patient/${id}`) {
-      navigate(`/patient/${id}/timeline`, { replace: true });
-    }
+    loadData();
   }, [id, navigate, location]);
+
+  if (loading) {
+    return (
+      <div className="p-4">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+          </div>
+          <div className="h-32 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    );
+  }
 
   if (error) {
     return (
@@ -44,8 +82,16 @@ export function Patient() {
               </svg>
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">Error</h3>
+              <h3 className="text-sm font-medium text-red-800">Error Loading Patient Data</h3>
               <div className="mt-2 text-sm text-red-700">{error}</div>
+              <div className="mt-4">
+                <button
+                  onClick={() => navigate('/')}
+                  className="text-sm font-medium text-red-600 hover:text-red-500"
+                >
+                  Return to Home
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -54,25 +100,12 @@ export function Patient() {
   }
 
   if (!patient) {
-    return (
-      <div className="p-4">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-        </div>
-      </div>
-    );
+    return null;
   }
-
-  const records = mockMedicalRecords[patient.id] || [];
 
   return (
     <div className="space-y-6">
-      {/* Patient Header */}
       <PatientHeader patient={patient} />
-
-      {/* Medical Timeline */}
       <div className="bg-white shadow-sm rounded-lg">
         <MedicalTimeline records={records} />
       </div>

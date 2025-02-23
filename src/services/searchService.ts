@@ -1,28 +1,68 @@
-import { SearchResult, SearchProvider } from '../types/search';
+import { SearchProvider, SearchResult, SearchResultType } from '../types/search';
+import { mockDataService } from './mockData';
 
-export interface SearchProvider {
-  type: string;
-  search: (query: string) => Promise<SearchResult[]>;
-  getDisplayName: () => string;
-  getIcon: () => JSX.Element;
+export interface SearchOptions {
+  type?: SearchResultType | 'ALL';
 }
+
+const patientProvider: SearchProvider = {
+  type: SearchResultType.PATIENT,
+  search: async (query: string) => {
+    const patients = await mockDataService.getPatients();
+    const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
+    
+    return patients
+      .filter(patient => {
+        const searchableText = [
+          patient.id,
+          patient.firstName,
+          patient.lastName,
+          patient.dateOfBirth.toLocaleDateString(),
+          patient.insuranceProvider,
+          patient.primaryPhysician,
+          patient.bloodType,
+          ...(patient.allergies || [])
+        ].filter(Boolean).join(' ').toLowerCase();
+        
+        return searchTerms.every(term => searchableText.includes(term));
+      })
+      .map(patient => ({
+        id: patient.id,
+        title: `${patient.firstName} ${patient.lastName}`,
+        subtitle: `DOB: ${patient.dateOfBirth.toLocaleDateString()}`,
+        type: SearchResultType.PATIENT,
+        data: patient
+      }));
+  },
+  getDisplayName: () => 'Patients',
+  getIcon: () => '👤'
+};
 
 class SearchService {
   private providers: SearchProvider[] = [];
+
+  constructor() {
+    this.registerProvider(patientProvider);
+  }
 
   registerProvider(provider: SearchProvider) {
     this.providers.push(provider);
   }
 
-  async search(query: string): Promise<SearchResult[]> {
+  async search(query: string, options: SearchOptions = { type: 'ALL' }): Promise<SearchResult[]> {
     if (!query.trim()) {
       return [];
     }
 
     try {
-      // Get results from all providers
+      // Filter providers based on type if specified
+      const activeProviders = options.type === 'ALL' 
+        ? this.providers
+        : this.providers.filter(provider => provider.type === options.type);
+
+      // Search across all active providers in parallel
       const results = await Promise.all(
-        this.providers.map(provider => provider.search(query))
+        activeProviders.map(provider => provider.search(query))
       );
       
       // Flatten and remove duplicates based on ID
@@ -32,13 +72,22 @@ class SearchService {
         return firstIndex === index;
       });
       
-      // Sort results by title
+      // Sort results
       return uniqueResults.sort((a, b) => a.title.localeCompare(b.title));
     } catch (error) {
       console.error('Search error:', error);
       return [];
     }
   }
+
+  getProviderByType(type: string): SearchProvider | undefined {
+    return this.providers.find(provider => provider.type === type);
+  }
+
+  getProviders(): SearchProvider[] {
+    return this.providers;
+  }
 }
 
+// Create and export singleton instance
 export const searchService = new SearchService();
