@@ -3,8 +3,11 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Patient as PatientType, MedicalRecord } from '../types/types';
 import { MedicalTimeline } from './MedicalTimeline';
 import { PatientHeader } from './PatientHeader';
+import { PatientDemographics } from './PatientDemographics';
 import { patientService } from '../services/patientService';
 import { medicalRecordService } from '../services/medicalRecordService';
+
+type TabType = 'timeline' | 'demographics';
 
 export function Patient() {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +17,7 @@ export function Patient() {
   const [records, setRecords] = useState<MedicalRecord[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<TabType>('timeline');
 
   useEffect(() => {
     async function loadData() {
@@ -43,6 +47,13 @@ export function Patient() {
         if (location.pathname === `/patient/${id}`) {
           navigate(`/patient/${id}/timeline`, { replace: true });
         }
+
+        // Set active tab based on URL
+        if (location.pathname.includes('/demographics')) {
+          setActiveTab('demographics');
+        } else {
+          setActiveTab('timeline');
+        }
       } catch (error) {
         console.error('Error loading patient data:', error);
         setError(error instanceof Error ? error.message : 'Failed to load patient data');
@@ -54,60 +65,76 @@ export function Patient() {
     }
 
     loadData();
-  }, [id, navigate, location]);
+  }, [id, location.pathname, navigate]);
+
+  const handleTabChange = (tab: TabType) => {
+    setActiveTab(tab);
+    navigate(`/patient/${id}/${tab}`);
+  };
 
   if (loading) {
     return (
-      <div className="p-4">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-          <div className="space-y-2">
-            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-          </div>
-          <div className="h-32 bg-gray-200 rounded"></div>
-        </div>
+      <div className="h-full w-full flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
-  if (error) {
+  if (error || !patient) {
     return (
-      <div className="p-4">
-        <div className="bg-red-50 border border-red-200 rounded-md p-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">Error Loading Patient Data</h3>
-              <div className="mt-2 text-sm text-red-700">{error}</div>
-              <div className="mt-4">
-                <button
-                  onClick={() => navigate('/')}
-                  className="text-sm font-medium text-red-600 hover:text-red-500"
-                >
-                  Return to Home
-                </button>
-              </div>
-            </div>
-          </div>
+      <div className="h-full w-full flex items-center justify-center">
+        <div className="text-red-600">
+          {error || 'Patient not found'}
         </div>
       </div>
     );
-  }
-
-  if (!patient) {
-    return null;
   }
 
   return (
-    <div className="space-y-6">
+    <div className="h-full flex flex-col">
       <PatientHeader patient={patient} />
-      <div className="bg-white shadow-sm rounded-lg">
-        <MedicalTimeline records={records} />
+      
+      {/* Tabs */}
+      <div className="px-1 sm:px-2 border-b border-gray-200">
+        <div className="flex space-x-8">
+          <button
+            onClick={() => handleTabChange('timeline')}
+            className={`py-4 px-1 inline-flex items-center border-b-2 font-medium text-sm ${
+              activeTab === 'timeline'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <svg className="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Timeline
+          </button>
+          <button
+            onClick={() => handleTabChange('demographics')}
+            className={`py-4 px-1 inline-flex items-center border-b-2 font-medium text-sm ${
+              activeTab === 'demographics'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <svg className="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            Demographics
+          </button>
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <div className="flex-1 overflow-auto">
+        {activeTab === 'timeline' ? (
+          <MedicalTimeline records={records} />
+        ) : (
+          <PatientDemographics patient={patient} />
+        )}
       </div>
     </div>
   );

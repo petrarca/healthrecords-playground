@@ -20,6 +20,7 @@ function AppContent() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/patient/:id" element={<Patient />} />
         <Route path="/patient/:id/timeline" element={<Patient />} />
+        <Route path="/patient/:id/demographics" element={<Patient />} />
       </Routes>
     </Shell>
   );

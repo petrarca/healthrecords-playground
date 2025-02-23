@@ -89,25 +89,9 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
 }) => {
   return (
     <div className="space-y-2">
-      {/* Fixed Patient Header */}
-      <div className="sticky top-0 z-40">
-        <div className="bg-gray-50 border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-            <h1 className="text-2xl font-semibold text-gray-900">
-              {patient.firstName} {patient.lastName}
-            </h1>
-            <div className="mt-1 flex items-center text-sm text-gray-500 space-x-4">
-              <span>{new Date(patient.dateOfBirth).toLocaleDateString()}</span>
-              <span>•</span>
-              <span>MRN: {patient.mrn}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 space-y-6">
+        <div className="py-4 px-1 sm:px-2 space-y-6">
           {/* Top Row - Personal Info & Physical Characteristics */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <SectionCard
@@ -144,7 +128,7 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
             </SectionCard>
 
             <SectionCard
-              title="Physical Characteristics"
+              title="Constitutional Data"
               icon={
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
@@ -168,6 +152,14 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
                   label="BMI" 
                   value={patient.bmi} 
                 />
+                {patient.allergies && patient.allergies.length > 0 && (
+                  <div className="col-span-2 pt-4 border-t border-gray-100">
+                    <InfoItem 
+                      label="Allergies" 
+                      value={patient.allergies} 
+                    />
+                  </div>
+                )}
               </div>
             </SectionCard>
           </div>
@@ -223,14 +215,6 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
                     value={patient.insuranceNumber} 
                   />
                 </div>
-                {patient.allergies && patient.allergies.length > 0 && (
-                  <div className="pt-4 border-t border-gray-100">
-                    <InfoItem 
-                      label="Allergies" 
-                      value={patient.allergies} 
-                    />
-                  </div>
-                )}
               </div>
             </SectionCard>
           </div>
