@@ -10,7 +10,7 @@ export function PatientSummary({ patient }: PatientSummaryProps) {
   if (!patient) return null;
 
   const age = calculateAge(new Date(patient.dateOfBirth));
-  const title = patient.sex === 'M' ? 'Mr.' : patient.sex === 'F' ? 'Ms.' : 'Mx.';
+  const title = 'Mx.';
 
   const dummyData = {
     generalSummary: 
@@ -27,7 +27,7 @@ export function PatientSummary({ patient }: PatientSummaryProps) {
   };
 
   return (
-    <div className="bg-white shadow rounded-lg p-6 space-y-6">
+    <div className="bg-white shadow rounded-lg p-6 space-y-6 mx-auto">
       <section>
         <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500 mb-2">General</h2>
         <div className="text-gray-800 text-sm leading-relaxed">

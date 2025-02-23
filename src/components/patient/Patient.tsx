@@ -135,7 +135,7 @@ export function Patient() {
 
         <div className="mt-6 px-4">
           {activeTab === 'summary' && (
-            <div className="w-1/2">
+            <div className="mx-auto w-3/4">
               <PatientSummary patient={patient} />
             </div>
           )}
