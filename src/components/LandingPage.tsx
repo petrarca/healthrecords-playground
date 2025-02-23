@@ -5,7 +5,7 @@ export const LandingPage: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] bg-gray-50">
       <div className="text-center max-w-3xl px-4">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Welcome to Medical Records
+          Welcome to HealthRecords
         </h1>
         <p className="text-lg text-gray-600 mb-8">
           Powerful search capabilities at your fingertips

@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "clean": "rm -rf node_modules dist .turbo .next .cache"
+    "clean": "rm -rf node_modules dist .turbo .next .cache .vite coverage build"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.2",
