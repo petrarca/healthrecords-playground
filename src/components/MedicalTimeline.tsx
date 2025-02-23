@@ -151,6 +151,26 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
   // Sort dates in descending order (newest first)
   const sortedDates = Object.keys(groupedByDate).sort((a, b) => b.localeCompare(a));
 
+  const allTypes = ['diagnosis', 'lab_result', 'complaint', 'vital_signs'] as const;
+  const allSelected = useMemo(() => 
+    allTypes.every(type => activeFilters.has(type)), 
+    [activeFilters]
+  );
+
+  const toggleAllFilters = () => {
+    if (allSelected) {
+      // If all are selected, deselect all
+      setActiveFilters(new Set());
+    } else {
+      // If not all are selected, select all
+      setActiveFilters(new Set(allTypes));
+    }
+    setSelectedDate(null);
+    if (timelineRef.current) {
+      timelineRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const toggleFilter = (type: MedicalRecord['type']) => {
     setActiveFilters(prev => {
       const next = new Set(prev);
@@ -194,6 +214,193 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
     }
   }, [selectedRecord]);
 
+  // Get all visible records in chronological order
+  const allVisibleRecords = useMemo(() => {
+    return sortedDates.flatMap(date => groupedByDate[date]);
+  }, [sortedDates, groupedByDate]);
+
+  // Get dates grouped by year and month for navigation
+  const datesByMonth = useMemo(() => {
+    const months: { date: string; records: MedicalRecord[] }[] = [];
+    
+    // Group records by month
+    sortedDates.forEach(date => {
+      const monthStart = date.substring(0, 7); // YYYY-MM format
+      const existingMonth = months.find(m => m.date.startsWith(monthStart));
+      
+      if (existingMonth) {
+        existingMonth.records.push(...groupedByDate[date]);
+      } else {
+        months.push({
+          date: date,
+          records: [...groupedByDate[date]]
+        });
+      }
+    });
+    
+    return months;
+  }, [sortedDates, groupedByDate]);
+
+  // Get unique months and years for quick navigation
+  const quickNavDates = useMemo(() => {
+    const dates = new Set<string>();
+    sortedDates.forEach(date => {
+      dates.add(date.substring(0, 7)); // YYYY-MM
+    });
+    return Array.from(dates).sort((a, b) => b.localeCompare(a)); // Sort descending
+  }, [sortedDates]);
+
+  // Get the currently selected month for highlighting in quick nav
+  const selectedMonth = useMemo(() => {
+    if (!selectedDate) return null;
+    return selectedDate.substring(0, 7); // YYYY-MM
+  }, [selectedDate]);
+
+  // Group quick nav dates by year
+  const quickNavByYear = useMemo(() => {
+    const years = new Map<string, string[]>();
+    quickNavDates.forEach(date => {
+      const year = date.substring(0, 4);
+      const existing = years.get(year) || [];
+      existing.push(date);
+      years.set(year, existing);
+    });
+    return years;
+  }, [quickNavDates]);
+
+  // Get records and types by month for quick navigation
+  const recordsByMonth = useMemo(() => {
+    const months = new Map<string, {
+      count: number;
+      types: Map<MedicalRecord['type'], number>;
+    }>();
+    
+    allVisibleRecords.forEach(record => {
+      const month = record.date.toISOString().substring(0, 7);
+      const monthData = months.get(month) || { count: 0, types: new Map() };
+      monthData.count++;
+      monthData.types.set(record.type, (monthData.types.get(record.type) || 0) + 1);
+      months.set(month, monthData);
+    });
+    
+    return months;
+  }, [allVisibleRecords]);
+
+  // Scroll the quick navigator to keep the selected month in view
+  useEffect(() => {
+    if (selectedMonth) {
+      const element = document.getElementById(`quick-nav-${selectedMonth}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }, [selectedMonth]);
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedRecord || !allVisibleRecords.length) return;
+
+      const currentIndex = allVisibleRecords.findIndex(record => record.id === selectedRecord.id);
+      if (currentIndex === -1) return;
+
+      // Get current record's month
+      const currentDate = selectedRecord.date.toISOString().split('T')[0];
+      const currentMonthIndex = datesByMonth.findIndex(m => 
+        m.date.substring(0, 7) === currentDate.substring(0, 7)
+      );
+
+      if (e.metaKey || e.ctrlKey) { // Cmd/Ctrl key is pressed
+        e.preventDefault();
+        let targetMonth: { date: string; records: MedicalRecord[] } | undefined;
+
+        switch (e.key) {
+          case 'ArrowUp':
+            // Move to previous month
+            if (currentMonthIndex > 0) {
+              targetMonth = datesByMonth[currentMonthIndex - 1];
+            }
+            break;
+          case 'ArrowDown':
+            // Move to next month
+            if (currentMonthIndex < datesByMonth.length - 1) {
+              targetMonth = datesByMonth[currentMonthIndex + 1];
+            }
+            break;
+        }
+
+        if (targetMonth) {
+          // Select the first record of the target month
+          const firstRecord = targetMonth.records[0];
+          setSelectedRecord(firstRecord);
+          const targetDate = firstRecord.date.toISOString().split('T')[0];
+          setSelectedDate(targetDate);
+          
+          // Scroll the record into view
+          const element = document.getElementById(`record-${firstRecord.id}`);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+      } else {
+        // Regular arrow key navigation
+        let nextIndex: number;
+        switch (e.key) {
+          case 'ArrowUp':
+            e.preventDefault();
+            nextIndex = currentIndex - 1;
+            if (nextIndex >= 0) {
+              const nextRecord = allVisibleRecords[nextIndex];
+              setSelectedRecord(nextRecord);
+              const nextDate = nextRecord.date.toISOString().split('T')[0];
+              setSelectedDate(nextDate);
+              const element = document.getElementById(`record-${nextRecord.id}`);
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+            }
+            break;
+          case 'ArrowDown':
+            e.preventDefault();
+            nextIndex = currentIndex + 1;
+            if (nextIndex < allVisibleRecords.length) {
+              const nextRecord = allVisibleRecords[nextIndex];
+              setSelectedRecord(nextRecord);
+              const nextDate = nextRecord.date.toISOString().split('T')[0];
+              setSelectedDate(nextDate);
+              const element = document.getElementById(`record-${nextRecord.id}`);
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+            }
+            break;
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedRecord, allVisibleRecords, datesByMonth]);
+
+  // Get records grouped by exact date (including time) and type
+  const recordsByDateAndType = useMemo(() => {
+    const dateMap = new Map<string, Map<MedicalRecord['type'], MedicalRecord[]>>();
+    
+    allVisibleRecords.forEach(record => {
+      const dateKey = record.date.toISOString().split('T')[0];
+      if (!dateMap.has(dateKey)) {
+        dateMap.set(dateKey, new Map());
+      }
+      const typeMap = dateMap.get(dateKey)!;
+      if (!typeMap.has(record.type)) {
+        typeMap.set(record.type, []);
+      }
+      typeMap.get(record.type)!.push(record);
+    });
+    
+    return dateMap;
+  }, [allVisibleRecords]);
+
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
@@ -211,22 +418,26 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
           </div>
           <div className="flex items-center gap-2.5">
             <button
-              onClick={() => {
-                setActiveFilters(new Set(['diagnosis', 'lab_result', 'complaint', 'vital_signs']));
-                setSelectedDate(null);
-                if (timelineRef.current) {
-                  timelineRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+              onClick={toggleAllFilters}
+              className={`
+                px-3.5 py-2 rounded-lg text-sm font-medium transition-colors duration-150 flex items-center gap-2
+                ${allSelected ? 
+                  'bg-blue-50 text-blue-700 hover:bg-blue-100' : 
+                  'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }
-              }}
-              className="px-3.5 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium transition-colors duration-150 flex items-center gap-2"
+              `}
             >
-              <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              <svg className={`w-4 h-4 ${allSelected ? 'text-blue-500' : 'text-gray-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {allSelected ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-7 7-7-7" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                )}
               </svg>
-              Show All
+              {allSelected ? 'Deselect All' : 'Select All'}
             </button>
             <div className="h-5 w-px bg-gray-200 mx-1"></div>
-            {(['diagnosis', 'lab_result', 'complaint', 'vital_signs'] as const).map(type => (
+            {allTypes.map(type => (
               <FilterButton
                 key={type}
                 type={type}
@@ -241,153 +452,93 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
 
       {/* Main container */}
       <div className="flex flex-1 min-h-0">
-        {/* Date Selector */}
-        <div className="w-52 border-r border-gray-200 bg-white">
+        {/* Quick Navigation Panel */}
+        <div className="w-64 flex-none overflow-y-auto border-l border-gray-200 bg-gray-50">
           <div className="px-4 py-3 border-b border-gray-200">
             <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
               <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               Quick Navigation
             </div>
           </div>
-          <div className="overflow-y-auto h-[calc(100%-50px)]">
-            <div className="relative p-2">
-              {/* Vertical timeline line */}
-              <div className="absolute left-[1.35rem] top-4 bottom-4 w-px bg-gray-200" />
-
-              {years.map(year => (
-                <div key={year} className="relative">
-                  {/* Year button with circle */}
-                  <button
-                    onClick={() => setSelectedYear(selectedYear === year ? null : year)}
-                    className={`
-                      relative z-10 flex items-center w-full px-2 py-2 group
-                      ${selectedYear === year ? 
-                        'mb-2' : ''
-                      }
-                    `}
-                  >
-                    <div className={`
-                      w-5 h-5 rounded-full flex items-center justify-center
-                      transition-colors duration-150
-                      ${selectedYear === year ? 
-                        'bg-blue-500 text-white ring-2 ring-blue-100' : 
-                        'bg-white border-2 border-gray-300 group-hover:border-gray-400'
-                      }
-                    `}>
-                      <div className="w-1.5 h-1.5 rounded-full bg-current" />
-                    </div>
-                    <span className={`
-                      ml-2.5 text-sm
-                      ${selectedYear === year ?
-                        'font-medium text-blue-600' :
-                        'text-gray-600 group-hover:text-gray-900'
-                      }
-                    `}>
-                      {year}
-                    </span>
-                    <div className="ml-auto flex items-center">
-                      <span className="text-xs text-gray-500">
-                        {Object.values(datesByYearAndMonth[year] || {})
-                          .reduce((sum, dates) => sum + dates.length, 0)} dates
-                      </span>
-                      <svg className="w-4 h-4 ml-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} 
-                          d={selectedYear === year ? 
-                            "M19 9l-7 7-7-7" : 
-                            "M9 5l7 7-7 7"
-                          } 
-                        />
-                      </svg>
-                    </div>
-                  </button>
-
-                  {/* Expandable dates for selected year */}
-                  {selectedYear === year && datesByYearAndMonth[year] && (
-                    <div className="ml-7 mb-3">
-                      {Object.entries(datesByYearAndMonth[year]).map(([monthYear, dates]) => (
-                        <div key={monthYear} className="mb-2">
-                          <div className="px-2 mb-1.5">
-                            <div className="flex items-center gap-1.5">
-                              <svg className="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                              </svg>
-                              <h4 className="text-xs font-medium text-gray-700">
-                                {monthYear.split(' ')[0]}
-                              </h4>
-                            </div>
-                          </div>
-                          <div className="space-y-1">
-                            {dates.map(date => {
-                              const eventCount = groupedByDate[date].length;
-                              const hasMultipleTypes = new Set(
-                                groupedByDate[date].map(record => record.type)
-                              ).size > 1;
-                              
-                              return (
-                                <button
-                                  key={date}
-                                  onClick={() => scrollToDate(date)}
-                                  className={`
-                                    w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md text-left
-                                    transition-all duration-150
-                                    ${selectedDate === date ? 
-                                      'bg-blue-50 hover:bg-blue-100' : 
-                                      'hover:bg-gray-50'
-                                    }
-                                  `}
-                                >
-                                  <div className={`
-                                    text-sm font-medium min-w-[1.25rem]
-                                    ${selectedDate === date ?
-                                      'text-blue-700' :
-                                      'text-gray-700'
-                                    }
-                                  `}>
-                                    {new Date(date).getDate()}
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-1.5">
-                                      {hasMultipleTypes && (
-                                        <div className="flex -space-x-1">
-                                          {Array.from(new Set(groupedByDate[date].map(record => record.type)))
-                                            .slice(0, 3)
-                                            .map(type => (
-                                              <div key={type} className="w-2 h-2 rounded-full ring-1 ring-white"
-                                                style={{
-                                                  backgroundColor: type === 'diagnosis' ? '#E53E3E' :
-                                                    type === 'lab_result' ? '#3182CE' :
-                                                    type === 'complaint' ? '#D69E2E' :
-                                                    '#38A169'
-                                                }}
-                                              />
-                                            ))
-                                          }
-                                        </div>
-                                      )}
-                                      <span className={`
-                                        text-xs truncate
-                                        ${selectedDate === date ?
-                                          'text-blue-700' :
-                                          'text-gray-600'
-                                        }
-                                      `}>
-                                        {eventCount} {eventCount === 1 ? 'event' : 'events'}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </button>
-                              );
-                            })}
+          <div className="p-4">
+            {Array.from(quickNavByYear.entries()).map(([year, months]) => (
+              <div key={year} className="mb-4">
+                <div className="text-sm font-medium text-gray-900 mb-2">{year}</div>
+                <div className="space-y-1">
+                  {months.map(month => {
+                    const [yearStr, monthStr] = month.split('-');
+                    const monthName = new Date(parseInt(yearStr), parseInt(monthStr) - 1).toLocaleString('default', { month: 'long' });
+                    const isSelected = month === selectedMonth;
+                    
+                    return (
+                      <button
+                        key={month}
+                        id={`quick-nav-${month}`}
+                        className={`
+                          w-full text-left px-3 py-2 rounded-lg text-sm
+                          transition-colors duration-150
+                          ${isSelected ? 
+                            'bg-blue-100 text-blue-900 font-medium' : 
+                            'text-gray-600 hover:bg-gray-100'
+                          }
+                        `}
+                        onClick={() => {
+                          // Find first record for this month
+                          const firstRecord = allVisibleRecords.find(record => 
+                            record.date.toISOString().startsWith(month)
+                          );
+                          if (firstRecord) {
+                            setSelectedRecord(firstRecord);
+                            setSelectedDate(firstRecord.date.toISOString().split('T')[0]);
+                            const element = document.getElementById(`record-${firstRecord.id}`);
+                            if (element) {
+                              element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }
+                          }
+                        }}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span>{monthName}</span>
+                          <div className="flex items-center gap-1">
+                            {/* Show type indicators */}
+                            {recordsByMonth.get(month) && (
+                              <div className="flex items-center gap-1.5">
+                                <div className="flex -space-x-1">
+                                  {Array.from(recordsByMonth.get(month)!.types.entries())
+                                    .sort((a, b) => b[1] - a[1]) // Sort by count
+                                    .map(([type, count]) => (
+                                      <div
+                                        key={type}
+                                        className="relative flex items-center justify-center w-4 h-4 rounded-full ring-1 ring-white"
+                                        style={{
+                                          backgroundColor: type === 'diagnosis' ? '#E53E3E' :
+                                            type === 'lab_result' ? '#3182CE' :
+                                            type === 'complaint' ? '#D69E2E' :
+                                            '#38A169'
+                                        }}
+                                      >
+                                        <span className="text-[8px] font-medium text-white">
+                                          {count}
+                                        </span>
+                                      </div>
+                                    ))
+                                  }
+                                </div>
+                                <span className="text-xs text-gray-500">
+                                  {recordsByMonth.get(month)!.count}
+                                </span>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      </button>
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -422,36 +573,73 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
 
                 {/* Events */}
                 <div className="divide-y divide-gray-100">
-                  {groupedByDate[date].map((record) => (
-                    <div
-                      key={record.id}
-                      className={`
-                        relative flex gap-3 px-4 py-3 cursor-pointer
-                        transition-all duration-150
-                        hover:bg-gray-50
-                        ${selectedRecord?.id === record.id ? 'bg-blue-50/50 ring-1 ring-blue-200' : ''}
-                      `}
-                      onClick={() => setSelectedRecord(record)}
-                    >
-                      <TimelineIcon type={record.type} />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-3">
-                          <h3 className="text-sm font-medium text-gray-900 truncate">
-                            {record.title}
-                          </h3>
-                          <time className="text-xs tabular-nums text-gray-500 whitespace-nowrap">
-                            {record.date.toLocaleTimeString(undefined, {
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
-                          </time>
+                  {groupedByDate[date].map((record, index) => {
+                    const recordDate = record.date.toISOString().split('T')[0];
+                    const typesForDay = recordsByDateAndType.get(recordDate);
+                    const hasMultipleTypes = typesForDay && typesForDay.size > 1;
+                    const isFirstOfDay = index === 0 || 
+                      groupedByDate[date][index - 1].date.toISOString().split('T')[0] !== recordDate;
+                    
+                    return (
+                      <div
+                        key={record.id}
+                        id={`record-${record.id}`}
+                        className={`
+                          relative flex gap-3 px-4 py-3 cursor-pointer
+                          transition-all duration-150
+                          hover:bg-gray-50
+                          ${selectedRecord?.id === record.id ? 'bg-blue-50/50 ring-1 ring-blue-200' : ''}
+                        `}
+                        onClick={() => setSelectedRecord(record)}
+                        tabIndex={0}
+                        role="button"
+                        aria-selected={selectedRecord?.id === record.id}
+                      >
+                        <div className="relative">
+                          <TimelineIcon type={record.type} />
+                          {hasMultipleTypes && isFirstOfDay && (
+                            <div className="absolute -right-1 -top-1 flex -space-x-1">
+                              {Array.from(typesForDay!.keys())
+                                .filter(type => type !== record.type)
+                                .map(type => (
+                                  <div
+                                    key={type}
+                                    className="w-2 h-2 rounded-full ring-1 ring-white"
+                                    style={{
+                                      backgroundColor: type === 'diagnosis' ? '#E53E3E' :
+                                        type === 'lab_result' ? '#3182CE' :
+                                        type === 'complaint' ? '#D69E2E' :
+                                        '#38A169'
+                                    }}
+                                  />
+                                ))}
+                            </div>
+                          )}
                         </div>
-                        <p className="mt-1 text-sm text-gray-600 line-clamp-2">
-                          {record.description}
-                        </p>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between text-sm mb-0.5">
+                            <div className="font-medium text-gray-900">
+                              {record.title}
+                              {hasMultipleTypes && isFirstOfDay && (
+                                <span className="ml-2 text-xs font-normal text-gray-500">
+                                  +{typesForDay!.size - 1} other type{typesForDay!.size > 2 ? 's' : ''} today
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-gray-500">
+                              {new Date(record.date).toLocaleTimeString([], { 
+                                hour: '2-digit', 
+                                minute: '2-digit'
+                              })}
+                            </div>
+                          </div>
+                          <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+                            {record.description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             ))}

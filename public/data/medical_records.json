@@ -15,6 +15,32 @@
       }
     },
     {
+      "id": "REC002",
+      "patientId": "4711",
+      "date": "2025-01-15T09:45:00",
+      "type": "lab_result",
+      "title": "Blood Work Results",
+      "description": "Complete blood count and metabolic panel within normal ranges.",
+      "details": {
+        "wbc": "7.2",
+        "rbc": "4.8",
+        "platelets": "250",
+        "glucose": "95"
+      }
+    },
+    {
+      "id": "REC003",
+      "patientId": "4711",
+      "date": "2025-01-15T10:00:00",
+      "type": "diagnosis",
+      "title": "Hypertension Follow-up",
+      "description": "Blood pressure well-controlled with current medication.",
+      "details": {
+        "diagnosis": "Controlled Hypertension",
+        "nextFollowUp": "3 months"
+      }
+    },
+    {
       "id": "REC101",
       "patientId": "4711",
       "date": "2024-10-15T10:00:00",
@@ -501,6 +527,100 @@
         "diagnosis": "Lupus",
         "medications": "Hydroxychloroquine 200mg, Prednisone 5mg",
         "symptoms": "Stable"
+      }
+    },
+    {
+      "id": "REC201",
+      "patientId": "4713",
+      "date": "2025-02-15T09:00:00",
+      "type": "complaint",
+      "title": "Joint Pain Assessment",
+      "description": "Patient reports increasing joint pain in knees and hands.",
+      "details": {
+        "painLevel": "6/10",
+        "duration": "2 weeks",
+        "location": "bilateral knees, hands"
+      }
+    },
+    {
+      "id": "REC202",
+      "patientId": "4713",
+      "date": "2025-02-15T09:15:00",
+      "type": "lab_result",
+      "title": "Rheumatoid Factor Test",
+      "description": "Blood work to assess for rheumatoid arthritis.",
+      "details": {
+        "rheumatoidFactor": "elevated",
+        "antiCCP": "positive",
+        "ESR": "32",
+        "CRP": "2.8"
+      }
+    },
+    {
+      "id": "REC203",
+      "patientId": "4713",
+      "date": "2025-02-15T10:00:00",
+      "type": "diagnosis",
+      "title": "Initial RA Diagnosis",
+      "description": "Diagnosed with early-stage rheumatoid arthritis based on symptoms and lab results.",
+      "details": {
+        "diagnosis": "Rheumatoid Arthritis",
+        "stage": "early",
+        "treatment": "referred to rheumatology"
+      }
+    },
+    {
+      "id": "REC301",
+      "patientId": "4714",
+      "date": "2025-02-22T14:00:00",
+      "type": "vital_signs",
+      "title": "Emergency Room Visit",
+      "description": "Patient presented with chest pain and shortness of breath.",
+      "details": {
+        "bloodPressure": "145/90",
+        "heartRate": "98",
+        "temperature": "98.8",
+        "oxygenSaturation": "94%"
+      }
+    },
+    {
+      "id": "REC302",
+      "patientId": "4714",
+      "date": "2025-02-22T14:15:00",
+      "type": "lab_result",
+      "title": "Cardiac Enzymes",
+      "description": "Urgent cardiac panel ordered.",
+      "details": {
+        "troponin": "elevated",
+        "ckMB": "elevated",
+        "BNP": "normal"
+      }
+    },
+    {
+      "id": "REC303",
+      "patientId": "4714",
+      "date": "2025-02-22T14:45:00",
+      "type": "diagnosis",
+      "title": "Acute Coronary Syndrome",
+      "description": "Diagnosed with NSTEMI based on symptoms and lab results.",
+      "details": {
+        "diagnosis": "NSTEMI",
+        "severity": "moderate",
+        "action": "admitted to CCU"
+      }
+    },
+    {
+      "id": "REC304",
+      "patientId": "4714",
+      "date": "2025-02-22T15:00:00",
+      "type": "vital_signs",
+      "title": "CCU Admission Vitals",
+      "description": "Initial vital signs upon CCU admission.",
+      "details": {
+        "bloodPressure": "138/85",
+        "heartRate": "82",
+        "temperature": "98.6",
+        "oxygenSaturation": "96%"
       }
     }
   ]
