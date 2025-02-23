@@ -186,7 +186,6 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
       <div className="flex-none bg-white border-b border-gray-200">
         <div className="px-6 py-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Medical Timeline</h2>
             <div className="text-sm text-gray-500">
               {Object.keys(groupedByDate).length} dates • {
                 Object.values(groupedByDate).reduce((sum, records) => sum + records.length, 0)

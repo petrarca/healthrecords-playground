@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { mockPatients, mockMedicalRecords } from '../services/mockData';
 import { Patient as PatientType } from '../services/mockData';
 import { MedicalTimeline } from './MedicalTimeline';
+import { PatientHeader } from './PatientHeader';
 
 export function Patient() {
   const { id } = useParams<{ id: string }>();
@@ -69,39 +70,7 @@ export function Patient() {
   return (
     <div className="space-y-6">
       {/* Patient Header */}
-      <div className="bg-white shadow-sm rounded-lg p-6">
-        <div className="flex items-start">
-          <div className="flex-shrink-0">
-            <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-              <svg className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </div>
-          </div>
-          <div className="ml-4">
-            <h2 className="text-xl font-semibold text-gray-900">
-              {patient.firstName} {patient.lastName}
-            </h2>
-            <dl className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Patient ID</dt>
-                <dd className="mt-1 text-sm text-gray-900">{patient.id}</dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Date of Birth</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {new Date(patient.dateOfBirth).toLocaleDateString()}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Insurance Provider</dt>
-                <dd className="mt-1 text-sm text-gray-900">{patient.insuranceProvider}</dd>
-              </div>
-            </dl>
-          </div>
-        </div>
-      </div>
+      <PatientHeader patient={patient} />
 
       {/* Medical Timeline */}
       <div className="bg-white shadow-sm rounded-lg">
