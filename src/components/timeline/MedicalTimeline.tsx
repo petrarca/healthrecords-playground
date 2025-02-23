@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import { MedicalRecord } from '../types/types';
+import { MedicalRecord } from '../../types/types';
 
 interface TimelineIconProps {
   type: MedicalRecord['type'];

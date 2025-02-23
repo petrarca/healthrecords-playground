@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Patient as PatientType, MedicalRecord } from '../types/types';
-import { MedicalTimeline } from './MedicalTimeline';
+import { Patient as PatientType, MedicalRecord } from '../../types/types';
+import { MedicalTimeline } from '../timeline/MedicalTimeline';
 import { PatientHeader } from './PatientHeader';
 import { PatientDemographics } from './PatientDemographics';
-import { patientService } from '../services/patientService';
-import { medicalRecordService } from '../services/medicalRecordService';
+import { patientService } from '../../services/patientService';
+import { medicalRecordService } from '../../services/medicalRecordService';
 
 type TabType = 'timeline' | 'demographics';
 
