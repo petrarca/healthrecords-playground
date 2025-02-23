@@ -622,6 +622,54 @@
         "temperature": "98.6",
         "oxygenSaturation": "96%"
       }
+    },
+    {
+      "id": "REC201",
+      "patientId": "4711",
+      "date": "2025-02-23T10:00:00",
+      "type": "medication",
+      "title": "Lisinopril Prescription",
+      "description": "Antihypertensive medication for blood pressure control.",
+      "details": {
+        "medication": "Lisinopril",
+        "dosage": "10mg",
+        "frequency": "Once daily",
+        "duration": "90 days",
+        "refills": "3",
+        "instructions": "Take one tablet by mouth daily in the morning"
+      }
+    },
+    {
+      "id": "REC202",
+      "patientId": "4711",
+      "date": "2025-02-23T10:00:00",
+      "type": "medication",
+      "title": "Atorvastatin Prescription",
+      "description": "Statin medication for cholesterol management.",
+      "details": {
+        "medication": "Atorvastatin",
+        "dosage": "20mg",
+        "frequency": "Once daily",
+        "duration": "90 days",
+        "refills": "3",
+        "instructions": "Take one tablet by mouth daily in the evening"
+      }
+    },
+    {
+      "id": "REC203",
+      "patientId": "4712",
+      "date": "2025-02-20T14:30:00",
+      "type": "medication",
+      "title": "Metformin Prescription",
+      "description": "Oral diabetes medication for blood sugar control.",
+      "details": {
+        "medication": "Metformin",
+        "dosage": "500mg",
+        "frequency": "Twice daily",
+        "duration": "30 days",
+        "refills": "5",
+        "instructions": "Take one tablet by mouth twice daily with meals"
+      }
     }
   ]
 }

@@ -19,37 +19,39 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
   const age = calculateAge(patient.dateOfBirth);
   
   return (
-    <div className="bg-white border-b border-gray-200">
+    <div className="bg-white shadow-sm border-b border-gray-200">
       {/* Critical Info Bar */}
-      <div className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 px-4 py-2">
+      <div className="bg-gradient-to-r from-gray-100 to-white border-b border-gray-200 px-4 py-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-semibold text-gray-900">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl font-semibold text-gray-900">
                 {patient.lastName}, {patient.firstName}
               </span>
-              <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+              <span className="px-2.5 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200">
                 ID: {patient.id}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <span className="font-medium text-gray-600">{age} y/o</span>
+            <div className="flex items-center gap-3 text-sm">
+              <span className="font-medium text-gray-800">{age} y/o</span>
               <span className="text-gray-300">•</span>
-              <span className={`font-medium ${
-                patient.sex === 'M' ? 'text-blue-600' :
-                patient.sex === 'F' ? 'text-pink-600' :
-                'text-purple-600'
+              <span className={`font-semibold ${
+                patient.sex === 'M' ? 'text-blue-700' :
+                patient.sex === 'F' ? 'text-pink-700' :
+                'text-purple-700'
               }`}>{patient.sex}</span>
               <span className="text-gray-300">•</span>
-              <span className="font-medium text-red-600">{patient.bloodType}</span>
+              <span className="font-semibold text-red-700">{patient.bloodType}</span>
               <span className="text-gray-300">•</span>
-              <span className="font-medium text-gray-900">DOB: {patient.dateOfBirth.toLocaleDateString()}</span>
+              <span className="font-medium text-gray-800">DOB: {patient.dateOfBirth.toLocaleDateString()}</span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <div className="text-sm font-medium text-gray-900">{patient.primaryPhysician}</div>
-              <div className="text-xs text-gray-500">Primary Physician</div>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 border-r border-gray-200 pr-6">
+              <div className="text-right">
+                <div className="text-sm font-medium text-gray-900">{patient.primaryPhysician}</div>
+                <div className="text-xs text-gray-500">Primary Physician</div>
+              </div>
             </div>
           </div>
         </div>

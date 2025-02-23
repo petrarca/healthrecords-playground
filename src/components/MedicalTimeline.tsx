@@ -32,6 +32,11 @@ const TimelineIcon: React.FC<TimelineIconProps> = ({ type, size = 'md' }) => {
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
       </svg>
     </div>,
+    medication: <div className={`${iconClasses} bg-[#7C3AED]`}>
+      <svg className={size === 'sm' ? "w-3 h-3" : "w-4 h-4"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+      </svg>
+    </div>,
   };
 
   return icons[type];
@@ -50,7 +55,8 @@ const FilterButton: React.FC<FilterButtonProps> = ({ type, active, onClick, coun
     diagnosis: "bg-red-50 text-red-700",
     lab_result: "bg-blue-50 text-blue-700",
     complaint: "bg-yellow-50 text-yellow-700",
-    vital_signs: "bg-green-50 text-green-700"
+    vital_signs: "bg-green-50 text-green-700",
+    medication: "bg-purple-50 text-purple-700"
   };
   const inactiveClasses = "bg-gray-50 text-gray-500 hover:bg-gray-100";
 
@@ -75,7 +81,8 @@ const getEventTypeName = (type: MedicalRecord['type']): string => {
     diagnosis: 'Assessment',
     lab_result: 'Laboratory Results',
     complaint: 'Patient Complaint',
-    vital_signs: 'Vital Signs'
+    vital_signs: 'Vital Signs',
+    medication: 'Prescription & Medications'
   };
   return names[type];
 };
@@ -83,7 +90,7 @@ const getEventTypeName = (type: MedicalRecord['type']): string => {
 export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => {
   const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null);
   const [activeFilters, setActiveFilters] = useState<Set<MedicalRecord['type']>>(
-    new Set(['diagnosis', 'lab_result', 'complaint', 'vital_signs'])
+    new Set(['diagnosis', 'lab_result', 'complaint', 'vital_signs', 'medication'])
   );
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<number>(() => {
@@ -151,7 +158,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
   // Sort dates in descending order (newest first)
   const sortedDates = Object.keys(groupedByDate).sort((a, b) => b.localeCompare(a));
 
-  const allTypes = ['diagnosis', 'lab_result', 'complaint', 'vital_signs'] as const;
+  const allTypes = ['diagnosis', 'lab_result', 'complaint', 'vital_signs', 'medication'] as const;
   const allSelected = useMemo(() => 
     allTypes.every(type => activeFilters.has(type)), 
     [activeFilters]
@@ -513,10 +520,11 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
                                         key={type}
                                         className="relative flex items-center justify-center w-4 h-4 rounded-full ring-1 ring-white"
                                         style={{
-                                          backgroundColor: type === 'diagnosis' ? '#E53E3E' :
-                                            type === 'lab_result' ? '#3182CE' :
-                                            type === 'complaint' ? '#D69E2E' :
-                                            '#38A169'
+                                          backgroundColor: type === 'diagnosis' ? '#DC2626' :
+                                            type === 'lab_result' ? '#2563EB' :
+                                            type === 'complaint' ? '#D97706' :
+                                            type === 'medication' ? '#7C3AED' :
+                                            '#059669'
                                         }}
                                       >
                                         <span className="text-[8px] font-medium text-white">
@@ -585,31 +593,37 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
                         key={record.id}
                         id={`record-${record.id}`}
                         className={`
-                          relative flex gap-3 px-4 py-3 cursor-pointer
-                          transition-all duration-150
-                          hover:bg-gray-50
-                          ${selectedRecord?.id === record.id ? 'bg-blue-50/50 ring-1 ring-blue-200' : ''}
+                          relative flex items-start gap-4 p-4 rounded-lg
+                          transition-all duration-200 cursor-pointer
+                          ${selectedRecord?.id === record.id ? 
+                            'bg-blue-50 border border-blue-200 shadow-sm' : 
+                            'bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm'
+                          }
                         `}
                         onClick={() => setSelectedRecord(record)}
                         tabIndex={0}
                         role="button"
                         aria-selected={selectedRecord?.id === record.id}
                       >
+                        {/* Timeline line */}
+                        <div className="absolute left-[1.65rem] top-0 bottom-0 w-px bg-gray-200"></div>
+                        
                         <div className="relative">
                           <TimelineIcon type={record.type} />
-                          {hasMultipleTypes && isFirstOfDay && (
+                          {isFirstOfDay && hasMultipleTypes && (
                             <div className="absolute -right-1 -top-1 flex -space-x-1">
                               {Array.from(typesForDay!.keys())
                                 .filter(type => type !== record.type)
                                 .map(type => (
                                   <div
                                     key={type}
-                                    className="w-2 h-2 rounded-full ring-1 ring-white"
+                                    className="w-2.5 h-2.5 rounded-full ring-2 ring-white shadow-sm"
                                     style={{
-                                      backgroundColor: type === 'diagnosis' ? '#E53E3E' :
-                                        type === 'lab_result' ? '#3182CE' :
-                                        type === 'complaint' ? '#D69E2E' :
-                                        '#38A169'
+                                      backgroundColor: type === 'diagnosis' ? '#DC2626' :
+                                        type === 'lab_result' ? '#2563EB' :
+                                        type === 'complaint' ? '#D97706' :
+                                        type === 'medication' ? '#7C3AED' :
+                                        '#059669'
                                     }}
                                   />
                                 ))}
@@ -617,23 +631,23 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between text-sm mb-0.5">
-                            <div className="font-medium text-gray-900">
+                          <div className="flex items-center justify-between text-sm mb-1">
+                            <div className="font-semibold text-gray-900">
                               {record.title}
                               {hasMultipleTypes && isFirstOfDay && (
-                                <span className="ml-2 text-xs font-normal text-gray-500">
+                                <span className="ml-2 text-xs font-medium text-gray-600">
                                   +{typesForDay!.size - 1} other type{typesForDay!.size > 2 ? 's' : ''} today
                                 </span>
                               )}
                             </div>
-                            <div className="text-gray-500">
+                            <div className="text-sm font-medium text-gray-700">
                               {new Date(record.date).toLocaleTimeString([], { 
                                 hour: '2-digit', 
                                 minute: '2-digit'
                               })}
                             </div>
                           </div>
-                          <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+                          <p className="mt-1.5 text-sm text-gray-700 line-clamp-2">
                             {record.description}
                           </p>
                         </div>
@@ -647,23 +661,23 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
         </div>
 
         {/* Details Panel */}
-        <div className="w-96 bg-gray-50">
+        <div className="w-96 bg-gray-50 border-l border-gray-200">
           {selectedRecord ? (
             <div className="h-full flex flex-col">
               {/* Details Header */}
-              <div className="px-4 py-3.5 bg-white border-b border-gray-200">
+              <div className="px-4 py-4 bg-white border-b border-gray-200 shadow-sm">
                 <div className="flex items-start gap-3">
                   <TimelineIcon type={selectedRecord.type} />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
-                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                      <h3 className="text-base font-semibold text-gray-900 truncate">
                         {selectedRecord.title}
                       </h3>
-                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 capitalize whitespace-nowrap">
+                      <span className="text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 font-medium capitalize whitespace-nowrap">
                         {selectedRecord.type.replace('_', ' ')}
                       </span>
                     </div>
-                    <time className="text-xs text-gray-500">
+                    <time className="text-sm text-gray-600 mt-0.5 block">
                       {selectedRecord.date.toLocaleString(undefined, {
                         weekday: 'short',
                         year: 'numeric',
@@ -679,31 +693,31 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
 
               {/* Details Content */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                <div className="bg-white rounded-lg border border-gray-200 px-4 py-3.5">
-                  <div className="flex items-center gap-2 mb-2">
-                    <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="bg-white rounded-lg border border-gray-200 shadow-sm px-4 py-4">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Description</h4>
+                    <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Description</h4>
                   </div>
-                  <p className="text-sm text-gray-900">
+                  <p className="text-sm text-gray-800 leading-relaxed">
                     {selectedRecord.description}
                   </p>
                 </div>
 
                 {selectedRecord.details && (
-                  <div className="bg-white rounded-lg border border-gray-200 px-4 py-3.5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="bg-white rounded-lg border border-gray-200 shadow-sm px-4 py-4">
+                    <div className="flex items-center gap-2 mb-2.5">
+                      <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Details</h4>
+                      <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Details</h4>
                     </div>
                     <dl className="grid grid-cols-2 gap-3">
                       {Object.entries(selectedRecord.details).map(([key, value]) => (
-                        <div key={key} className="bg-gray-50 rounded-md p-2.5">
-                          <dt className="text-xs font-medium text-gray-500">{key}</dt>
-                          <dd className="text-sm font-medium text-gray-900 mt-0.5">{value}</dd>
+                        <div key={key} className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                          <dt className="text-xs font-medium text-gray-600">{key}</dt>
+                          <dd className="text-sm font-semibold text-gray-900 mt-1">{value}</dd>
                         </div>
                       ))}
                     </dl>
@@ -712,7 +726,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
               </div>
             </div>
           ) : (
-            <div className="h-full flex items-center justify-center text-sm text-gray-500">
+            <div className="h-full flex items-center justify-center text-sm text-gray-600">
               Select a record to view details
             </div>
           )}

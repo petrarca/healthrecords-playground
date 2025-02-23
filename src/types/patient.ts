@@ -11,4 +11,13 @@ export interface Patient {
   primaryPhysician?: string;
   insuranceProvider?: string;
   insuranceNumber?: string;
+  address?: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
+  phone?: string;
+  email?: string;
 }

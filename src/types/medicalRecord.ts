@@ -2,7 +2,7 @@ export interface MedicalRecord {
   id: string;
   patientId: string;
   date: Date;
-  type: 'diagnosis' | 'lab_result' | 'complaint' | 'vital_signs';
+  type: 'diagnosis' | 'lab_result' | 'complaint' | 'vital_signs' | 'medication';
   title: string;
   description: string;
   details?: Record<string, string | number>;
