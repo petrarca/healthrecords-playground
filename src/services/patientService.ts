@@ -1,4 +1,4 @@
-import { Patient } from '../types/types';
+import { Patient } from '../types';
 import { mockPatients } from './mockData';
 
 export class PatientService {
@@ -15,17 +15,5 @@ export class PatientService {
       ...patient,
       dateOfBirth: new Date(patient.dateOfBirth) // Ensure date is properly instantiated
     };
-  }
-
-  static async searchPatients(query: string): Promise<Patient[]> {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const normalizedQuery = query.toLowerCase();
-    return Object.values(mockPatients).filter(patient => 
-      patient.firstName.toLowerCase().includes(normalizedQuery) ||
-      patient.lastName.toLowerCase().includes(normalizedQuery) ||
-      patient.id.toLowerCase().includes(normalizedQuery)
-    );
   }
 }
