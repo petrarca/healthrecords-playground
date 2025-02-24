@@ -1,5 +1,5 @@
 import { Patient } from '../../types/types';
-import { calculateAge } from '../../lib/dateUtils';
+import { calculateAge } from '../../lib/utils';
 
 interface PatientSummaryProps {
   patient: Patient | null;

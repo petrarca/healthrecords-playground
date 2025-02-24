@@ -1,6 +1,6 @@
 import React from 'react';
 import { Patient } from '../../types/types';
-import { calculateAge } from '../../lib/dateUtils';
+import { calculateAge } from '../../lib/utils';
 import { useNavigate } from 'react-router-dom';
 
 interface PatientHeaderProps {
