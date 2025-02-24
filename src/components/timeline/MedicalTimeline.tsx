@@ -293,7 +293,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
         />
       </div>
       
-      <div className="flex-1 flex gap-4 min-h-0">
+      <div className="flex gap-4 h-[calc(100vh-300px)]">
         <div className="flex flex-col">
           <TimelineYearSelector
             years={years}
@@ -305,7 +305,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
           />
         </div>
         
-        <div ref={timelineRef} className="flex-1 overflow-y-auto bg-white rounded-lg shadow-sm border border-gray-200">
+        <div ref={timelineRef} className="flex-1 flex flex-col bg-white rounded-lg shadow-sm border border-gray-200">
           <TimelineList
             groupedByDate={groupedByDate}
             datesByYearAndMonth={datesByYearAndMonth}

@@ -34,7 +34,7 @@ export function Dropdown({ value, onChange, options, className = '' }: DropdownP
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="h-9 w-10 flex items-center justify-center rounded-md border border-input bg-white text-sm shadow-sm
+        className="h-[42px] w-[42px] flex items-center justify-center rounded-lg border border-gray-300 bg-white text-sm shadow-sm
           hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-400"
       >
         {selectedOption?.icon}

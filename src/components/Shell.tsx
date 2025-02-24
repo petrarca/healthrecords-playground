@@ -17,7 +17,7 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen flex flex-col overflow-hidden bg-gray-50">
       <ShellHeader 
         onSearchResult={handleSearchResult}
         onMobileMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -26,7 +26,7 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
       />
       
       {/* Main Content */}
-      <main className={`max-w-[1600px] mx-auto px-1 sm:px-2 py-6 transition-all duration-300 ${
+      <main className={`flex-1 overflow-hidden max-w-[1600px] mx-auto w-full px-1 sm:px-2 py-6 transition-all duration-300 ${
         isChatOpen ? 'mr-96' : ''
       }`}>
         {children}

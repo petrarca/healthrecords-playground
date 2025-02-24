@@ -4,7 +4,6 @@ import {
   User2, 
   Home, 
   Phone, 
-  Heart,
   BadgeAlert 
 } from 'lucide-react';
 
@@ -104,48 +103,6 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
             <div className="flex justify-between">
               <span className="text-gray-500">Email:</span>
               <span className="font-medium">{patient.email}</span>
-            </div>
-          )}
-        </div>
-      </Card>
-
-      {/* Medical Profile Card */}
-      <Card title="Medical Profile" icon={<Heart size={16} />} variant="rose">
-        <div className="space-y-2 text-sm">
-          <div className="grid gap-1">
-            {patient.bloodType && (
-              <div className="flex justify-between">
-                <span className="text-gray-500">Blood Type:</span>
-                <span className="font-medium">{patient.bloodType}</span>
-              </div>
-            )}
-            {patient.height && (
-              <div className="flex justify-between">
-                <span className="text-gray-500">Height:</span>
-                <span className="font-medium">{patient.height}</span>
-              </div>
-            )}
-            {patient.weight && (
-              <div className="flex justify-between">
-                <span className="text-gray-500">Weight:</span>
-                <span className="font-medium">{patient.weight}</span>
-              </div>
-            )}
-          </div>
-          
-          {patient.allergies && patient.allergies.length > 0 && (
-            <div className="border-t border-rose-100 pt-2 mt-2">
-              <div className="text-xs text-rose-600 font-medium mb-1">Allergies</div>
-              <div className="flex flex-wrap gap-1">
-                {patient.allergies.map((allergy, index) => (
-                  <span 
-                    key={index} 
-                    className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-rose-100 text-rose-700 border border-rose-200"
-                  >
-                    {allergy}
-                  </span>
-                ))}
-              </div>
             </div>
           )}
         </div>

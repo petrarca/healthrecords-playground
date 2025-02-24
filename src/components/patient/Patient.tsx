@@ -5,10 +5,11 @@ import { MedicalTimeline } from '../timeline/MedicalTimeline';
 import { PatientHeader } from './PatientHeader';
 import { PatientDemographics } from './PatientDemographics';
 import { PatientSummary } from './PatientSummary';
+import { MedicalProfile } from './MedicalProfile';
 import { patientService } from '../../services/patientService';
 import { medicalRecordService } from '../../services/medicalRecordService';
 
-type TabType = 'timeline' | 'demographics' | 'summary';
+type TabType = 'timeline' | 'demographics' | 'summary' | 'profile';
 
 export function Patient() {
   const { id } = useParams<{ id: string }>();
@@ -58,6 +59,8 @@ export function Patient() {
           setActiveTab('demographics');
         } else if (location.pathname.includes('/summary')) {
           setActiveTab('summary');
+        } else if (location.pathname.includes('/profile')) {
+          setActiveTab('profile');
         } else {
           setActiveTab('timeline');
         }
@@ -98,57 +101,74 @@ export function Patient() {
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col overflow-hidden">
       <PatientHeader patient={patient} />
       
-      <div className="mt-6">
-        <div className="border-b border-gray-200">
-          <nav className="-mb-px flex space-x-8">
-            <button
-              onClick={() => handleTabChange('summary')}
-              className={`${
-                activeTab === 'summary'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              } whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium`}
-            >
-              Summary
-            </button>
-            <button
-              onClick={() => handleTabChange('timeline')}
-              className={`${
-                activeTab === 'timeline'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              } whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium`}
-            >
-              Timeline
-            </button>
-            <button
-              onClick={() => handleTabChange('demographics')}
-              className={`${
-                activeTab === 'demographics'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              } whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium`}
-            >
-              Demographics
-            </button>
-          </nav>
-        </div>
+      <div className="flex-1 overflow-hidden">
+        <div className="mt-6">
+          <div className="border-b border-gray-200">
+            <nav className="-mb-px flex space-x-8">
+              <button
+                onClick={() => handleTabChange('summary')}
+                className={`${
+                  activeTab === 'summary'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                } whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium`}
+              >
+                Summary
+              </button>
+              <button
+                onClick={() => handleTabChange('timeline')}
+                className={`${
+                  activeTab === 'timeline'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                } whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium`}
+              >
+                Timeline
+              </button>
+              <button
+                onClick={() => handleTabChange('demographics')}
+                className={`${
+                  activeTab === 'demographics'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                } whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium`}
+              >
+                Demographics
+              </button>
+              <button
+                onClick={() => handleTabChange('profile')}
+                className={`${
+                  activeTab === 'profile'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                } whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium`}
+              >
+                Medical Profile
+              </button>
+            </nav>
+          </div>
 
-        <div className="mt-6 px-4">
-          {activeTab === 'summary' && (
-            <div className="mx-auto w-3/4">
-              <PatientSummary patient={patient} />
+          <div className="flex-1 overflow-hidden">
+            <div className="mt-6">
+              {activeTab === 'summary' && (
+                <div className="mx-auto w-3/4">
+                  <PatientSummary patient={patient} />
+                </div>
+              )}
+              {activeTab === 'timeline' && (
+                <MedicalTimeline records={records} />
+              )}
+              {activeTab === 'demographics' && (
+                <PatientDemographics patient={patient} />
+              )}
+              {activeTab === 'profile' && (
+                <MedicalProfile patient={patient} />
+              )}
             </div>
-          )}
-          {activeTab === 'timeline' && (
-            <MedicalTimeline records={records} />
-          )}
-          {activeTab === 'demographics' && (
-            <PatientDemographics patient={patient} />
-          )}
+          </div>
         </div>
       </div>
     </div>

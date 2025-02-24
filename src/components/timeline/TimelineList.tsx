@@ -20,7 +20,7 @@ export const TimelineList: React.FC<TimelineListProps> = ({
   onRecordSelect,
 }) => {
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="h-96 overflow-y-scroll px-4 scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500">
       {datesByYearAndMonth[selectedYear] && 
         Object.entries(datesByYearAndMonth[selectedYear]).map(([monthYear, dates]) => (
           <div key={monthYear} className="mb-3">

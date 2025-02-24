@@ -167,7 +167,7 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
             onKeyDown={handleKeyDown}
           />
           <button 
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800 transition-all duration-150 group"
+            className="absolute inset-y-0 right-2 my-auto h-8 px-2 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800 transition-all duration-150 group flex items-center justify-center"
             onClick={() => {
               // Voice search functionality will be implemented later
               console.log('Voice search clicked');
