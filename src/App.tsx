@@ -5,7 +5,17 @@ import { Patient } from './components/patient/Patient';
 import { useNavigate } from 'react-router-dom';
 import { navigationService } from './services/navigationService';
 import { useEffect } from 'react';
-import './services/searchProviders'; // Import to register providers
+import './services/patientSearchProviders'; // Import to register providers
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
 function AppContent() {
   const navigate = useNavigate();
@@ -30,9 +40,11 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <AppContent />
+      </Router>
+    </QueryClientProvider>
   );
 }
 

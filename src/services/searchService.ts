@@ -39,7 +39,7 @@ const patientProvider: SearchProvider = {
 };
 
 class SearchService {
-  private providers: SearchProvider[] = [];
+  private readonly providers: SearchProvider[] = [];
 
   constructor() {
     this.registerProvider(patientProvider);
