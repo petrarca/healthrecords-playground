@@ -1,3 +1,14 @@
+export type AddressType = 'HOME' | 'WORK' | 'OTHER';
+
+export interface Address {
+  label: AddressType;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+}
+
 export interface Patient {
   id: string;
   firstName: string;
@@ -11,13 +22,8 @@ export interface Patient {
   primaryPhysician?: string;
   insuranceProvider?: string;
   insuranceNumber?: string;
-  address?: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
+  addresses: Address[];
+  primaryAddressType?: AddressType;
   phone?: string;
   email?: string;
 }

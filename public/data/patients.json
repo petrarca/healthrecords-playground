@@ -14,13 +14,25 @@
       "primaryPhysician": "Dr. Anderson",
       "insuranceProvider": "Blue Cross",
       "insuranceNumber": "BC123456789",
-      "address": {
-        "street": "123 Oak Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94105",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "123 Oak Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94105",
+          "country": "USA"
+        },
+        {
+          "label": "WORK",
+          "street": "555 Market Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94105",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0123",
       "email": "john.smith@email.com"
     },
@@ -38,13 +50,17 @@
       "primaryPhysician": "Dr. Martinez",
       "insuranceProvider": "Aetna",
       "insuranceNumber": "AE987654321",
-      "address": {
-        "street": "456 Pine Avenue",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "456 Pine Avenue",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0124",
       "email": "emma.johnson@email.com"
     },
@@ -62,13 +78,17 @@
       "primaryPhysician": "Dr. Chen",
       "insuranceProvider": "Medicare",
       "insuranceNumber": "MC456789123",
-      "address": {
-        "street": "789 Market Street, Apt 4B",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94103",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "789 Market Street, Apt 4B",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94103",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0125",
       "email": "michael.williams@email.com"
     },
@@ -86,13 +106,17 @@
       "primaryPhysician": "Dr. Thompson",
       "insuranceProvider": "United Healthcare",
       "insuranceNumber": "UH789123456",
-      "address": {
-        "street": "321 Hayes Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94102",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "321 Hayes Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94102",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0126",
       "email": "sarah.brown@email.com"
     },
@@ -110,13 +134,17 @@
       "primaryPhysician": "Dr. Patel",
       "insuranceProvider": "Kaiser",
       "insuranceNumber": "KP159753468",
-      "address": {
-        "street": "901 Valencia Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "901 Valencia Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0127",
       "email": "david.miller@email.com"
     },
@@ -134,13 +162,17 @@
       "primaryPhysician": "Dr. Wilson",
       "insuranceProvider": "Cigna",
       "insuranceNumber": "CG852963741",
-      "address": {
-        "street": "2345 Mission Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "2345 Mission Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0128",
       "email": "lisa.garcia@email.com"
     },
@@ -158,13 +190,17 @@
       "primaryPhysician": "Dr. Lee",
       "insuranceProvider": "Humana",
       "insuranceNumber": "HU963852741",
-      "address": {
-        "street": "3456 Folsom Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "3456 Folsom Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0129",
       "email": "james.taylor@email.com"
     },
@@ -182,13 +218,17 @@
       "primaryPhysician": "Dr. Nguyen",
       "insuranceProvider": "Blue Shield",
       "insuranceNumber": "BS741852963",
-      "address": {
-        "street": "4567 24th Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "4567 24th Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0130",
       "email": "maria.rodriguez@email.com"
     },
@@ -206,13 +246,17 @@
       "primaryPhysician": "Dr. White",
       "insuranceProvider": "Anthem",
       "insuranceNumber": "AN159753468",
-      "address": {
-        "street": "5678 Guerrero Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "5678 Guerrero Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0131",
       "email": "robert.anderson@email.com"
     },
@@ -230,13 +274,17 @@
       "primaryPhysician": "Dr. Brown",
       "insuranceProvider": "United Healthcare",
       "insuranceNumber": "UH951753684",
-      "address": {
-        "street": "6789 Dolores Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "6789 Dolores Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0132",
       "email": "jennifer.martin@email.com"
     },
@@ -254,13 +302,17 @@
       "primaryPhysician": "Dr. Garcia",
       "insuranceProvider": "Medicare",
       "insuranceNumber": "MC357159852",
-      "address": {
-        "street": "7890 19th Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "7890 19th Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0133",
       "email": "william.thompson@email.com"
     },
@@ -278,13 +330,17 @@
       "primaryPhysician": "Dr. Taylor",
       "insuranceProvider": "Aetna",
       "insuranceNumber": "AE753951852",
-      "address": {
-        "street": "8901 20th Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "8901 20th Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0134",
       "email": "patricia.moore@email.com"
     },
@@ -302,13 +358,17 @@
       "primaryPhysician": "Dr. Martinez",
       "insuranceProvider": "Humana",
       "insuranceNumber": "HU456123789",
-      "address": {
-        "street": "9012 21st Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "9012 21st Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0135",
       "email": "richard.jackson@email.com"
     },
@@ -326,13 +386,17 @@
       "primaryPhysician": "Dr. Anderson",
       "insuranceProvider": "Kaiser",
       "insuranceNumber": "KP789456123",
-      "address": {
-        "street": "2345 22nd Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "2345 22nd Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0136",
       "email": "elizabeth.white@email.com"
     },
@@ -350,13 +414,17 @@
       "primaryPhysician": "Dr. Thompson",
       "insuranceProvider": "Blue Cross",
       "insuranceNumber": "BC951357846",
-      "address": {
-        "street": "3456 23rd Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "3456 23rd Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0137",
       "email": "thomas.harris@email.com"
     },
@@ -374,13 +442,17 @@
       "primaryPhysician": "Dr. Wilson",
       "insuranceProvider": "Cigna",
       "insuranceNumber": "CG357951846",
-      "address": {
-        "street": "4567 24th Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "4567 24th Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0138",
       "email": "susan.clark@email.com"
     },
@@ -398,13 +470,17 @@
       "primaryPhysician": "Dr. Moore",
       "insuranceProvider": "Medicare",
       "insuranceNumber": "MC159357846",
-      "address": {
-        "street": "5678 25th Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "5678 25th Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0139",
       "email": "daniel.lewis@email.com"
     },
@@ -422,13 +498,17 @@
       "primaryPhysician": "Dr. Jackson",
       "insuranceProvider": "Anthem",
       "insuranceNumber": "AN753159846",
-      "address": {
-        "street": "6789 26th Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "6789 26th Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0140",
       "email": "margaret.lee@email.com"
     },
@@ -446,13 +526,17 @@
       "primaryPhysician": "Dr. Harris",
       "insuranceProvider": "United Healthcare",
       "insuranceNumber": "UH357951846",
-      "address": {
-        "street": "7890 27th Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "7890 27th Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0141",
       "email": "joseph.walker@email.com"
     },
@@ -470,13 +554,17 @@
       "primaryPhysician": "Dr. Clark",
       "insuranceProvider": "Blue Shield",
       "insuranceNumber": "BS951357846",
-      "address": {
-        "street": "8901 28th Street",
-        "city": "San Francisco",
-        "state": "CA",
-        "zipCode": "94110",
-        "country": "USA"
-      },
+      "addresses": [
+        {
+          "label": "HOME",
+          "street": "8901 28th Street",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA"
+        }
+      ],
+      "primaryAddressType": "HOME",
       "phone": "(415) 555-0142",
       "email": "barbara.young@email.com"
     }
