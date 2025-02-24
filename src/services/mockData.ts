@@ -88,6 +88,16 @@ export class MockDataService {
     }
     return this.medicalRecords.filter(record => record.patientId === patientId);
   }
+
+  async updatePatient(updatedPatient: Patient): Promise<void> {
+    if (!this.initialized) {
+      await this.initialize();
+    }
+    const index = this.patients.findIndex(p => p.id === updatedPatient.id);
+    if (index !== -1) {
+      this.patients[index] = updatedPatient;
+    }
+  }
 }
 
 export const mockDataService = new MockDataService();

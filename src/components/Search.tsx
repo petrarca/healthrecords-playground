@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react"
 import { SearchResult, SearchResultType } from "../types/search"
 import { searchService } from "../services/searchService"
-import { Dropdown } from "./ui/dropdown"
+import { SearchType } from "./ui/searchType"
 
 const searchTypeOptions = [
   { 
@@ -152,7 +152,7 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
   return (
     <div className={`relative ${className}`}>
       <div className="flex gap-2">
-        <Dropdown
+        <SearchType
           value={searchType}
           onChange={handleTypeChange}
           options={searchTypeOptions}

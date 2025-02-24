@@ -1,54 +1,59 @@
 import React from 'react';
-import { Patient } from '../../types/patient';
+import { Patient, AddressType } from '../../types/patient';
 import { 
   User2, 
   Home, 
   Phone, 
-  BadgeAlert 
+  BadgeAlert,
+  Star,
+  Settings2,
+  MapPin
 } from 'lucide-react';
-
-interface PatientDemographicsProps {
-  patient: Patient;
-}
+import { CardDropdown } from '../ui/cardDropdown';
 
 interface CardProps {
   title: string;
   icon: React.ReactNode;
   children: React.ReactNode;
-  variant: 'blue' | 'green' | 'purple' | 'amber' | 'rose';
+  variant: 'blue' | 'green' | 'purple' | 'amber';
+  headerContent?: React.ReactNode;
 }
 
 const cardStyles = {
-  blue: 'border-blue-200 bg-blue-50/50',
-  green: 'border-green-200 bg-green-50/50',
-  purple: 'border-purple-200 bg-purple-50/50',
-  amber: 'border-amber-200 bg-amber-50/50',
-  rose: 'border-rose-200 bg-rose-50/50',
+  blue: 'border-blue-200',
+  green: 'border-green-200',
+  purple: 'border-purple-200',
+  amber: 'border-amber-200'
 } as const;
 
 const headerStyles = {
-  blue: 'bg-blue-100/50 border-blue-200',
-  green: 'bg-green-100/50 border-green-200',
-  purple: 'bg-purple-100/50 border-purple-200',
-  amber: 'bg-amber-100/50 border-amber-200',
-  rose: 'bg-rose-100/50 border-rose-200',
+  blue: 'bg-blue-50 border-blue-200',
+  green: 'bg-green-50 border-green-200',
+  purple: 'bg-purple-50 border-purple-200',
+  amber: 'bg-amber-50 border-amber-200'
 } as const;
 
 const iconStyles = {
   blue: 'text-blue-600',
   green: 'text-green-600',
   purple: 'text-purple-600',
-  amber: 'text-amber-600',
-  rose: 'text-rose-600',
+  amber: 'text-amber-600'
 } as const;
 
-const Card: React.FC<CardProps> = ({ title, icon, children, variant }) => (
+const Card: React.FC<CardProps> = ({ title, icon, children, variant, headerContent }) => (
   <div className={`bg-white rounded shadow-sm overflow-hidden border ${cardStyles[variant]}`}>
-    <div className={`border-b px-3 py-2 flex items-center gap-2 ${headerStyles[variant]}`}>
-      <div className={`w-4 h-4 ${iconStyles[variant]}`}>
-        {icon}
+    <div className={`border-b px-3 py-2 ${headerStyles[variant]}`}>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className={`w-4 h-4 ${iconStyles[variant]}`}>
+            {icon}
+          </div>
+          <h3 className="text-sm font-medium text-gray-900">{title}</h3>
+        </div>
+        <div className="flex items-center">
+          {headerContent}
+        </div>
       </div>
-      <h3 className="text-sm font-medium text-gray-900">{title}</h3>
     </div>
     <div className="p-3">
       {children}
@@ -56,9 +61,51 @@ const Card: React.FC<CardProps> = ({ title, icon, children, variant }) => (
   </div>
 );
 
+interface PatientDemographicsProps {
+  patient: Patient;
+  onUpdatePatient?: (updatedPatient: Patient) => void;
+}
+
+const handleSetPrimaryAddress = (addressType: AddressType | '', patient: Patient, onUpdatePatient?: (updatedPatient: Patient) => void) => {
+  if (onUpdatePatient) {
+    onUpdatePatient({
+      ...patient,
+      primaryAddressType: addressType || undefined
+    });
+  }
+};
+
 export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
-  patient
+  patient,
+  onUpdatePatient
 }) => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement>(null);
+
+  const handleSetPrimaryAddressLocal = (addressType: AddressType | '') => {
+    if (onUpdatePatient) {
+      onUpdatePatient({
+        ...patient,
+        primaryAddressType: addressType || undefined
+      });
+    }
+    setIsMenuOpen(false);
+  };
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Get unique address types from patient's addresses
+  const addressTypes = patient.addresses?.map(addr => addr.label) || [];
+
   return (
     <div className="grid gap-3 md:grid-cols-2">
       <div className="space-y-3">
@@ -81,30 +128,62 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
         </Card>
 
         {/* Addresses Card */}
-        <Card title="Addresses" icon={<Home size={16} />} variant="green">
-          <div className="grid gap-1.5 text-sm">
-            {(!patient.addresses || patient.addresses.length === 0) ? (
-              <div className="text-gray-500 italic">No addresses defined</div>
-            ) : (
-              patient.addresses.map((address, index) => {
-                const isPrimary = address.label === patient.primaryAddressType;
-                return (
-                  <div key={index} className="flex gap-2">
-                    <span className="text-gray-500 w-14">{address.label}:</span>
-                    <span className="flex-1 flex items-center gap-2">
-                      <span>{address.street}, {address.city}, {address.state} {address.zipCode}</span>
-                      {isPrimary && (
-                        <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded whitespace-nowrap">
-                          Primary Address
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                );
-              })
-            )}
+        <div className={`bg-white rounded shadow-sm overflow-hidden border border-green-200`}>
+          <div className="border-b px-3 py-2 bg-green-50 border-green-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 text-green-600">
+                  <Home size={16} />
+                </div>
+                <h3 className="text-sm font-medium text-gray-900">Addresses</h3>
+              </div>
+              {addressTypes.length > 0 && onUpdatePatient && (
+                <CardDropdown
+                  options={[
+                    ...(patient.primaryAddressType ? [{
+                      value: '',
+                      label: 'No Primary Address',
+                      icon: <MapPin size={14} className="text-gray-500" />
+                    }] : []),
+                    ...addressTypes
+                      .filter(type => type !== patient.primaryAddressType)
+                      .map(type => ({
+                        value: type,
+                        label: `Set ${type} as Primary`,
+                        icon: <MapPin size={14} className="text-gray-500" />
+                      }))
+                  ]}
+                  onSelect={handleSetPrimaryAddressLocal}
+                  className="relative z-[5]"
+                />
+              )}
+            </div>
           </div>
-        </Card>
+          <div className="p-3">
+            <div className="grid gap-1.5 text-sm">
+              {(!patient.addresses || patient.addresses.length === 0) ? (
+                <div className="text-gray-500 italic">No addresses defined</div>
+              ) : (
+                patient.addresses.map((address, index) => {
+                  const isPrimary = address.label === patient.primaryAddressType;
+                  return (
+                    <div key={index} className="flex gap-2">
+                      <span className="text-gray-500 w-14">{address.label}:</span>
+                      <span className="flex-1 flex items-center gap-2">
+                        <span>{address.street}, {address.city}, {address.state} {address.zipCode}</span>
+                        {isPrimary && (
+                          <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded whitespace-nowrap">
+                            Primary Address
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        </div>
 
         {/* Contact Data Card */}
         <Card title="Contact" icon={<Phone size={16} />} variant="purple">

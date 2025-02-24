@@ -82,6 +82,16 @@ export function Patient() {
     navigate(`/patient/${id}/${tab}`);
   };
 
+  const handleUpdatePatient = async (updatedPatient: PatientType) => {
+    try {
+      await patientService.updatePatient(updatedPatient);
+      setPatient(updatedPatient);
+    } catch (error) {
+      console.error('Error updating patient:', error);
+      // You might want to show an error message to the user here
+    }
+  };
+
   if (loading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
@@ -162,7 +172,10 @@ export function Patient() {
                 <MedicalTimeline records={records} />
               )}
               {activeTab === 'demographics' && (
-                <PatientDemographics patient={patient} />
+                <PatientDemographics 
+                  patient={patient} 
+                  onUpdatePatient={handleUpdatePatient}
+                />
               )}
               {activeTab === 'profile' && (
                 <MedicalProfile patient={patient} />

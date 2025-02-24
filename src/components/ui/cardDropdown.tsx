@@ -1,22 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { MapPin } from 'lucide-react';
 
-interface DropdownOption {
+interface CardDropdownOption {
   value: string;
   label: string;
   icon?: React.ReactNode;
 }
 
-interface DropdownProps {
-  value: string;
-  onChange: (value: string) => void;
-  options: DropdownOption[];
+interface CardDropdownProps {
+  options: CardDropdownOption[];
+  onSelect: (value: string) => void;
   className?: string;
 }
 
-export function Dropdown({ value, onChange, options, className = '' }: DropdownProps) {
+export function CardDropdown({ options, onSelect, className = '' }: CardDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const selectedOption = options.find(opt => opt.value === value);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,25 +33,27 @@ export function Dropdown({ value, onChange, options, className = '' }: DropdownP
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="h-[42px] w-[42px] flex items-center justify-center rounded-lg border border-gray-300 bg-white text-sm shadow-sm
+        className="h-7 w-7 flex items-center justify-center rounded border border-gray-300 bg-white text-sm shadow-sm
           hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-400"
+        title="Card actions"
       >
-        {selectedOption?.icon}
+        <MapPin size={14} className="text-gray-500" />
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 top-full mt-1 w-40 rounded-md border border-gray-200 bg-white py-1 shadow-lg">
+        <div className="absolute right-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white py-1 shadow-lg z-50">
           {options.map((option) => (
             <button
               key={option.value}
               onClick={() => {
-                onChange(option.value);
+                onSelect(option.value);
                 setIsOpen(false);
               }}
-              className={`w-full flex items-center gap-2 px-3 py-1.5 text-sm text-left hover:bg-gray-50
-                ${option.value === value ? 'bg-blue-50 text-blue-600' : 'text-gray-900'}`}
+              className="w-full flex items-center gap-2 px-3 py-1.5 text-sm whitespace-nowrap hover:bg-gray-50 text-gray-700"
             >
-              {option.icon}
+              <div className="w-4 h-4 flex-shrink-0">
+                {option.icon || <MapPin size={14} className="text-gray-500" />}
+              </div>
               <span>{option.label}</span>
             </button>
           ))}

@@ -50,6 +50,16 @@ class PatientService {
       return searchTerms.every(term => searchableText.includes(term));
     });
   }
+
+  async updatePatient(updatedPatient: Patient): Promise<void> {
+    await this.initialize();
+    const index = this.patients.findIndex(p => p.id === updatedPatient.id);
+    if (index !== -1) {
+      this.patients[index] = updatedPatient;
+      // In a real app, we would make an API call here
+      await mockDataService.updatePatient(updatedPatient);
+    }
+  }
 }
 
 export const patientService = new PatientService();
