@@ -4,7 +4,9 @@ import {
   User2, 
   Home, 
   Phone, 
-  MapPin
+  MapPin,
+  Save,
+  X
 } from 'lucide-react';
 import { CardDropdown } from '../ui/cardDropdown';
 
@@ -77,6 +79,32 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
   onUpdatePatient
 }) => {
   const menuRef = React.useRef<HTMLDivElement>(null);
+  const [isContactEditMode, setIsContactEditMode] = React.useState(false);
+  const [editedPhone, setEditedPhone] = React.useState(patient.phone || '');
+  const [editedEmail, setEditedEmail] = React.useState(patient.email || '');
+  const [phoneError, setPhoneError] = React.useState('');
+  const [emailError, setEmailError] = React.useState('');
+  const formRef = React.useRef<HTMLFormElement>(null);
+
+  const handlePhoneValidation = (input: HTMLInputElement) => {
+    if (!input.validity.valid && input.value) {
+      setPhoneError(input.validationMessage || 'Please enter a valid phone number');
+      return false;
+    } else {
+      setPhoneError('');
+      return true;
+    }
+  };
+
+  const handleEmailValidation = (input: HTMLInputElement) => {
+    if (!input.validity.valid && input.value) {
+      setEmailError(input.validationMessage || 'Please enter a valid email address');
+      return false;
+    } else {
+      setEmailError('');
+      return true;
+    }
+  };
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -91,6 +119,37 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
 
   // Get unique address types from patient's addresses
   const addressTypes = patient.addresses?.map(addr => addr.label) || [];
+
+  const handleSaveContact = () => {
+    // Reset error states
+    setPhoneError('');
+    setEmailError('');
+
+    if (formRef.current) {
+      const phoneInput = formRef.current.querySelector('input[type="tel"]') as HTMLInputElement;
+      const emailInput = formRef.current.querySelector('input[type="email"]') as HTMLInputElement;
+      
+      const phoneValid = handlePhoneValidation(phoneInput);
+      const emailValid = handleEmailValidation(emailInput);
+
+      if (phoneValid && emailValid) {
+        if (onUpdatePatient) {
+          onUpdatePatient({
+            ...patient,
+            phone: editedPhone || undefined,
+            email: editedEmail || undefined,
+          });
+        }
+        setIsContactEditMode(false);
+      }
+    }
+  };
+
+  const handleCancelContactEdit = () => {
+    setEditedPhone(patient.phone || '');
+    setEditedEmail(patient.email || '');
+    setIsContactEditMode(false);
+  };
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
@@ -172,22 +231,118 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
         </div>
 
         {/* Contact Data Card */}
-        <Card title="Contact" icon={<Phone size={16} />} variant="purple">
+        <Card 
+          title="Contact" 
+          icon={<Phone size={16} />} 
+          variant="purple"
+          headerContent={
+            onUpdatePatient && (
+              isContactEditMode ? (
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleSaveContact}
+                    className="h-7 w-7 flex items-center justify-center rounded border border-gray-300 bg-white text-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-purple-400"
+                    title="Save changes"
+                  >
+                    <Save size={14} className="text-gray-500" />
+                  </button>
+                  <button
+                    onClick={handleCancelContactEdit}
+                    className="h-7 w-7 flex items-center justify-center rounded border border-gray-300 bg-white text-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-purple-400"
+                    title="Cancel"
+                  >
+                    <X size={14} className="text-gray-500" />
+                  </button>
+                </div>
+              ) : (
+                <CardDropdown
+                  options={[
+                    {
+                      value: 'edit',
+                      label: 'Edit Contact Info',
+                      icon: <Phone size={14} className="text-gray-500" />
+                    }
+                  ]}
+                  onSelect={() => setIsContactEditMode(true)}
+                  className="relative z-[5]"
+                />
+              )
+            )
+          }
+        >
           <div className="grid gap-2 text-sm">
-            {patient.phone && (
-              <div className="flex gap-4">
-                <span className="text-gray-500 w-20">Phone:</span>
-                <span>{patient.phone}</span>
-              </div>
-            )}
-            {patient.email && (
-              <div className="flex gap-4">
-                <span className="text-gray-500 w-20">Email:</span>
-                <span>{patient.email}</span>
-              </div>
-            )}
-            {!patient.phone && !patient.email && (
-              <div className="text-gray-500 italic">No contact information available</div>
+            {isContactEditMode ? (
+              <form ref={formRef} onSubmit={(e) => e.preventDefault()} noValidate>
+                <div className="grid gap-2">
+                  <div className="flex gap-4">
+                    <span className="text-gray-500 w-20">Phone:</span>
+                    <div className="flex-1">
+                      <input
+                        type="tel"
+                        value={editedPhone}
+                        onChange={(e) => {
+                          setEditedPhone(e.target.value);
+                          if (!e.target.value) {
+                            setPhoneError('');
+                          }
+                        }}
+                        onBlur={(e) => handlePhoneValidation(e.target)}
+                        className={`w-full px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-purple-400 ${
+                          phoneError ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        placeholder="Enter phone number"
+                        pattern="[0-9+\-\s()]{6,}"
+                        title="Please enter a valid phone number (minimum 6 digits, can contain +, -, spaces, and parentheses)"
+                      />
+                      {phoneError && (
+                        <p className="mt-1 text-xs text-red-500">{phoneError}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="text-gray-500 w-20">Email:</span>
+                    <div className="flex-1">
+                      <input
+                        type="email"
+                        value={editedEmail}
+                        onChange={(e) => {
+                          setEditedEmail(e.target.value);
+                          if (!e.target.value) {
+                            setEmailError('');
+                          }
+                        }}
+                        onBlur={(e) => handleEmailValidation(e.target)}
+                        className={`w-full px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-purple-400 ${
+                          emailError ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        placeholder="Enter email address"
+                        required={editedEmail.length > 0}
+                      />
+                      {emailError && (
+                        <p className="mt-1 text-xs text-red-500">{emailError}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </form>
+            ) : (
+              <>
+                {patient.phone && (
+                  <div className="flex gap-4">
+                    <span className="text-gray-500 w-20">Phone:</span>
+                    <span>{patient.phone}</span>
+                  </div>
+                )}
+                {patient.email && (
+                  <div className="flex gap-4">
+                    <span className="text-gray-500 w-20">Email:</span>
+                    <span>{patient.email}</span>
+                  </div>
+                )}
+                {!patient.phone && !patient.email && (
+                  <div className="text-gray-500 italic">No contact information available</div>
+                )}
+              </>
             )}
           </div>
         </Card>
