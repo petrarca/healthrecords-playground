@@ -5,7 +5,7 @@ import { PatientHeader } from './PatientHeader';
 import { PatientDemographics } from './PatientDemographics';
 import { PatientSummary } from './PatientSummary';
 import { MedicalProfile } from './MedicalProfile';
-import { usePatient } from '../../hooks/usePatient';
+import { usePatient, useUpdatePatient } from '../../hooks/usePatient';
 import { useMedicalRecords } from '../../hooks/useMedicalRecords';
 
 type TabType = 'timeline' | 'demographics' | 'summary' | 'profile';
@@ -18,6 +18,7 @@ export function Patient() {
 
   const { data: patient, isLoading: patientLoading, error: patientError } = usePatient(id || '');
   const { data: records, isLoading: recordsLoading } = useMedicalRecords(id || '');
+  const { mutate: updatePatient } = useUpdatePatient();
 
   const loading = patientLoading || recordsLoading;
   const error = patientError?.message || null;
@@ -100,7 +101,7 @@ export function Patient() {
           <MedicalTimeline records={records} />
         )}
         {activeTab === 'demographics' && (
-          <PatientDemographics patient={patient} />
+          <PatientDemographics patient={patient} onUpdatePatient={updatePatient} />
         )}
         {activeTab === 'summary' && (
           <PatientSummary patient={patient} />

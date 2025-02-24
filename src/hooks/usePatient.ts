@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Patient } from '../types/types';
 import { patientService } from '../services/patientService';
 
@@ -15,5 +15,15 @@ export const useSearchPatients = (query: string) => {
     queryKey: ['patients', 'search', query],
     queryFn: () => patientService.searchPatients(query),
     enabled: !!query,
+  });
+};
+
+export const useUpdatePatient = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (patient: Patient) => patientService.updatePatient(patient),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['patient'] });
+    },
   });
 };
