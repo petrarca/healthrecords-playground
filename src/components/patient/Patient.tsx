@@ -114,8 +114,8 @@ export function Patient() {
     <div className="h-full flex flex-col overflow-hidden">
       <PatientHeader patient={patient} />
       
-      <div className="flex-1 overflow-hidden">
-        <div className="mt-6">
+      <div className="flex-1 overflow-hidden pt-6">
+        <div>
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex space-x-8">
               <button
@@ -164,7 +164,7 @@ export function Patient() {
           <div className="flex-1">
             <div className="mt-6">
               {activeTab === 'summary' && (
-                <div className="mx-auto w-3/4">
+                <div className="mx-auto w-[90%] max-w-7xl pt-4">
                   <PatientSummary patient={patient} />
                 </div>
               )}
