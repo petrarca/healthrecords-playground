@@ -43,34 +43,36 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
   };
 
   return (
-    <div className="grid gap-3 md:grid-cols-2">
-      {/* Left Column: Personal Info, Contact, Addresses */}
-      <div className="space-y-3">
-        <PersonalInfoCard
-          firstName={patient.firstName}
-          lastName={patient.lastName}
-          dateOfBirth={patient.dateOfBirth}
-          sex={patient.sex}
-        />
-        <ContactCard
-          phone={patient.phone || ''}
-          email={patient.email || ''}
-          onUpdateContact={onUpdatePatient ? handleUpdateContact : undefined}
-        />
-        <AddressCard 
-          addresses={patient.addresses || []}
-          primaryAddressType={patient.primaryAddressType}
-          onUpdateAddresses={onUpdatePatient ? handleUpdateAddresses : undefined}
-          onUpdatePrimaryAddress={onUpdatePatient ? handleUpdatePrimaryAddress : undefined}
-        />
-      </div>
+    <div className="overflow-y-auto h-[calc(100vh-16rem)] pr-2">
+      <div className="grid gap-3 md:grid-cols-2">
+        {/* Left Column: Personal Info, Contact, Addresses */}
+        <div className="space-y-3">
+          <PersonalInfoCard
+            firstName={patient.firstName}
+            lastName={patient.lastName}
+            dateOfBirth={patient.dateOfBirth}
+            sex={patient.sex}
+          />
+          <ContactCard
+            phone={patient.phone || ''}
+            email={patient.email || ''}
+            onUpdateContact={onUpdatePatient ? handleUpdateContact : undefined}
+          />
+          <AddressCard 
+            addresses={patient.addresses || []}
+            primaryAddressType={patient.primaryAddressType}
+            onUpdateAddresses={onUpdatePatient ? handleUpdateAddresses : undefined}
+            onUpdatePrimaryAddress={onUpdatePatient ? handleUpdatePrimaryAddress : undefined}
+          />
+        </div>
 
-      {/* Right Column: Insurance */}
-      <div>
-        <InsuranceCard
-          provider={patient.insuranceProvider}
-          number={patient.insuranceNumber}
-        />
+        {/* Right Column: Insurance */}
+        <div>
+          <InsuranceCard
+            provider={patient.insuranceProvider}
+            number={patient.insuranceNumber}
+          />
+        </div>
       </div>
     </div>
   );

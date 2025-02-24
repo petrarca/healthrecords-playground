@@ -96,7 +96,7 @@ export function Patient() {
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 bg-gray-50 pt-4">
+      <div className="flex-1 bg-gray-50 pt-4 overflow-hidden">
         {activeTab === 'timeline' && records && (
           <MedicalTimeline records={records} />
         )}

@@ -3,7 +3,6 @@ import { Home, Trash2, Save, X, Plus } from 'lucide-react';
 import { Card } from '../../ui/Card';
 import { CardDropdown } from '../../ui/cardDropdown';
 import { Address, AddressType } from '../../../types/patient';
-import { parseAddressString, formatAddressToString } from '../../../services/addressParser';
 
 interface AddressCardProps {
   addresses: Address[];
@@ -20,12 +19,10 @@ export const AddressCard: React.FC<AddressCardProps> = ({
 }) => {
   const [isEditMode, setIsEditMode] = React.useState(false);
   const [editedAddresses, setEditedAddresses] = React.useState<Address[]>(addresses);
-  const [addressInputs, setAddressInputs] = React.useState<string[]>([]);
   const [addressError, setAddressError] = React.useState('');
 
   React.useEffect(() => {
     setEditedAddresses(addresses);
-    setAddressInputs(addresses.map(addr => formatAddressToString(addr)));
   }, [addresses]);
 
   const getNextAvailableAddressType = (): AddressType => {
@@ -47,13 +44,6 @@ export const AddressCard: React.FC<AddressCardProps> = ({
       country: ''
     };
     setEditedAddresses([...editedAddresses, newAddress]);
-    setAddressInputs([...addressInputs, '']);
-  };
-
-  const handleUpdateAddressInput = (index: number, value: string) => {
-    const newInputs = [...addressInputs];
-    newInputs[index] = value;
-    setAddressInputs(newInputs);
   };
 
   const handleUpdateAddress = (index: number, field: keyof Address, value: string) => {
@@ -66,39 +56,25 @@ export const AddressCard: React.FC<AddressCardProps> = ({
         return;
       }
       updatedAddresses[index] = { ...updatedAddresses[index], label: value as AddressType };
-      setEditedAddresses(updatedAddresses);
+    } else if (field === 'addressLine') {
+      updatedAddresses[index] = { 
+        ...updatedAddresses[index], 
+        addressLine: value,
+        // Clear other fields since we're using addressLine only
+        street: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        country: ''
+      };
     }
-  };
-
-  const handleAddressInputComplete = (index: number) => {
-    const value = addressInputs[index];
-    if (!value) return;
-
-    try {
-      const parsedAddress = parseAddressString(value);
-      // Only update if parsing was successful (got any fields)
-      if (Object.keys(parsedAddress).length > 0) {
-        const updatedAddresses = [...editedAddresses];
-        updatedAddresses[index] = { 
-          ...updatedAddresses[index],
-          ...parsedAddress
-        };
-        setEditedAddresses(updatedAddresses);
-        setAddressError('');
-      } else {
-        setAddressError('Could not parse address. Please use format: street, city, state zip, country');
-      }
-    } catch (error) {
-      console.error('Error parsing address:', error);
-      setAddressError('Invalid address format. Please use format: street, city, state zip, country');
-    }
+    setEditedAddresses(updatedAddresses);
+    setAddressError('');
   };
 
   const handleDeleteAddress = (index: number) => {
     const updatedAddresses = editedAddresses.filter((_, i) => i !== index);
-    const updatedInputs = addressInputs.filter((_, i) => i !== index);
     setEditedAddresses(updatedAddresses);
-    setAddressInputs(updatedInputs);
     // If the deleted address was primary, clear the primary address type
     if (editedAddresses[index].label === primaryAddressType) {
       onUpdatePrimaryAddress?.(undefined);
@@ -106,25 +82,6 @@ export const AddressCard: React.FC<AddressCardProps> = ({
   };
 
   const handleSave = () => {
-    // Validate addresses
-    const hasEmptyFields = editedAddresses.some(addr => 
-      !addr.street || !addr.city || !addr.state || !addr.zipCode || !addr.country
-    );
-    
-    if (hasEmptyFields) {
-      setAddressError('Please enter complete addresses in the format: street, city, state zip, country');
-      return;
-    }
-
-    // Check for duplicate address types
-    const types = editedAddresses.map(addr => addr.label);
-    const hasDuplicates = types.some((type, index) => types.indexOf(type) !== index);
-    
-    if (hasDuplicates) {
-      setAddressError('Each address must have a unique type');
-      return;
-    }
-
     onUpdateAddresses?.(editedAddresses);
     setIsEditMode(false);
     setAddressError('');
@@ -132,7 +89,6 @@ export const AddressCard: React.FC<AddressCardProps> = ({
 
   const handleCancel = () => {
     setEditedAddresses(addresses);
-    setAddressInputs(addresses.map(addr => formatAddressToString(addr)));
     setAddressError('');
     setIsEditMode(false);
   };
@@ -168,9 +124,30 @@ export const AddressCard: React.FC<AddressCardProps> = ({
                   value: 'edit',
                   label: 'Edit Addresses',
                   icon: <Home size={14} className="text-gray-500" />
-                }
+                },
+                ...(primaryAddressType ? [{
+                  value: 'clear_primary',
+                  label: 'Clear Primary Address',
+                  icon: <X size={14} className="text-gray-500" />
+                }] : []),
+                ...addresses
+                  .filter(addr => addr.label !== primaryAddressType)
+                  .map(addr => ({
+                    value: `set_primary_${addr.label}`,
+                    label: `Set ${addr.label} as Primary`,
+                    icon: <Home size={14} className="text-gray-500" />
+                  }))
               ]}
-              onSelect={() => setIsEditMode(true)}
+              onSelect={(value) => {
+                if (value === 'edit') {
+                  setIsEditMode(true);
+                } else if (value === 'clear_primary') {
+                  onUpdatePrimaryAddress?.(undefined);
+                } else if (value.startsWith('set_primary_')) {
+                  const addressType = value.replace('set_primary_', '') as AddressType;
+                  onUpdatePrimaryAddress?.(addressType);
+                }
+              }}
               className="relative z-[5]"
             />
           )
@@ -184,18 +161,12 @@ export const AddressCard: React.FC<AddressCardProps> = ({
               <div key={index} className="border rounded-lg p-3 bg-white shadow-sm">
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
-                    <label className="block text-gray-500 mb-1">Address Line</label>
+                    <label className="block text-gray-500 mb-1">Address</label>
                     <input
                       type="text"
-                      value={addressInputs[index] || ''}
-                      onChange={(e) => handleUpdateAddressInput(index, e.target.value)}
-                      onBlur={() => handleAddressInputComplete(index)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          handleAddressInputComplete(index);
-                        }
-                      }}
-                      placeholder="Enter full address..."
+                      value={address.addressLine || ''}
+                      onChange={(e) => handleUpdateAddress(index, 'addressLine', e.target.value)}
+                      placeholder="Enter address..."
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-green-400 border-gray-300"
                     />
                   </div>
@@ -253,7 +224,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
                   <div key={index} className="flex gap-4">
                     <span className="text-gray-500 w-20">{address.label}:</span>
                     <span className="flex-1 flex items-center gap-2">
-                      <span>{formatAddressToString(address)}</span>
+                      <span>{address.addressLine || ''}</span>
                       {isPrimary && (
                         <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded whitespace-nowrap">
                           Primary Address
