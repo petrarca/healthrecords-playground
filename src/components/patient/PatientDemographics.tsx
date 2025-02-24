@@ -4,9 +4,6 @@ import {
   User2, 
   Home, 
   Phone, 
-  BadgeAlert,
-  Star,
-  Settings2,
   MapPin
 } from 'lucide-react';
 import { CardDropdown } from '../ui/cardDropdown';
@@ -66,7 +63,7 @@ interface PatientDemographicsProps {
   onUpdatePatient?: (updatedPatient: Patient) => void;
 }
 
-const handleSetPrimaryAddress = (addressType: AddressType | '', patient: Patient, onUpdatePatient?: (updatedPatient: Patient) => void) => {
+const handleSetPrimaryAddressLocal = (addressType: AddressType | '', patient: Patient, onUpdatePatient?: (updatedPatient: Patient) => void) => {
   if (onUpdatePatient) {
     onUpdatePatient({
       ...patient,
@@ -79,23 +76,12 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
   patient,
   onUpdatePatient
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const menuRef = React.useRef<HTMLDivElement>(null);
-
-  const handleSetPrimaryAddressLocal = (addressType: AddressType | '') => {
-    if (onUpdatePatient) {
-      onUpdatePatient({
-        ...patient,
-        primaryAddressType: addressType || undefined
-      });
-    }
-    setIsMenuOpen(false);
-  };
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
+        console.log('Clicked outside menu');
       }
     };
 
@@ -209,7 +195,7 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
 
       <div className="space-y-3">
         {/* Insurance Card */}
-        <Card title="Insurance" icon={<BadgeAlert size={16} />} variant="amber">
+        <Card title="Insurance" icon={<Phone size={16} />} variant="amber">
           <div className="grid gap-2 text-sm">
             {patient.insuranceProvider && (
               <div className="flex gap-4">

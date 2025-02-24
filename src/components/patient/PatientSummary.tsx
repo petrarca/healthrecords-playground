@@ -26,7 +26,7 @@ export function PatientSummary({ patient }: PatientSummaryProps) {
   };
 
   return (
-    <div className="bg-white shadow rounded-lg p-6 space-y-6 mx-auto h-96 overflow-y-scroll scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500">
+    <div className="bg-white shadow rounded-lg p-6 space-y-6 mx-auto h-[calc(100vh-16rem)] overflow-y-auto scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500">
       <section>
         <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500 mb-2">General</h2>
         <div className="text-gray-800 text-sm leading-relaxed">

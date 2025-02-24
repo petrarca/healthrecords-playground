@@ -161,7 +161,7 @@ export function Patient() {
             </nav>
           </div>
 
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1">
             <div className="mt-6">
               {activeTab === 'summary' && (
                 <div className="mx-auto w-3/4">
