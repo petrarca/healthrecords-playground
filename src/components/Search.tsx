@@ -6,11 +6,20 @@ import { Dropdown } from "./ui/dropdown"
 
 const searchTypeOptions = [
   { 
-    value: SearchResultType.PATIENT,
+    value: 'ALL',
     label: 'All',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    )
+  },
+  {
+    value: SearchResultType.PATIENT,
+    label: 'Patients',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
       </svg>
     )
   }
@@ -25,7 +34,7 @@ interface SearchProps {
 
 export function Search({ onResultSelect, className = '' }: SearchProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchType, setSearchType] = useState<SearchResultType>(SearchResultType.PATIENT);
+  const [searchType, setSearchType] = useState<SearchResultType | 'ALL'>('ALL');
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -66,7 +75,7 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
   }, [searchType]);
 
   const handleTypeChange = useCallback((value: string) => {
-    setSearchType(value as SearchResultType);
+    setSearchType(value as SearchResultType | 'ALL');
     setResults([]);
     setIsSearching(false);
     setSelectedIndex(-1);
