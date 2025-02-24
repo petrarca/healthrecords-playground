@@ -36,9 +36,16 @@ export function PatientSummary({ patient }: PatientSummaryProps) {
     const element = document.getElementById(sectionId);
     const container = document.getElementById('patient-summary-content');
     if (element && container) {
-      const elementPosition = element.offsetTop;
+      // Get the element's position relative to the container
+      const containerRect = container.getBoundingClientRect();
+      const elementRect = element.getBoundingClientRect();
+      const relativeTop = elementRect.top - containerRect.top + container.scrollTop;
+      
+      // Add a small offset to account for the sticky header
+      const scrollOffset = 16; // 1rem = 16px
+      
       container.scrollTo({
-        top: elementPosition,
+        top: relativeTop - scrollOffset,
         behavior: 'smooth'
       });
     }
