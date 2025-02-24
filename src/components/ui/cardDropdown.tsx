@@ -41,7 +41,7 @@ export function CardDropdown({ options, onSelect, className = '' }: CardDropdown
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white py-1 shadow-lg z-50">
+        <div className="fixed transform -translate-x-full mt-1 min-w-[200px] rounded-md border border-gray-200 bg-white py-1 shadow-lg z-[100]">
           {options.map((option) => (
             <button
               key={option.value}

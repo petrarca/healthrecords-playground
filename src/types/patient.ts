@@ -2,11 +2,12 @@ export type AddressType = 'HOME' | 'WORK' | 'OTHER';
 
 export interface Address {
   label: AddressType;
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
+  addressLine: string;
+  street?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  country?: string;
 }
 
 export interface Patient {

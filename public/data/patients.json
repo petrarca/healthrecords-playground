@@ -17,6 +17,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "123 Oak Street, San Francisco, CA 94105, USA",
           "street": "123 Oak Street",
           "city": "San Francisco",
           "state": "CA",
@@ -25,6 +26,7 @@
         },
         {
           "label": "WORK",
+          "addressLine": "555 Market Street, San Francisco, CA 94105, USA",
           "street": "555 Market Street",
           "city": "San Francisco",
           "state": "CA",
@@ -53,6 +55,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "456 Pine Avenue, San Francisco, CA 94110, USA",
           "street": "456 Pine Avenue",
           "city": "San Francisco",
           "state": "CA",
@@ -81,6 +84,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "789 Market Street, Apt 4B, San Francisco, CA 94103, USA",
           "street": "789 Market Street, Apt 4B",
           "city": "San Francisco",
           "state": "CA",
@@ -109,6 +113,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "321 Hayes Street, San Francisco, CA 94102, USA",
           "street": "321 Hayes Street",
           "city": "San Francisco",
           "state": "CA",
@@ -137,6 +142,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "901 Valencia Street, San Francisco, CA 94110, USA",
           "street": "901 Valencia Street",
           "city": "San Francisco",
           "state": "CA",
@@ -165,6 +171,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "2345 Mission Street, San Francisco, CA 94110, USA",
           "street": "2345 Mission Street",
           "city": "San Francisco",
           "state": "CA",
@@ -193,6 +200,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "3456 Folsom Street, San Francisco, CA 94110, USA",
           "street": "3456 Folsom Street",
           "city": "San Francisco",
           "state": "CA",
@@ -221,6 +229,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "4567 24th Street, San Francisco, CA 94110, USA",
           "street": "4567 24th Street",
           "city": "San Francisco",
           "state": "CA",
@@ -249,6 +258,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "5678 Guerrero Street, San Francisco, CA 94110, USA",
           "street": "5678 Guerrero Street",
           "city": "San Francisco",
           "state": "CA",
@@ -277,6 +287,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "6789 Dolores Street, San Francisco, CA 94110, USA",
           "street": "6789 Dolores Street",
           "city": "San Francisco",
           "state": "CA",
@@ -305,6 +316,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "7890 19th Street, San Francisco, CA 94110, USA",
           "street": "7890 19th Street",
           "city": "San Francisco",
           "state": "CA",
@@ -333,6 +345,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "8901 20th Street, San Francisco, CA 94110, USA",
           "street": "8901 20th Street",
           "city": "San Francisco",
           "state": "CA",
@@ -361,6 +374,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "9012 21st Street, San Francisco, CA 94110, USA",
           "street": "9012 21st Street",
           "city": "San Francisco",
           "state": "CA",
@@ -389,6 +403,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "2345 22nd Street, San Francisco, CA 94110, USA",
           "street": "2345 22nd Street",
           "city": "San Francisco",
           "state": "CA",
@@ -417,6 +432,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "3456 23rd Street, San Francisco, CA 94110, USA",
           "street": "3456 23rd Street",
           "city": "San Francisco",
           "state": "CA",
@@ -445,6 +461,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "4567 24th Street, San Francisco, CA 94110, USA",
           "street": "4567 24th Street",
           "city": "San Francisco",
           "state": "CA",
@@ -473,6 +490,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "5678 25th Street, San Francisco, CA 94110, USA",
           "street": "5678 25th Street",
           "city": "San Francisco",
           "state": "CA",
@@ -501,6 +519,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "6789 26th Street, San Francisco, CA 94110, USA",
           "street": "6789 26th Street",
           "city": "San Francisco",
           "state": "CA",
@@ -529,6 +548,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "7890 27th Street, San Francisco, CA 94110, USA",
           "street": "7890 27th Street",
           "city": "San Francisco",
           "state": "CA",
@@ -557,6 +577,7 @@
       "addresses": [
         {
           "label": "HOME",
+          "addressLine": "8901 28th Street, San Francisco, CA 94110, USA",
           "street": "8901 28th Street",
           "city": "San Francisco",
           "state": "CA",

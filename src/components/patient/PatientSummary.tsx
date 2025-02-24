@@ -34,20 +34,8 @@ export function PatientSummary({ patient }: PatientSummaryProps) {
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
-    const container = document.getElementById('patient-summary-content');
-    if (element && container) {
-      // Get the element's position relative to the container
-      const containerRect = container.getBoundingClientRect();
-      const elementRect = element.getBoundingClientRect();
-      const relativeTop = elementRect.top - containerRect.top + container.scrollTop;
-      
-      // Add a small offset to account for the sticky header
-      const scrollOffset = 16; // 1rem = 16px
-      
-      container.scrollTo({
-        top: relativeTop - scrollOffset,
-        behavior: 'smooth'
-      });
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -71,86 +59,88 @@ export function PatientSummary({ patient }: PatientSummaryProps) {
       </div>
 
       {/* Main Content */}
-      <div id="patient-summary-content" className="flex-1 bg-white shadow rounded-lg p-6 space-y-6 h-[calc(100vh-16rem)] overflow-y-auto scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500">
-        <section id="general">
-          <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500 mb-2">General</h2>
-          <div className="text-gray-800 text-sm leading-relaxed">
-            {dummyData.generalSummary}
-          </div>
-        </section>
+      <div className="flex-1">
+        <div id="patient-summary-content" className="bg-white shadow rounded-lg p-6 space-y-6 h-[calc(100vh-16rem)] overflow-y-auto scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500">
+          <section id="general" className="scroll-mt-6">
+            <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500 mb-2">General</h2>
+            <div className="text-gray-800 text-sm leading-relaxed">
+              {dummyData.generalSummary}
+            </div>
+          </section>
 
-        <section id="diagnosis">
-          <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500 mb-2">Diagnosis</h2>
-          <div className="text-gray-800 text-sm leading-relaxed">
-            <span className="text-blue-700 font-medium">Type 2 Diabetes Mellitus (E11.9)</span>
-            {" - "}
-            <span className="text-green-600">well-controlled</span>
-            <br />
-            <span className="text-blue-700 font-medium">Grade 1 Hypertension (I10)</span>
-            {" - "}
-            <span className="text-green-600">stable</span>
-            <br />
-            <span className="text-blue-700 font-medium">Osteoarthritis - Left Knee (M17.12)</span>
-            {" - "}
-            <span className="text-yellow-600">under monitoring</span>
-            <br />
-            <p className="mt-2">{dummyData.diagnoses}</p>
-          </div>
-        </section>
+          <section id="diagnosis" className="scroll-mt-6">
+            <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500 mb-2">Diagnosis</h2>
+            <div className="text-gray-800 text-sm leading-relaxed">
+              <span className="text-blue-700 font-medium">Type 2 Diabetes Mellitus (E11.9)</span>
+              {" - "}
+              <span className="text-green-600">well-controlled</span>
+              <br />
+              <span className="text-blue-700 font-medium">Grade 1 Hypertension (I10)</span>
+              {" - "}
+              <span className="text-green-600">stable</span>
+              <br />
+              <span className="text-blue-700 font-medium">Osteoarthritis - Left Knee (M17.12)</span>
+              {" - "}
+              <span className="text-yellow-600">under monitoring</span>
+              <br />
+              <p className="mt-2">{dummyData.diagnoses}</p>
+            </div>
+          </section>
 
-        <section id="lab-results">
-          <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500 mb-2">Lab Results</h2>
-          <div className="text-gray-800 text-sm leading-relaxed">
-            <div className="space-y-2">
-              <p>
-                <span className="font-medium">Cholesterol:</span>{" "}
-                <span className="text-green-600 font-medium">180 mg/dL</span> (Total)
-              </p>
-              <p>
-                <span className="font-medium">Blood Pressure:</span>{" "}
-                <span className="text-green-600 font-medium">120/80 mmHg</span>
-              </p>
-              <p>
-                <span className="font-medium">HbA1c:</span>{" "}
-                <span className="text-green-600 font-medium">5.7%</span>
-              </p>
-              {patient.bloodType && (
+          <section id="lab-results" className="scroll-mt-6">
+            <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500 mb-2">Lab Results</h2>
+            <div className="text-gray-800 text-sm leading-relaxed">
+              <div className="space-y-2">
                 <p>
-                  <span className="font-medium">Blood Type:</span>{" "}
-                  <span className="font-medium">{patient.bloodType}</span>
+                  <span className="font-medium">Cholesterol:</span>{" "}
+                  <span className="text-green-600 font-medium">180 mg/dL</span> (Total)
                 </p>
-              )}
+                <p>
+                  <span className="font-medium">Blood Pressure:</span>{" "}
+                  <span className="text-green-600 font-medium">120/80 mmHg</span>
+                </p>
+                <p>
+                  <span className="font-medium">HbA1c:</span>{" "}
+                  <span className="text-green-600 font-medium">5.7%</span>
+                </p>
+                {patient.bloodType && (
+                  <p>
+                    <span className="font-medium">Blood Type:</span>{" "}
+                    <span className="font-medium">{patient.bloodType}</span>
+                  </p>
+                )}
+              </div>
+              <p className="mt-3">{dummyData.labResults}</p>
             </div>
-            <p className="mt-3">{dummyData.labResults}</p>
-          </div>
-        </section>
+          </section>
 
-        <section id="treatments">
-          <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500 mb-2">Treatments</h2>
-          <div className="text-gray-800 text-sm leading-relaxed">
-            <div className="space-y-2">
-              <p>
-                <span className="text-blue-700 font-medium">Diabetes Management:</span>
-                {" Metformin 1000mg BID"}
-              </p>
-              <p>
-                <span className="text-blue-700 font-medium">Cardiovascular:</span>
-                {" Lisinopril 10mg daily"}
-              </p>
-              <p>
-                <span className="text-blue-700 font-medium">Physical Therapy:</span>
-                {" Bi-weekly sessions"}
-              </p>
+          <section id="treatments" className="scroll-mt-6">
+            <h2 className="text-sm font-medium uppercase tracking-wide text-gray-500 mb-2">Treatments</h2>
+            <div className="text-gray-800 text-sm leading-relaxed">
+              <div className="space-y-2">
+                <p>
+                  <span className="text-blue-700 font-medium">Diabetes Management:</span>
+                  {" Metformin 1000mg BID"}
+                </p>
+                <p>
+                  <span className="text-blue-700 font-medium">Cardiovascular:</span>
+                  {" Lisinopril 10mg daily"}
+                </p>
+                <p>
+                  <span className="text-blue-700 font-medium">Physical Therapy:</span>
+                  {" Bi-weekly sessions"}
+                </p>
+              </div>
+              <p className="mt-3">{dummyData.treatments}</p>
             </div>
-            <p className="mt-3">{dummyData.treatments}</p>
-          </div>
-        </section>
+          </section>
 
-        <div className="mt-6 pt-4 border-t border-gray-100">
-          <p className="text-xs text-gray-400 italic">
-            Note: This is a placeholder summary. Future versions will generate this content 
-            from the patient's medical data.
-          </p>
+          <div className="mt-6 pt-4 border-t border-gray-100">
+            <p className="text-xs text-gray-400 italic">
+              Note: This is a placeholder summary. Future versions will generate this content 
+              from the patient's medical data.
+            </p>
+          </div>
         </div>
       </div>
     </div>

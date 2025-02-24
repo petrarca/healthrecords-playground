@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { MedicalTimeline } from '../timeline/MedicalTimeline';
 import { PatientHeader } from './PatientHeader';
-import { PatientDemographics } from './PatientDemographics';
+import { PatientDemographics } from './demographics/PatientDemographics';
 import { PatientSummary } from './PatientSummary';
 import { MedicalProfile } from './MedicalProfile';
 import { usePatient, useUpdatePatient } from '../../hooks/usePatient';
@@ -47,7 +47,7 @@ export function Patient() {
 
   return (
     <div className="flex flex-col h-full">
-      <PatientHeader patient={patient} />
+        <PatientHeader patient={patient} />
       
       {/* Navigation Tabs */}
       <div className="bg-white border-b border-gray-200">
@@ -96,7 +96,7 @@ export function Patient() {
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 overflow-y-auto bg-gray-50">
+      <div className="flex-1 bg-gray-50 pt-4">
         {activeTab === 'timeline' && records && (
           <MedicalTimeline records={records} />
         )}
