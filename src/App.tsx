@@ -18,11 +18,11 @@ function AppContent() {
     <Shell>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/patient/:id" element={<Patient />} />
-        <Route path="/patient/:id/timeline" element={<Patient />} />
-        <Route path="/patient/:id/demographics" element={<Patient />} />
-        <Route path="/patient/:id/summary" element={<Patient />} />
-        <Route path="/patient/:id/profile" element={<Patient />} />
+        <Route path="/patients/:id" element={<Patient />} />
+        <Route path="/patients/:id/timeline" element={<Patient />} />
+        <Route path="/patients/:id/demographics" element={<Patient />} />
+        <Route path="/patients/:id/summary" element={<Patient />} />
+        <Route path="/patients/:id/profile" element={<Patient />} />
       </Routes>
     </Shell>
   );

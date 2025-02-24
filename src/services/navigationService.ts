@@ -16,7 +16,7 @@ class NavigationService {
 
     switch (type) {
       case SearchResultType.PATIENT:
-        this.navigate(`/patient/${id}/timeline`);
+        this.navigateToPatientTimeline(id);
         break;
       case SearchResultType.LANDING:
         this.navigate('/');
@@ -24,6 +24,14 @@ class NavigationService {
       default:
         console.error('Unknown result type:', type);
     }
+  }
+
+  public navigateToPatientTimeline(id: string) {
+    if (!this.navigate) {
+      console.error('Navigation not initialized');
+      return;
+    }
+    this.navigate(`/patients/${id}/timeline`, { replace: true });
   }
 }
 

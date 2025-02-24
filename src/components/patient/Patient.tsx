@@ -50,8 +50,8 @@ export function Patient() {
         }
 
         // If we're at the patient root, redirect to summary
-        if (location.pathname === `/patient/${id}`) {
-          navigate(`/patient/${id}/summary`, { replace: true });
+        if (location.pathname === `/patients/${id}`) {
+          navigate(`/patients/${id}/summary`, { replace: true });
         }
 
         // Set active tab based on URL
@@ -79,7 +79,7 @@ export function Patient() {
 
   const handleTabChange = (tab: TabType) => {
     setActiveTab(tab);
-    navigate(`/patient/${id}/${tab}`);
+    navigate(`/patients/${id}/${tab}`);
   };
 
   const handleUpdatePatient = async (updatedPatient: PatientType) => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Patient } from '../../types/types';
 import { calculateAge } from '../../lib/dateUtils';
+import { useNavigate } from 'react-router-dom';
 
 interface PatientHeaderProps {
   patient: Patient;
@@ -8,6 +9,7 @@ interface PatientHeaderProps {
 
 export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
   const age = calculateAge(new Date(patient.dateOfBirth));
+  const navigate = useNavigate();
   
   return (
     <div className="bg-white shadow-sm">
@@ -53,7 +55,12 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
       {/* Extended Info Grid */}
       <div className="grid grid-cols-4 divide-x divide-gray-100 border-b border-gray-200">
         {/* Vitals & Measurements */}
-        <div className="px-4 py-3">
+        <div 
+          className="px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors"
+          onClick={() => navigate(`/patients/${patient.id}/profile`)}
+          role="button"
+          aria-label="View patient profile and measurements"
+        >
           <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Measurements</h3>
           <div className="space-y-1">
             {patient.height && (
@@ -82,7 +89,12 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
         </div>
 
         {/* Allergies & Alerts */}
-        <div className="px-4 py-3">
+        <div 
+          className="px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors"
+          onClick={() => navigate(`/patients/${patient.id}/profile`)}
+          role="button"
+          aria-label="View patient profile and alerts"
+        >
           <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Alerts</h3>
           <div className="flex items-center gap-2">
             <svg className="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
