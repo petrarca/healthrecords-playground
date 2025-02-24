@@ -139,7 +139,7 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
                         icon: <MapPin size={14} className="text-gray-500" />
                       }))
                   ]}
-                  onSelect={handleSetPrimaryAddressLocal}
+                  onSelect={(value) => handleSetPrimaryAddressLocal(value as AddressType | "", patient, onUpdatePatient)}
                   className="relative z-[5]"
                 />
               )}
