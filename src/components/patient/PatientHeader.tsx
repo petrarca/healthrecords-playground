@@ -18,7 +18,12 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
         <div className="px-4 py-3">
           <div className="flex items-center justify-between">
             {/* Patient Basic Info */}
-            <div className="flex items-center space-x-4">
+            <div 
+              className="cursor-pointer hover:bg-gray-50 transition-colors"
+              onClick={() => navigate(`/patients/${patient.id}/demographics`)}
+              role="button"
+              aria-label="View patient demographics"
+            >
               <div>
                 <h1 className="text-xl font-semibold text-gray-900 flex items-center gap-3">
                   {patient.lastName}, {patient.firstName}
