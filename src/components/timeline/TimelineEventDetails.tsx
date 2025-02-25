@@ -72,12 +72,21 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
   };
 
   const handleCancel = () => {
-    setEditedRecord(record || null);
-    setIsEditMode(false);
-    setIsCreatingNew(false);
+    if (!record) {
+      // When no record is selected (new record mode), maintain the "New record" state
+      setEditedRecord(null);
+      setIsEditMode(false);
+      setIsCreatingNew(true);
+    } else {
+      // When editing an existing record, reset to the original record
+      setEditedRecord(record);
+      setIsEditMode(false);
+      setIsCreatingNew(false);
+    }
   };
 
   const handleUpdateField = (field: keyof MedicalRecord, value: string | number | boolean | Record<string, string | number>) => {
+    if (!editedRecord) return;
     setEditedRecord({ ...editedRecord, [field]: value });
   };
 

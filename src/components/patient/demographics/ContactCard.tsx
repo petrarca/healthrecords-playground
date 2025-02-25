@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Pencil, Check, X } from 'lucide-react';
+import { Phone, Check, X } from 'lucide-react';
 import { Card } from '../../ui/Card';
 import { CardDropdown } from '../../ui/cardDropdown';
 
