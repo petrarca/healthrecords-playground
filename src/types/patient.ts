@@ -12,6 +12,7 @@ export interface Address {
 
 export interface Patient {
   id: string;
+  patientId: string;
   firstName: string;
   lastName: string;
   dateOfBirth: Date;

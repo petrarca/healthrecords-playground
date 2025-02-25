@@ -28,7 +28,7 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
                 <h1 className="text-xl font-semibold text-gray-900 flex items-center gap-3">
                   {patient.lastName}, {patient.firstName}
                   <span className="px-2 py-0.5 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                    #{patient.id}
+                    #{patient.patientId}
                   </span>
                 </h1>
                 <div className="mt-1 flex items-center gap-2 text-sm text-gray-600">

@@ -2,6 +2,7 @@
   "patients": [
     {
       "id": "4711",
+      "patientId": "4711",
       "firstName": "John",
       "lastName": "Smith",
       "dateOfBirth": "1975-03-15",
@@ -40,6 +41,7 @@
     },
     {
       "id": "4712",
+      "patientId": "4712",
       "firstName": "Emma",
       "lastName": "Johnson",
       "dateOfBirth": "1988-07-22",
@@ -69,6 +71,7 @@
     },
     {
       "id": "4713",
+      "patientId": "4713",
       "firstName": "Michael",
       "lastName": "Williams",
       "dateOfBirth": "1962-11-30",
@@ -98,6 +101,7 @@
     },
     {
       "id": "4714",
+      "patientId": "4714",
       "firstName": "Sarah",
       "lastName": "Brown",
       "dateOfBirth": "1995-04-18",
@@ -127,6 +131,7 @@
     },
     {
       "id": "4715",
+      "patientId": "4715",
       "firstName": "David",
       "lastName": "Miller",
       "dateOfBirth": "1980-09-05",
@@ -156,6 +161,7 @@
     },
     {
       "id": "4716",
+      "patientId": "4716",
       "firstName": "Lisa",
       "lastName": "Garcia",
       "dateOfBirth": "1992-12-10",
@@ -185,6 +191,7 @@
     },
     {
       "id": "4717",
+      "patientId": "4717",
       "firstName": "James",
       "lastName": "Taylor",
       "dateOfBirth": "1958-06-25",
@@ -214,6 +221,7 @@
     },
     {
       "id": "4718",
+      "patientId": "4718",
       "firstName": "Maria",
       "lastName": "Rodriguez",
       "dateOfBirth": "1990-02-14",
@@ -243,6 +251,7 @@
     },
     {
       "id": "4719",
+      "patientId": "4719",
       "firstName": "Robert",
       "lastName": "Anderson",
       "dateOfBirth": "1971-08-30",
@@ -272,6 +281,7 @@
     },
     {
       "id": "4720",
+      "patientId": "4720",
       "firstName": "Jennifer",
       "lastName": "Martin",
       "dateOfBirth": "1983-11-12",
@@ -301,6 +311,7 @@
     },
     {
       "id": "4721",
+      "patientId": "4721",
       "firstName": "William",
       "lastName": "Thompson",
       "dateOfBirth": "1967-04-03",
@@ -330,6 +341,7 @@
     },
     {
       "id": "4722",
+      "patientId": "4722",
       "firstName": "Patricia",
       "lastName": "Moore",
       "dateOfBirth": "1987-09-28",
@@ -359,6 +371,7 @@
     },
     {
       "id": "4723",
+      "patientId": "4723",
       "firstName": "Richard",
       "lastName": "Jackson",
       "dateOfBirth": "1959-01-20",
@@ -388,6 +401,7 @@
     },
     {
       "id": "4724",
+      "patientId": "4724",
       "firstName": "Elizabeth",
       "lastName": "White",
       "dateOfBirth": "1993-06-15",
@@ -417,6 +431,7 @@
     },
     {
       "id": "4725",
+      "patientId": "4725",
       "firstName": "Thomas",
       "lastName": "Harris",
       "dateOfBirth": "1976-12-08",
@@ -446,6 +461,7 @@
     },
     {
       "id": "4726",
+      "patientId": "4726",
       "firstName": "Susan",
       "lastName": "Clark",
       "dateOfBirth": "1982-03-25",
@@ -475,6 +491,7 @@
     },
     {
       "id": "4727",
+      "patientId": "4727",
       "firstName": "Daniel",
       "lastName": "Lewis",
       "dateOfBirth": "1964-07-19",
@@ -504,6 +521,7 @@
     },
     {
       "id": "4728",
+      "patientId": "4728",
       "firstName": "Margaret",
       "lastName": "Lee",
       "dateOfBirth": "1991-10-05",
@@ -533,6 +551,7 @@
     },
     {
       "id": "4729",
+      "patientId": "4729",
       "firstName": "Joseph",
       "lastName": "Walker",
       "dateOfBirth": "1969-05-12",
@@ -562,6 +581,7 @@
     },
     {
       "id": "4730",
+      "patientId": "4730",
       "firstName": "Barbara",
       "lastName": "Young",
       "dateOfBirth": "1986-08-17",
