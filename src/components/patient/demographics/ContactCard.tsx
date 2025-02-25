@@ -80,14 +80,15 @@ export const ContactCard: React.FC<ContactCardProps> = ({
             <div className="flex gap-2">
               <button
                 onClick={handleSave}
-                className="h-7 w-7 flex items-center justify-center rounded border border-gray-300 bg-white text-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-purple-400"
+                className="h-7 w-20 flex items-center justify-center rounded border border-gray-300 bg-white text-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-purple-400"
                 title="Save changes"
               >
-                <Save size={14} className="text-gray-500" />
+                <Save size={20} className="text-gray-500 mr-1" />
+                <span>Save</span>
               </button>
               <button
                 onClick={handleCancel}
-                className="h-7 w-7 flex items-center justify-center rounded border border-gray-300 bg-white text-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-purple-400"
+                className="h-7 w-9 flex items-center justify-center rounded border border-gray-300 bg-white text-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-purple-400"
                 title="Cancel"
               >
                 <X size={14} className="text-gray-500" />
