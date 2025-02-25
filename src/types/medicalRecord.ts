@@ -19,7 +19,7 @@ export interface MedicalRecord {
 }
 
 export interface FieldMetaData {
-  name: string;
+  label: string;
   description: string;
   type: 'string' | 'number' | 'boolean' | 'date' | 'enum';
   required?: boolean;

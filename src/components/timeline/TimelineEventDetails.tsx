@@ -144,27 +144,32 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
         {record.details && Object.keys(record.details).length > 0 && (
           <div className="border-t border-gray-200 pt-4">
             <dl className="grid grid-cols-1 gap-x-4 gap-y-2">
-              {Object.entries(record.details).map(([key, value]) => (
-                <div key={key} className="flex justify-between">
-                  <dt className="text-sm text-gray-500 capitalize">{key.replace(/_/g, ' ')}</dt>
-                  {isEditMode ? (
-                    <input
-                      type="text"
-                      value={editedRecord.details?.[key] || ''}
-                      onChange={(e) => {
-                        const updatedDetails = {
-                          ...(editedRecord.details || {}),
-                          [key]: e.target.value
-                        };
-                        handleUpdateField('details', updatedDetails);
-                      }}
-                      className="text-sm text-gray-900 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    />
-                  ) : (
-                    <dd className="text-sm text-gray-900">{value}</dd>
-                  )}
-                </div>
-              ))}
+              {(() => {
+                const typeMetadata = record.type ? metadataService.getMetaDataForType(record.type).fields : null;
+                return Object.entries(record.details).map(([key, value]) => (
+                  <div key={key} className="flex justify-between">
+                    <dt className="text-sm text-gray-500">
+                      {typeMetadata?.[key]?.label || key.replace(/_/g, ' ')}
+                    </dt>
+                    {isEditMode ? (
+                      <input
+                        type="text"
+                        value={editedRecord.details?.[key] || ''}
+                        onChange={(e) => {
+                          const updatedDetails = {
+                            ...(editedRecord.details || {}),
+                            [key]: e.target.value
+                          };
+                          handleUpdateField('details', updatedDetails);
+                        }}
+                        className="text-sm text-gray-900 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      />
+                    ) : (
+                      <dd className="text-sm text-gray-900">{value}</dd>
+                    )}
+                  </div>
+                ));
+              })()}
             </dl>
           </div>
         )}

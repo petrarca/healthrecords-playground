@@ -6,12 +6,12 @@
       "date": "2025-01-15T09:30:00",
       "type": "vital_signs",
       "title": "Routine Follow-up",
-      "description": "BP 128/82. Current medication regimen effective. Continue current dosage.",
+      "description": "Vital signs checked during routine follow-up visit.",
       "details": {
-        "bloodPressure": "128/82",
-        "heartRate": "72",
-        "temperature": "98.6",
-        "medications": "Lisinopril 10mg, Atorvastatin 20mg"
+        "blood_pressure": "128/82",
+        "heart_rate": 72,
+        "temperature": 36.8,
+        "respiratory_rate": 16
       }
     },
     {
@@ -19,13 +19,13 @@
       "patientId": "4711",
       "date": "2025-01-15T09:45:00",
       "type": "lab_result",
-      "title": "Blood Work Results",
-      "description": "Complete blood count and metabolic panel within normal ranges.",
+      "title": "Complete Blood Count",
+      "description": "Complete blood count within normal ranges.",
       "details": {
-        "wbc": "7.2",
-        "rbc": "4.8",
-        "platelets": "250",
-        "glucose": "95"
+        "test_name": "Complete Blood Count",
+        "value": 7.2,
+        "unit": "K/µL",
+        "reference_range": "4.5-11.0 K/µL"
       }
     },
     {
@@ -33,11 +33,12 @@
       "patientId": "4711",
       "date": "2025-01-15T10:00:00",
       "type": "diagnosis",
-      "title": "Hypertension Follow-up",
-      "description": "Blood pressure well-controlled with current medication.",
+      "title": "Hypertension Assessment",
+      "description": "Regular assessment of hypertension condition.",
       "details": {
-        "diagnosis": "Controlled Hypertension",
-        "nextFollowUp": "3 months"
+        "condition": "Essential Hypertension",
+        "severity": "Mild",
+        "status": "Active"
       }
     },
     {
@@ -45,13 +46,13 @@
       "patientId": "4711",
       "date": "2024-10-15T10:00:00",
       "type": "lab_result",
-      "title": "Lipid Panel Results",
+      "title": "Lipid Panel",
       "description": "Cholesterol levels showing improvement with statin therapy.",
       "details": {
-        "totalCholesterol": "190",
-        "LDL": "110",
-        "HDL": "45",
-        "triglycerides": "175"
+        "test_name": "Total Cholesterol",
+        "value": 190,
+        "unit": "mg/dL",
+        "reference_range": "<200 mg/dL"
       }
     },
     {
@@ -62,9 +63,9 @@
       "title": "Annual Physical",
       "description": "Annual check-up shows good progress. Cholesterol levels improved.",
       "details": {
-        "diagnosis": "Hypertension, High Cholesterol",
-        "bloodPressure": "130/85",
-        "cholesterol": "185"
+        "condition": "Hypertension, High Cholesterol",
+        "severity": "Mild",
+        "status": "Active"
       }
     },
     {
@@ -75,9 +76,9 @@
       "title": "Headache and Dizziness",
       "description": "Patient reports occasional headaches and dizziness. BP slightly elevated.",
       "details": {
-        "symptoms": "Headache, dizziness",
-        "bloodPressure": "142/88",
-        "frequency": "2-3 times per week"
+        "symptom": "Persistent headache",
+        "severity": "Moderate",
+        "duration": "2-3 times per week"
       }
     },
     {
@@ -88,9 +89,10 @@
       "title": "BP Check",
       "description": "Blood pressure elevated. Increasing Lisinopril dosage.",
       "details": {
-        "bloodPressure": "145/92",
-        "heartRate": "78",
-        "temperature": "98.4"
+        "blood_pressure": "145/92",
+        "heart_rate": 78,
+        "temperature": 36.7,
+        "respiratory_rate": 18
       }
     },
     {
@@ -101,10 +103,10 @@
       "title": "Comprehensive Metabolic Panel",
       "description": "All values within normal range except slightly elevated cholesterol.",
       "details": {
-        "glucose": "98",
-        "creatinine": "1.0",
-        "potassium": "4.2",
-        "sodium": "140"
+        "test_name": "Glucose",
+        "value": 98,
+        "unit": "mg/dL",
+        "reference_range": "70-110 mg/dL"
       }
     },
     {
@@ -115,9 +117,9 @@
       "title": "Annual Physical",
       "description": "Initial diagnosis of hypertension. Starting medication.",
       "details": {
-        "diagnosis": "Hypertension",
-        "bloodPressure": "148/94",
-        "treatment": "Starting Lisinopril 5mg"
+        "condition": "Essential Hypertension",
+        "severity": "Mild",
+        "status": "Active"
       }
     },
     {
@@ -128,9 +130,9 @@
       "title": "Emergency Visit - Allergic Reaction",
       "description": "Patient experienced anaphylaxis after latex exposure. Administered epinephrine.",
       "details": {
-        "allergen": "Latex",
-        "treatment": "Epinephrine injection, Prednisone 20mg",
-        "severity": "Severe"
+        "condition": "Latex Allergy",
+        "severity": "Severe",
+        "status": "Active"
       }
     },
     {
@@ -141,10 +143,10 @@
       "title": "Allergy Follow-up",
       "description": "Review of allergy management plan. No recent reactions.",
       "details": {
-        "bloodPressure": "118/75",
-        "heartRate": "72",
-        "temperature": "98.6",
-        "weight": "135"
+        "blood_pressure": "118/75",
+        "heart_rate": 72,
+        "temperature": 36.8,
+        "respiratory_rate": 16
       }
     },
     {
@@ -155,9 +157,10 @@
       "title": "Allergy Panel Results",
       "description": "Confirmed allergies to latex and various pollens.",
       "details": {
-        "latex_IGE": "High",
-        "pollen_IGE": "Elevated",
-        "dust_IGE": "Normal"
+        "test_name": "Latex IgE",
+        "value": "High",
+        "unit": "",
+        "reference_range": ""
       }
     },
     {
@@ -168,9 +171,9 @@
       "title": "Seasonal Allergies",
       "description": "Increased allergy symptoms during spring season.",
       "details": {
-        "symptoms": "Sneezing, itchy eyes, congestion",
+        "symptom": "Seasonal allergy symptoms",
         "severity": "Moderate",
-        "triggers": "Tree pollen"
+        "duration": "2 weeks"
       }
     },
     {
@@ -181,9 +184,9 @@
       "title": "Annual Physical",
       "description": "Routine check-up. Allergy management plan reviewed and updated.",
       "details": {
-        "diagnosis": "Severe Allergies",
-        "plan": "Continue antihistamines, avoid triggers",
-        "status": "Well-controlled"
+        "condition": "Severe Allergies",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -194,9 +197,9 @@
       "title": "Emergency Visit",
       "description": "Moderate allergic reaction to unknown trigger.",
       "details": {
-        "symptoms": "Hives, wheezing",
-        "treatment": "Antihistamines, oral steroids",
-        "severity": "Moderate"
+        "condition": "Allergic Reaction",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -205,12 +208,12 @@
       "date": "2023-06-15T11:30:00",
       "type": "vital_signs",
       "title": "Follow-up Visit",
-      "description": "Routine allergy check-up. Symptoms well-controlled.",
+      "description": "Regular check of BP and joint function.",
       "details": {
-        "bloodPressure": "120/78",
-        "heartRate": "70",
-        "temperature": "98.4",
-        "weight": "133"
+        "blood_pressure": "120/78",
+        "heart_rate": 70,
+        "temperature": 36.7,
+        "respiratory_rate": 16
       }
     },
     {
@@ -221,9 +224,9 @@
       "title": "Arthritis Management",
       "description": "Joint pain in hands and knees. Prescribed new anti-inflammatory.",
       "details": {
-        "diagnosis": "Arthritis",
-        "treatment": "Meloxicam 15mg",
-        "painLevel": "6/10"
+        "condition": "Osteoarthritis",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -234,10 +237,10 @@
       "title": "BP and Joint Check",
       "description": "Blood pressure stable. Joint pain increased with cold weather.",
       "details": {
-        "bloodPressure": "132/84",
-        "heartRate": "74",
-        "temperature": "98.6",
-        "painLevel": "7/10"
+        "blood_pressure": "132/84",
+        "heart_rate": 74,
+        "temperature": 36.8,
+        "respiratory_rate": 18
       }
     },
     {
@@ -248,10 +251,10 @@
       "title": "Rheumatoid Factor Test",
       "description": "RF and anti-CCP antibodies negative. Consistent with osteoarthritis.",
       "details": {
-        "RF": "Negative",
-        "antiCCP": "Negative",
-        "ESR": "22",
-        "CRP": "2.5"
+        "test_name": "Rheumatoid Factor",
+        "value": "Negative",
+        "unit": "",
+        "reference_range": ""
       }
     },
     {
@@ -262,9 +265,9 @@
       "title": "Increased Joint Pain",
       "description": "Reports increased pain in knees after starting new exercise routine.",
       "details": {
-        "symptoms": "Knee pain, stiffness",
-        "painLevel": "8/10",
-        "triggers": "Exercise, weather changes"
+        "symptom": "Increased joint pain",
+        "severity": "Moderate",
+        "duration": "2 weeks"
       }
     },
     {
@@ -275,9 +278,9 @@
       "title": "Annual Physical",
       "description": "Yearly check-up. Arthritis symptoms progressing slowly.",
       "details": {
-        "diagnosis": "Osteoarthritis, Hypertension",
-        "bloodPressure": "135/88",
-        "treatment": "Continue current medications"
+        "condition": "Osteoarthritis, Hypertension",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -288,10 +291,10 @@
       "title": "Follow-up Visit",
       "description": "Regular check of BP and joint function.",
       "details": {
-        "bloodPressure": "130/82",
-        "heartRate": "76",
-        "temperature": "98.4",
-        "painLevel": "5/10"
+        "blood_pressure": "130/82",
+        "heart_rate": 76,
+        "temperature": 36.7,
+        "respiratory_rate": 16
       }
     },
     {
@@ -302,10 +305,10 @@
       "title": "Comprehensive Panel",
       "description": "Routine blood work to monitor medication effects.",
       "details": {
-        "creatinine": "1.1",
-        "ALT": "25",
-        "AST": "28",
-        "uricAcid": "5.8"
+        "test_name": "Creatinine",
+        "value": 1.1,
+        "unit": "mg/dL",
+        "reference_range": "0.6-1.2 mg/dL"
       }
     },
     {
@@ -316,9 +319,10 @@
       "title": "Asthma Follow-up",
       "description": "Increased frequency of rescue inhaler use. Adjusting maintenance medication.",
       "details": {
-        "peakFlow": "350",
-        "medications": "Fluticasone/Salmeterol inhaler, Albuterol inhaler",
-        "frequency": "Daily maintenance, rescue as needed"
+        "blood_pressure": "128/80",
+        "heart_rate": 72,
+        "temperature": 36.8,
+        "respiratory_rate": 18
       }
     },
     {
@@ -329,9 +333,10 @@
       "title": "Diabetes Check",
       "description": "A1C slightly elevated. Adjusting medication dosage.",
       "details": {
-        "A1C": "7.2",
-        "bloodSugar": "156",
-        "medications": "Metformin 1000mg, Glipizide 5mg"
+        "test_name": "A1C",
+        "value": 7.2,
+        "unit": "%",
+        "reference_range": "<7%"
       }
     },
     {
@@ -342,9 +347,9 @@
       "title": "Migraine Episode",
       "description": "Severe migraine with aura. IV medications administered.",
       "details": {
-        "painLevel": "9/10",
-        "symptoms": "Aura, nausea",
-        "treatment": "Sumatriptan injection, Ondansetron 4mg"
+        "symptom": "Severe migraine",
+        "severity": "Severe",
+        "duration": "1 day"
       }
     },
     {
@@ -355,9 +360,9 @@
       "title": "Cardiology Follow-up",
       "description": "Stress test shows stable condition. Continuing current treatment plan.",
       "details": {
-        "diagnosis": "Coronary Artery Disease - Stable",
-        "medications": "Metoprolol 25mg, Aspirin 81mg",
-        "stressTest": "Normal"
+        "condition": "Coronary Artery Disease - Stable",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -368,9 +373,10 @@
       "title": "Thyroid Function Test",
       "description": "TSH levels normalized with current medication.",
       "details": {
-        "TSH": "2.5",
-        "T4": "1.2",
-        "medication": "Levothyroxine 100mcg"
+        "test_name": "TSH",
+        "value": 2.5,
+        "unit": "mU/L",
+        "reference_range": "0.4-4.5 mU/L"
       }
     },
     {
@@ -381,9 +387,9 @@
       "title": "Sleep Study Results",
       "description": "CPAP pressure adjusted. Patient reports improved sleep quality.",
       "details": {
-        "AHI": "12.5",
-        "oxygenSaturation": "96",
-        "cpapPressure": "10 cmH2O"
+        "condition": "Obstructive Sleep Apnea",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -394,9 +400,9 @@
       "title": "Psychiatry Follow-up",
       "description": "Symptoms improving with current treatment plan. Continue therapy.",
       "details": {
-        "diagnosis": "Depression, Fibromyalgia",
-        "medications": "Duloxetine 60mg, Pregabalin 150mg",
-        "symptoms": "Improved mood, reduced pain"
+        "condition": "Depression, Fibromyalgia",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -407,9 +413,9 @@
       "title": "Osteoporosis Follow-up",
       "description": "DEXA scan shows improvement. Continue current treatment.",
       "details": {
-        "diagnosis": "Osteoporosis",
-        "medications": "Alendronate 70mg weekly, Calcium + Vitamin D",
-        "boneDensity": "Improved"
+        "condition": "Osteoporosis",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -420,9 +426,9 @@
       "title": "Rheumatology Follow-up",
       "description": "Joint swelling decreased. Maintaining current treatment plan.",
       "details": {
-        "diagnosis": "Rheumatoid Arthritis",
-        "medications": "Methotrexate 15mg weekly, Folic acid 1mg",
-        "symptoms": "Reduced joint pain"
+        "condition": "Rheumatoid Arthritis",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -433,9 +439,9 @@
       "title": "Nephrology Follow-up",
       "description": "Creatinine stable. Dietary compliance good.",
       "details": {
-        "diagnosis": "Chronic Kidney Disease Stage 3",
-        "medications": "Lisinopril 20mg, Sodium bicarbonate",
-        "creatinine": "1.2"
+        "condition": "Chronic Kidney Disease Stage 3",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -446,9 +452,9 @@
       "title": "Gastroenterology Follow-up",
       "description": "Maintaining strict gluten-free diet. Symptoms well controlled.",
       "details": {
-        "diagnosis": "Celiac Disease",
-        "medications": "Vitamin D supplement, Iron supplement",
-        "symptoms": "Improved digestion"
+        "condition": "Celiac Disease",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -459,9 +465,9 @@
       "title": "Dermatology Follow-up",
       "description": "Skin lesions improving with current treatment.",
       "details": {
-        "diagnosis": "Psoriasis",
-        "medications": "Adalimumab injection, Topical corticosteroid",
-        "symptoms": "Reduced skin lesions"
+        "condition": "Psoriasis",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -472,9 +478,9 @@
       "title": "Gynecology Follow-up",
       "description": "Pain well managed with current treatment plan.",
       "details": {
-        "diagnosis": "Endometriosis",
-        "medications": "Leuprolide injection, Norethindrone 5mg",
-        "symptoms": "Reduced pelvic pain"
+        "condition": "Endometriosis",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -485,9 +491,9 @@
       "title": "Pulmonology Follow-up",
       "description": "Breathing improved with current regimen.",
       "details": {
-        "diagnosis": "COPD with Emphysema",
-        "medications": "Tiotropium inhaler, Albuterol inhaler",
-        "symptoms": "Improved breathing"
+        "condition": "COPD with Emphysema",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -498,9 +504,9 @@
       "title": "Neurology Follow-up",
       "description": "MRI stable. Continuing current treatment plan.",
       "details": {
-        "diagnosis": "Multiple Sclerosis",
-        "medications": "Dimethyl fumarate, Baclofen 10mg",
-        "symptoms": "Stable"
+        "condition": "Multiple Sclerosis",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -511,9 +517,9 @@
       "title": "Neurology Follow-up",
       "description": "Tremor well controlled. Adjusting medication timing.",
       "details": {
-        "diagnosis": "Parkinson's Disease",
-        "medications": "Carbidopa/Levodopa 25/100mg, Pramipexole 0.5mg",
-        "symptoms": "Improved tremor control"
+        "condition": "Parkinson's Disease",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -524,9 +530,9 @@
       "title": "Rheumatology Follow-up",
       "description": "Disease activity stable. Maintaining current medications.",
       "details": {
-        "diagnosis": "Lupus",
-        "medications": "Hydroxychloroquine 200mg, Prednisone 5mg",
-        "symptoms": "Stable"
+        "condition": "Lupus",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -537,9 +543,9 @@
       "title": "Joint Pain Assessment",
       "description": "Patient reports increasing joint pain in knees and hands.",
       "details": {
-        "painLevel": "6/10",
-        "duration": "2 weeks",
-        "affected_areas": "bilateral knees, hands"
+        "symptom": "Increased joint pain",
+        "severity": "Moderate",
+        "duration": "2 weeks"
       }
     },
     {
@@ -550,10 +556,10 @@
       "title": "Rheumatoid Factor Test",
       "description": "Blood work to assess for rheumatoid arthritis.",
       "details": {
-        "rheumatoidFactor": "elevated",
-        "antiCCP": "positive",
-        "ESR": "32",
-        "CRP": "2.8"
+        "test_name": "Rheumatoid Factor",
+        "value": "Elevated",
+        "unit": "",
+        "reference_range": ""
       }
     },
     {
@@ -564,9 +570,9 @@
       "title": "Initial RA Diagnosis",
       "description": "Diagnosed with early-stage rheumatoid arthritis based on symptoms and lab results.",
       "details": {
-        "diagnosis": "Rheumatoid Arthritis",
-        "stage": "early",
-        "treatment": "referred to rheumatology"
+        "condition": "Rheumatoid Arthritis",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -577,10 +583,10 @@
       "title": "Emergency Room Visit",
       "description": "Patient presented with chest pain and shortness of breath.",
       "details": {
-        "bloodPressure": "145/90",
-        "heartRate": "98",
-        "temperature": "98.8",
-        "oxygenSaturation": "94%"
+        "blood_pressure": "145/90",
+        "heart_rate": 98,
+        "temperature": 36.9,
+        "respiratory_rate": 20
       }
     },
     {
@@ -591,9 +597,10 @@
       "title": "Cardiac Enzymes",
       "description": "Urgent cardiac panel ordered.",
       "details": {
-        "troponin": "elevated",
-        "ckMB": "elevated",
-        "BNP": "normal"
+        "test_name": "Troponin",
+        "value": "Elevated",
+        "unit": "",
+        "reference_range": ""
       }
     },
     {
@@ -604,9 +611,9 @@
       "title": "Acute Coronary Syndrome",
       "description": "Diagnosed with NSTEMI based on symptoms and lab results.",
       "details": {
-        "diagnosis": "NSTEMI",
-        "severity": "moderate",
-        "action": "admitted to CCU"
+        "condition": "NSTEMI",
+        "severity": "Moderate",
+        "status": "Active"
       }
     },
     {
@@ -617,10 +624,10 @@
       "title": "CCU Admission Vitals",
       "description": "Initial vital signs upon CCU admission.",
       "details": {
-        "bloodPressure": "138/85",
-        "heartRate": "82",
-        "temperature": "98.6",
-        "oxygenSaturation": "96%"
+        "blood_pressure": "138/85",
+        "heart_rate": 82,
+        "temperature": 36.8,
+        "respiratory_rate": 18
       }
     },
     {
@@ -631,12 +638,10 @@
       "title": "Lisinopril Prescription",
       "description": "Antihypertensive medication for blood pressure control.",
       "details": {
-        "medication": "Lisinopril",
+        "name": "Lisinopril",
         "dosage": "10mg",
         "frequency": "Once daily",
-        "duration": "90 days",
-        "refills": "3",
-        "instructions": "Take one tablet by mouth daily in the morning"
+        "duration": "Ongoing"
       }
     },
     {
@@ -647,12 +652,10 @@
       "title": "Atorvastatin Prescription",
       "description": "Statin medication for cholesterol management.",
       "details": {
-        "medication": "Atorvastatin",
+        "name": "Atorvastatin",
         "dosage": "20mg",
         "frequency": "Once daily",
-        "duration": "90 days",
-        "refills": "3",
-        "instructions": "Take one tablet by mouth daily in the evening"
+        "duration": "Ongoing"
       }
     },
     {
@@ -663,12 +666,10 @@
       "title": "Metformin Prescription",
       "description": "Oral diabetes medication for blood sugar control.",
       "details": {
-        "medication": "Metformin",
+        "name": "Metformin",
         "dosage": "500mg",
         "frequency": "Twice daily",
-        "duration": "30 days",
-        "refills": "5",
-        "instructions": "Take one tablet by mouth twice daily with meals"
+        "duration": "Ongoing"
       }
     }
   ]

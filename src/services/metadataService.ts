@@ -9,20 +9,20 @@ export class MetadataService {
       icon: 'stethoscope',
       fields: {
         condition: {
-          name: 'Condition',
+          label: 'Condition',
           description: 'The diagnosed medical condition',
           type: 'string',
           required: true
         },
         severity: {
-          name: 'Severity',
+          label: 'Severity',
           description: 'The severity level of the condition',
           type: 'enum',
           enumValues: ['Mild', 'Moderate', 'Severe'],
           required: true
         },
         status: {
-          name: 'Status',
+          label: 'Status',
           description: 'Current status of the diagnosis',
           type: 'enum',
           enumValues: ['Active', 'Resolved', 'Recurring'],
@@ -37,25 +37,25 @@ export class MetadataService {
       icon: 'microscope',
       fields: {
         test_name: {
-          name: 'Test Name',
+          label: 'Test Name',
           description: 'Name of the laboratory test',
           type: 'string',
           required: true
         },
         value: {
-          name: 'Value',
+          label: 'Value',
           description: 'Numerical result of the test',
           type: 'number',
           required: true
         },
         unit: {
-          name: 'Unit',
+          label: 'Unit',
           description: 'Unit of measurement',
           type: 'string',
           required: true
         },
         reference_range: {
-          name: 'Reference Range',
+          label: 'Reference Range',
           description: 'Normal range for this test result',
           type: 'string'
         }
@@ -68,25 +68,25 @@ export class MetadataService {
       icon: 'pill',
       fields: {
         name: {
-          name: 'Medication Name',
+          label: 'Medication Name',
           description: 'Name of the medication',
           type: 'string',
           required: true
         },
         dosage: {
-          name: 'Dosage',
+          label: 'Dosage',
           description: 'Amount of medication to be taken',
           type: 'string',
           required: true
         },
         frequency: {
-          name: 'Frequency',
+          label: 'Frequency',
           description: 'How often to take the medication',
           type: 'string',
           required: true
         },
         duration: {
-          name: 'Duration',
+          label: 'Duration',
           description: 'How long to take the medication',
           type: 'string'
         }
@@ -99,13 +99,13 @@ export class MetadataService {
       icon: 'activity',
       fields: {
         blood_pressure: {
-          name: 'Blood Pressure',
+          label: 'Blood Pressure',
           description: 'Systolic/Diastolic blood pressure reading',
           type: 'string',
           pattern: '\\d{2,3}\\/\\d{2,3}'
         },
         heart_rate: {
-          name: 'Heart Rate',
+          label: 'Heart Rate',
           description: 'Heart beats per minute',
           type: 'number',
           validation: {
@@ -114,7 +114,7 @@ export class MetadataService {
           }
         },
         temperature: {
-          name: 'Temperature',
+          label: 'Temperature',
           description: 'Body temperature',
           type: 'number',
           validation: {
@@ -123,7 +123,7 @@ export class MetadataService {
           }
         },
         respiratory_rate: {
-          name: 'Respiratory Rate',
+          label: 'Respiratory Rate',
           description: 'Breaths per minute',
           type: 'number',
           validation: {
@@ -140,20 +140,20 @@ export class MetadataService {
       icon: 'alert-circle',
       fields: {
         symptom: {
-          name: 'Symptom',
+          label: 'Symptom',
           description: 'Description of the symptom or concern',
           type: 'string',
           required: true
         },
         severity: {
-          name: 'Severity',
+          label: 'Severity',
           description: 'How severe the symptom is',
           type: 'enum',
           enumValues: ['Mild', 'Moderate', 'Severe'],
           required: true
         },
         duration: {
-          name: 'Duration',
+          label: 'Duration',
           description: 'How long the symptom has been present',
           type: 'string'
         }
