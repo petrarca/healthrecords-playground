@@ -10,9 +10,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 interface MedicalTimelineProps {
   records: MedicalRecord[];
   selectedRecordId?: string;
+  onRecordSelect?: (recordId: string) => void;
 }
 
-export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selectedRecordId }) => {
+export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selectedRecordId, onRecordSelect }) => {
   console.log('MedicalTimeline rendered with records:', records);
   
   const { id: patientId } = useParams<{ id: string }>();
@@ -204,12 +205,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
     setSelectedRecord(record);
     // Update URL when record is selected
     navigate(`/patients/${patientId}/timeline/${record.id}`, { replace: true });
-  };
-
-  const handleRecordClose = () => {
-    setSelectedRecord(null);
-    // Remove record ID from URL when record is closed
-    navigate(`/patients/${patientId}/timeline`, { replace: true });
+    onRecordSelect?.(record.id);
   };
 
   // Update selected record if it changes in the records array
@@ -398,7 +394,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
                 console.error('Failed to update record:', error);
               }
             }}
-            onClose={handleRecordClose}
+            onRecordAdded={(newRecord) => handleRecordSelect(newRecord)}
           />
         </div>
       </div>

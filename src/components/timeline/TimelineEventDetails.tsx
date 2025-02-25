@@ -5,6 +5,7 @@ import { TimelineIcon } from './TimelineIcon';
 import { CardDropdown } from '../ui/cardDropdown';
 import { Plus, MapPin, Check, X } from 'lucide-react';
 import { useUpdateMedicalRecord, useAddMedicalRecord } from '../../hooks/useMedicalRecords';
+import { generateShortId } from '../../lib/utils';
 
 enum RecordState {
   VIEWING = 'viewing',
@@ -16,13 +17,13 @@ enum RecordState {
 interface TimelineEventDetailsProps {
   record?: MedicalRecord;
   onUpdateRecord?: (record: MedicalRecord) => void;
-  onClose?: () => void;
+  onRecordAdded?: (record: MedicalRecord) => void;
 }
 
 export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
   record,
   onUpdateRecord,
-  onClose,
+  onRecordAdded,
 }) => {
   const [recordState, setRecordState] = useState<RecordState>(record ? RecordState.VIEWING : RecordState.SELECTING);
   const [editedRecord, setEditedRecord] = useState<MedicalRecord | null>(record || null);
@@ -67,7 +68,7 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
 
   const handleNewRecord = (type: MedicalRecordType) => {
     const newRecord: MedicalRecord = {
-      id: crypto.randomUUID(),
+      id: generateShortId(),
       patientId: record?.patientId || '', 
       type,
       date: new Date(),
@@ -80,26 +81,32 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
   };
 
   const handleSave = () => {
-    if (editedRecord) {
+    if (!editedRecord || !isValid) return;
+
+    const saveRecord = (recordToSave: MedicalRecord) => {
       const mutate = recordState === RecordState.CREATING ? addRecord : updateRecord;
-      
-      // When editing, ensure we're using the original record ID
-      const recordToSave = recordState === RecordState.EDITING ? 
-        { ...editedRecord, id: record!.id } : 
-        editedRecord;
-      
       mutate(recordToSave, {
         onSuccess: () => {
-          if (onUpdateRecord) {
-            // Pass the correct record with proper ID
-            onUpdateRecord(recordToSave);
+          if (recordState === RecordState.CREATING) {
+            onRecordAdded?.(recordToSave);
+          } else {
+            onUpdateRecord?.(recordToSave);
           }
-          // Reset state before the query invalidation triggers a re-render
           setRecordState(RecordState.VIEWING);
           setEditedRecord(recordToSave);
+        },
+        onError: (error) => {
+          console.error('Failed to save record:', error);
         }
       });
-    }
+    };
+
+    // When editing, ensure we're using the original record ID
+    const recordToSave = recordState === RecordState.EDITING ? 
+      { ...editedRecord, id: record!.id } : 
+      editedRecord;
+    
+    saveRecord(recordToSave);
   };
 
   const handleCancel = () => {
@@ -211,16 +218,6 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
               >
                 <X size={14} />
                 Cancel
-              </button>
-              <button
-                onClick={() => {
-                  setRecordState(RecordState.VIEWING);
-                  onClose?.();
-                }}
-                className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <X className="h-4 w-4 mr-2" />
-                Close
               </button>
             </div>
           ) : (record && (
