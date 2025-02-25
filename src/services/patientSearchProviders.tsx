@@ -9,7 +9,7 @@ export class PatientSearchProvider implements SearchProvider {
     const patients = await patientService.searchPatients(query);
     
     return patients.map(patient => {
-      const isIdMatch = patient.id.toLowerCase().includes(query.toLowerCase());
+      const isIdMatch = patient.patientId.toLowerCase().includes(query.toLowerCase());
       return {
         id: patient.id,
         title: `${patient.firstName} ${patient.lastName}`,

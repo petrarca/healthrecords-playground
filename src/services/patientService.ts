@@ -38,6 +38,7 @@ class PatientService {
     return this.patients.filter(patient => {
       const searchableText = [
         patient.id,
+        patient.patientId,
         patient.firstName,
         patient.lastName,
         patient.dateOfBirth.toLocaleDateString(),
