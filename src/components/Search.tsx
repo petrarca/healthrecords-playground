@@ -40,6 +40,30 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const selectedItemRef = useRef<HTMLButtonElement>(null);
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+  const performSearch = useCallback((value: string) => {
+    const trimmedValue = value.trim();
+    // Allow * to bypass the minimum length check
+    if (trimmedValue === '*' || trimmedValue.length >= MIN_SEARCH_LENGTH) {
+      setIsSearching(true);
+      searchService.search(value, { type: searchType })
+        .then(searchResults => {
+          setResults(searchResults);
+          // Auto-select first result if available
+          setSelectedIndex(searchResults.length > 0 ? 0 : -1);
+        })
+        .catch(error => {
+          console.error('Search failed:', error);
+          setResults([]);
+          setSelectedIndex(-1);
+        });
+    } else {
+      setIsSearching(false);
+      setResults([]);
+      setSelectedIndex(-1);
+    }
+  }, [searchType]);
 
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -49,30 +73,19 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
       setIsSearching(false);
       setResults([]);
       setSelectedIndex(-1);
+      return;
     }
-  }, []);
 
-  const executeSearch = useCallback(async (value: string) => {
-    const trimmedValue = value.trim();
-    // Allow * to bypass the minimum length check
-    if (trimmedValue === '*' || trimmedValue.length >= MIN_SEARCH_LENGTH) {
-      setIsSearching(true);
-      try {
-        const searchResults = await searchService.search(value, { type: searchType });
-        setResults(searchResults);
-        // Auto-select first result if available
-        setSelectedIndex(searchResults.length > 0 ? 0 : -1);
-      } catch (error) {
-        console.error('Search failed:', error);
-        setResults([]);
-        setSelectedIndex(-1);
-      }
-    } else {
-      setIsSearching(false);
-      setResults([]);
-      setSelectedIndex(-1);
+    // Clear any existing timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
     }
-  }, [searchType]);
+    
+    // Set new timeout
+    searchTimeoutRef.current = setTimeout(() => {
+      performSearch(value);
+    }, 300);
+  }, [performSearch]);
 
   const handleTypeChange = useCallback((value: string) => {
     setSearchType(value as SearchResultType | 'ALL');
@@ -90,11 +103,6 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
   }, [onResultSelect]);
 
   const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!isSearching && event.key === 'Enter') {
-      executeSearch(searchTerm);
-      return;
-    }
-
     if (isSearching && results.length > 0) {
       switch (event.key) {
         case 'ArrowDown':
@@ -124,7 +132,7 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
           break;
       }
     }
-  }, [isSearching, results, selectedIndex, searchTerm, executeSearch, selectResult]);
+  }, [isSearching, results, selectedIndex, selectResult]);
 
   const getSearchResultContent = () => {
     if (results.length > 0) {
@@ -213,6 +221,15 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
   }, []);
 
   return (
