@@ -9,7 +9,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "clean": "rm -rf node_modules dist .turbo .next .cache .vite coverage build"
+    "clean": "rm -rf node_modules dist .turbo .next .cache .vite coverage build",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.2",
@@ -38,7 +39,8 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
-    "husky": "^9.1.7",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.4.3",
     "tailwind-scrollbar": "^4.0.1",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.22.0",
@@ -48,11 +50,5 @@
     "onlyBuiltDependencies": [
       "esbuild"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pnpm lint && pnpm compile",
-      "pre-push": "pnpm lint && pnpm compile"
-    }
   }
 }
