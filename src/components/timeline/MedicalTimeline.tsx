@@ -171,9 +171,7 @@ const handleRecordNavigation = (
   return false;
 };
 
-export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selectedRecordId, onRecordSelect }) => {
-  console.log('MedicalTimeline rendered with records:', records);
-  
+export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selectedRecordId, onRecordSelect }) => {  
   const { id: patientId } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null);
@@ -186,9 +184,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
       MedicalRecordType.MEDICATION
     ])
   );
-  
-  console.log('Active filters:', Array.from(activeFilters));
-  
+    
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<number>(() => getInitialYear(records));
   const timelineRef = useRef<HTMLDivElement>(null);

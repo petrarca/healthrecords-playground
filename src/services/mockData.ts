@@ -21,8 +21,6 @@ export class MockDataService {
     }
 
     try {
-      console.log('Initializing mock data service...');
-      
       // Load patients
       const patientsResponse = await fetch('/data/patients.json');
       if (!patientsResponse.ok) {
@@ -36,8 +34,6 @@ export class MockDataService {
         allergies: Array.isArray(patient.allergies) ? patient.allergies : []
       }));
       
-      console.log('Processed patients:', this.patients.length);
-
       // Load medical records
       const recordsResponse = await fetch('/data/medical_records.json');
       if (!recordsResponse.ok) {
@@ -51,9 +47,7 @@ export class MockDataService {
         type: this.convertToMedicalRecordType(record.type),
         details: record.details || {}
       }));
-      
-      console.log('Processed medical records:', this.medicalRecords.length);
-      
+            
       this.initialized = true;
     } catch (error) {
       console.error('Failed to initialize mock data:', error);
