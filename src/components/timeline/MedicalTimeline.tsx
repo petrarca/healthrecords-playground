@@ -52,13 +52,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
 
   // Filter and group records by date
   const groupedByDate = useMemo(() => {
-    console.log('Filtering records with active filters:', Array.from(activeFilters));
-    const filtered = records.filter(record => {
-      const included = activeFilters.has(record.type);
-      console.log('Record type:', record.type, 'included:', included);
-      return included;
-    });
-    console.log('Filtered records:', filtered);
+    const filtered = records.filter(record => activeFilters.has(record.type));
     
     // Sort records by date (newest first) before grouping
     const sortedRecords = [...filtered].sort((a, b) => b.date.getTime() - a.date.getTime());
@@ -203,10 +197,23 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
   };
 
   const handleRecordSelect = (record: MedicalRecord) => {
-    setSelectedRecord(record);
-    const date = record.date.toISOString().split('T')[0];
-    setSelectedDate(date);
+    const currentRecord = records.find(r => r.id === record.id);
+    if (currentRecord) {
+      setSelectedRecord(currentRecord);
+      const date = currentRecord.date.toISOString().split('T')[0];
+      setSelectedDate(date);
+    }
   };
+
+  // Update selected record if it changes in the records array
+  useEffect(() => {
+    if (selectedRecord) {
+      const updatedRecord = records.find(r => r.id === selectedRecord.id);
+      if (updatedRecord && JSON.stringify(updatedRecord) !== JSON.stringify(selectedRecord)) {
+        setSelectedRecord(updatedRecord);
+      }
+    }
+  }, [records, selectedRecord]);
 
   // Get all visible records in chronological order
   const allVisibleRecords = useMemo(() => {
@@ -365,14 +372,8 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
             record={selectedRecord || undefined}
             onUpdateRecord={async (updatedRecord) => {
               try {
-                if (selectedRecord) {
-                  await updateRecord.mutateAsync(updatedRecord);
-                  setSelectedRecord(updatedRecord);
-                } else {
-                  // This is a new record
-                  await updateRecord.mutateAsync(updatedRecord);
-                  setSelectedRecord(updatedRecord);
-                }
+                const result = await updateRecord.mutateAsync(updatedRecord);
+                setSelectedRecord(result);
               } catch (error) {
                 console.error('Failed to update record:', error);
               }

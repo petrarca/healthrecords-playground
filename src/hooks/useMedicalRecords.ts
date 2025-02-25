@@ -24,16 +24,23 @@ export const useUpdateMedicalRecord = () => {
   return useMutation({
     mutationFn: async (updatedRecord: MedicalRecord) => {
       await medicalRecordService.updateRecord(updatedRecord);
+      return updatedRecord;
     },
-    onSuccess: (_, updatedRecord) => {
-      // Invalidate the patient's records query
-      queryClient.invalidateQueries({
-        queryKey: ['medicalRecords', updatedRecord.patientId],
+    onSuccess: (updatedRecord) => {
+      // Update the cache directly instead of invalidating
+      queryClient.setQueryData(['medicalRecords', updatedRecord.patientId], (oldData: MedicalRecord[] | undefined) => {
+        if (!oldData) return [updatedRecord];
+        return oldData.map(record => record.id === updatedRecord.id ? updatedRecord : record);
       });
-      // Invalidate any search queries
-      queryClient.invalidateQueries({
-        queryKey: ['medicalRecords', 'search'],
-      });
+      
+      // Update any search queries that might contain this record
+      queryClient.setQueriesData(
+        { queryKey: ['medicalRecords', 'search'] },
+        (oldData: MedicalRecord[] | undefined) => {
+          if (!oldData) return oldData;
+          return oldData.map(record => record.id === updatedRecord.id ? updatedRecord : record);
+        }
+      );
     },
   });
 };

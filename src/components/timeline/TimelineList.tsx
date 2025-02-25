@@ -44,14 +44,18 @@ export const TimelineList: React.FC<TimelineListProps> = ({
                     </span>
                   </div>
                   <div>
-                    {groupedByDate[date]?.map(record => (
-                      <TimelineEventCard
-                        key={record.id}
-                        record={record}
-                        isSelected={selectedRecord?.id === record.id}
-                        onClick={() => onRecordSelect(record)}
-                      />
-                    ))}
+                    {groupedByDate[date]?.map(record => {
+                      // Use a stable reference for the record if it's selected
+                      const recordToUse = selectedRecord?.id === record.id ? selectedRecord : record;
+                      return (
+                        <TimelineEventCard
+                          key={`${record.id}-${record.title}`}
+                          record={recordToUse}
+                          isSelected={selectedRecord?.id === record.id}
+                          onClick={() => onRecordSelect(recordToUse)}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               ))}

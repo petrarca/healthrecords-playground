@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MedicalRecord, MedicalRecordType } from '../../types/medicalRecord';
 import { metadataService } from '../../services/metadataService';
 import { TimelineIcon } from './TimelineIcon';
 import { CardDropdown } from '../ui/cardDropdown';
 import { Plus, MapPin, Check, X } from 'lucide-react';
 import { useUpdateMedicalRecord, useAddMedicalRecord } from '../../hooks/useMedicalRecords';
+
+enum RecordState {
+  VIEWING = 'viewing',
+  EDITING = 'editing',
+  CREATING = 'creating',
+  SELECTING = 'selecting'
+}
 
 interface TimelineEventDetailsProps {
   record?: MedicalRecord;
@@ -15,24 +22,40 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
   record,
   onUpdateRecord,
 }) => {
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isCreatingNew, setIsCreatingNew] = useState(!record);
+  const [recordState, setRecordState] = useState<RecordState>(record ? RecordState.VIEWING : RecordState.SELECTING);
   const [editedRecord, setEditedRecord] = useState<MedicalRecord | null>(record || null);
+
   const { mutate: updateRecord } = useUpdateMedicalRecord();
   const { mutate: addRecord } = useAddMedicalRecord();
 
+  // Validation
   const isValid = editedRecord?.title && editedRecord.title.trim() !== '' && 
                  editedRecord.description && editedRecord.description.trim() !== '';
 
-  if (!record && !isCreatingNew) {
-    return null;
-  }
+  // Reset state when record changes
+  useEffect(() => {
+    if (record) {
+      setRecordState(RecordState.VIEWING);
+      setEditedRecord(record);
+    } else {
+      setRecordState(RecordState.SELECTING);
+      setEditedRecord(null);
+    }
+  }, [record]);
+
+  // Handle state transitions
+  useEffect(() => {
+    if (!record && recordState === RecordState.VIEWING) {
+      setRecordState(RecordState.SELECTING);
+    }
+  }, [record, recordState]);
+
+  const isEditMode = recordState === RecordState.EDITING || recordState === RecordState.CREATING;
 
   const handleEdit = () => {
     if (record) {
-      setIsEditMode(true);
-      setIsCreatingNew(false);
-      setEditedRecord(record);
+      setRecordState(RecordState.EDITING);
+      setEditedRecord({...record});
     }
   };
 
@@ -51,37 +74,39 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
       details: {}
     };
     setEditedRecord(newRecord);
-    setIsCreatingNew(true);
-    setIsEditMode(true);
+    setRecordState(RecordState.CREATING);
   };
 
   const handleSave = () => {
     if (editedRecord) {
-      const mutate = isCreatingNew ? addRecord : updateRecord;
+      const mutate = recordState === RecordState.CREATING ? addRecord : updateRecord;
       
-      mutate(editedRecord, {
+      // When editing, ensure we're using the original record ID
+      const recordToSave = recordState === RecordState.EDITING ? 
+        { ...editedRecord, id: record!.id } : 
+        editedRecord;
+      
+      mutate(recordToSave, {
         onSuccess: () => {
           if (onUpdateRecord) {
-            onUpdateRecord(editedRecord);
+            // Pass the correct record with proper ID
+            onUpdateRecord(recordToSave);
           }
-          setIsEditMode(false);
-          setIsCreatingNew(false);
+          // Reset state before the query invalidation triggers a re-render
+          setRecordState(RecordState.VIEWING);
+          setEditedRecord(recordToSave);
         }
       });
     }
   };
 
   const handleCancel = () => {
-    if (!record) {
-      // When no record is selected (new record mode), maintain the "New record" state
-      setEditedRecord(null);
-      setIsEditMode(false);
-      setIsCreatingNew(true);
-    } else {
-      // When editing an existing record, reset to the original record
+    if (record) {
       setEditedRecord(record);
-      setIsEditMode(false);
-      setIsCreatingNew(false);
+      setRecordState(RecordState.VIEWING);
+    } else {
+      setEditedRecord(null);
+      setRecordState(RecordState.SELECTING);
     }
   };
 
@@ -109,6 +134,23 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
     icon: <TimelineIcon type={type} size="sm" />
   }));
 
+  const getHeaderText = () => {
+    if (!record && recordState === RecordState.SELECTING) {
+      return 'Select entry in timeline or add new one';
+    }
+
+    switch (recordState) {
+      case RecordState.CREATING:
+        return editedRecord?.title || 'New Record';
+      case RecordState.EDITING:
+        return editedRecord?.title || record?.title || 'Edit Record';
+      case RecordState.VIEWING:
+        return record?.title || '';
+      default:
+        return 'Select entry in timeline or add new one';
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       {/* Header */}
@@ -123,8 +165,8 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
             </div>
           )}
           <div>
-            <h3 className={`font-semibold text-gray-900 ${!record && !isEditMode ? 'text-base' : 'text-lg'}`}>
-              {isEditMode ? (editedRecord?.title || 'New Record') : (!record && !isEditMode ? 'Select entry in timeline or add new one' : record?.title || 'New Record')}
+            <h3 className={`font-semibold text-gray-900 ${recordState === RecordState.SELECTING ? 'text-base' : 'text-lg'}`}>
+              {getHeaderText()}
             </h3>
             <p className="text-sm text-gray-500">
               {(isEditMode ? editedRecord?.type : record?.type) && (
