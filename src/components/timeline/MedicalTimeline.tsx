@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { MedicalRecord, MedicalRecordType } from '../../types/types';
 import { TimelineFilters } from './TimelineFilters';
 import { TimelineYearSelector } from './TimelineYearSelector';
@@ -12,6 +12,164 @@ interface MedicalTimelineProps {
   selectedRecordId?: string;
   onRecordSelect?: (recordId: string) => void;
 }
+
+// Helper functions
+const getInitialYear = (records: MedicalRecord[]): number => {
+  if (!records.length) return new Date().getFullYear();
+  
+  const recordGroups = records.reduce((groups, record) => {
+    const date = record.date.toISOString().split('T')[0];
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(record);
+    return groups;
+  }, {} as Record<string, MedicalRecord[]>);
+  
+  return Math.max(...Object.keys(recordGroups).map(date => new Date(date).getFullYear()));
+};
+
+const getRecordCountsByType = (records: MedicalRecord[]): Record<MedicalRecordType, number> => {
+  return records.reduce((counts, record) => {
+    counts[record.type] = (counts[record.type] ?? 0) + 1;
+    return counts;
+  }, {} as Record<MedicalRecordType, number>);
+};
+
+const groupRecordsByDate = (records: MedicalRecord[], activeFilters: Set<MedicalRecordType>): Record<string, MedicalRecord[]> => {
+  const filtered = records.filter(record => activeFilters.has(record.type));
+  const sortedRecords = [...filtered].sort((a, b) => b.date.getTime() - a.date.getTime());
+  
+  return sortedRecords.reduce((groups, record) => {
+    const date = record.date.toISOString().split('T')[0];
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(record);
+    return groups;
+  }, {} as Record<string, MedicalRecord[]>);
+};
+
+const groupDatesByYearAndMonth = (groupedByDate: Record<string, MedicalRecord[]>): Record<number, Record<string, string[]>> => {
+  const years: Record<number, Record<string, string[]>> = {};
+  const dates = Object.keys(groupedByDate);
+
+  const addDateToYearMonth = (date: string) => {
+    const [year, month] = date.split('-');
+    const yearNum = parseInt(year);
+    const monthYear = `${month}-${year}`;
+
+    if (!years[yearNum]) {
+      years[yearNum] = {};
+    }
+    if (!years[yearNum][monthYear]) {
+      years[yearNum][monthYear] = [];
+    }
+    years[yearNum][monthYear].push(date);
+  };
+
+  // Process all dates
+  dates.forEach(addDateToYearMonth);
+
+  // Sort dates within each month
+  Object.values(years).forEach(yearData => {
+    Object.values(yearData).forEach(dates => {
+      dates.sort((a, b) => b.localeCompare(a));
+    });
+  });
+
+  return years;
+};
+
+const getRecordsByMonth = (records: MedicalRecord[]): Map<string, { count: number; types: Map<MedicalRecordType, number> }> => {
+  return records.reduce((months, record) => {
+    const month = record.date.toISOString().substring(0, 7); // YYYY-MM
+    const monthData = months.get(month) ?? { count: 0, types: new Map() };
+    monthData.count++;
+    monthData.types.set(record.type, (monthData.types.get(record.type) ?? 0) + 1);
+    months.set(month, monthData);
+    return months;
+  }, new Map());
+};
+
+const getAllVisibleRecords = (groupedByDate: Record<string, MedicalRecord[]>): MedicalRecord[] => {
+  const sortedDates = Object.keys(groupedByDate).sort((a, b) => b.localeCompare(a));
+  return sortedDates.flatMap(date => groupedByDate[date]);
+};
+
+const getDatesByMonth = (groupedByDate: Record<string, MedicalRecord[]>): { date: string; records: MedicalRecord[] }[] => {
+  const months: { date: string; records: MedicalRecord[] }[] = [];
+  const sortedDates = Object.keys(groupedByDate).sort((a, b) => b.localeCompare(a));
+  
+  sortedDates.forEach(date => {
+    const monthStart = date.substring(0, 7); // YYYY-MM format
+    const existingMonth = months.find(m => m.date.startsWith(monthStart));
+    
+    if (existingMonth) {
+      existingMonth.records.push(...groupedByDate[date]);
+    } else {
+      months.push({
+        date: date,
+        records: [...groupedByDate[date]]
+      });
+    }
+  });
+  
+  return months;
+};
+
+// Navigation utility functions
+const scrollRecordIntoView = (recordId: string) => {
+  const element = document.getElementById(`record-${recordId}`);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+};
+
+const getCurrentMonthIndex = (datesByMonth: Array<{ date: string }>, currentDate: string): number => {
+  return datesByMonth.findIndex(m => 
+    m.date.substring(0, 7) === currentDate.substring(0, 7)
+  );
+};
+
+const handleMonthNavigation = (
+  direction: 'prev' | 'next',
+  currentMonthIndex: number,
+  datesByMonth: Array<{ date: string; records: MedicalRecord[] }>,
+  onSelect: (record: MedicalRecord) => void
+): boolean => {
+  let targetMonth: { date: string; records: MedicalRecord[] } | undefined;
+
+  if (direction === 'prev' && currentMonthIndex > 0) {
+    targetMonth = datesByMonth[currentMonthIndex - 1];
+  } else if (direction === 'next' && currentMonthIndex < datesByMonth.length - 1) {
+    targetMonth = datesByMonth[currentMonthIndex + 1];
+  }
+
+  if (targetMonth) {
+    onSelect(targetMonth.records[0]);
+    return true;
+  }
+  return false;
+};
+
+const handleRecordNavigation = (
+  direction: 'prev' | 'next',
+  currentIndex: number,
+  allVisibleRecords: MedicalRecord[],
+  onSelect: (record: MedicalRecord) => void
+): boolean => {
+  const nextIndex = direction === 'prev' ? currentIndex - 1 : currentIndex + 1;
+  const isValidIndex = direction === 'prev' 
+    ? nextIndex >= 0 
+    : nextIndex < allVisibleRecords.length;
+
+  if (isValidIndex) {
+    onSelect(allVisibleRecords[nextIndex]);
+    return true;
+  }
+  return false;
+};
 
 export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selectedRecordId, onRecordSelect }) => {
   console.log('MedicalTimeline rendered with records:', records);
@@ -32,102 +190,17 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
   console.log('Active filters:', Array.from(activeFilters));
   
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [selectedYear, setSelectedYear] = useState<number>(() => {
-    if (!records.length) return new Date().getFullYear();
-    return Math.max(...Object.keys(records.reduce((groups, record) => {
-      const date = record.date.toISOString().split('T')[0];
-      if (!groups[date]) {
-        groups[date] = [];
-      }
-      groups[date].push(record);
-      return groups;
-    }, {} as Record<string, MedicalRecord[]>)).map(date => new Date(date).getFullYear()));
-  });
+  const [selectedYear, setSelectedYear] = useState<number>(() => getInitialYear(records));
   const timelineRef = useRef<HTMLDivElement>(null);
 
-  // Count records by type
-  const recordCounts = useMemo(() => {
-    const counts = records.reduce((counts, record) => {
-      counts[record.type] = (counts[record.type] || 0) + 1;
-      return counts;
-    }, {} as Record<MedicalRecordType, number>);
-    console.log('Record counts:', counts);
-    return counts;
-  }, [records]);
-
-  // Filter and group records by date
-  const groupedByDate = useMemo(() => {
-    const filtered = records.filter(record => activeFilters.has(record.type));
-    
-    // Sort records by date (newest first) before grouping
-    const sortedRecords = [...filtered].sort((a, b) => b.date.getTime() - a.date.getTime());
-    
-    return sortedRecords.reduce((groups, record) => {
-      const date = record.date.toISOString().split('T')[0];
-      if (!groups[date]) {
-        groups[date] = [];
-      }
-      groups[date].push(record);
-      return groups;
-    }, {} as Record<string, MedicalRecord[]>);
-  }, [records, activeFilters]);
-
-  // Group dates by year and month (newest first)
-  const datesByYearAndMonth = useMemo(() => {
-    const years: Record<number, Record<string, string[]>> = {};
-    
-    Object.keys(groupedByDate)
-      .sort((a, b) => b.localeCompare(a)) // Sort dates in descending order
-      .forEach(date => {
-        const dateObj = new Date(date);
-        const year = dateObj.getFullYear();
-        const month = dateObj.toLocaleDateString(undefined, { month: 'long' });
-        const monthYear = `${month} ${year}`;
-        
-        if (!years[year]) {
-          years[year] = {};
-        }
-        if (!years[year][monthYear]) {
-          years[year][monthYear] = [];
-        }
-        years[year][monthYear].push(date);
-      });
-
-    // Sort dates within each month (newest first)
-    Object.values(years).forEach(yearData => {
-      Object.values(yearData).forEach(dates => {
-        dates.sort((a, b) => b.localeCompare(a));
-      });
-    });
-
-    console.log('Dates grouped by year and month:', years);
-    return years;
-  }, [groupedByDate]);
-
-  const years = useMemo(() => {
-    return Object.keys(datesByYearAndMonth)
-      .map(Number)
-      .sort((a, b) => b - a);
-  }, [datesByYearAndMonth]);
-
-  // Get records and types by month for quick navigation
-  const recordsByMonth = useMemo(() => {
-    const months = new Map<string, {
-      count: number;
-      types: Map<MedicalRecordType, number>;
-    }>();
-    
-    records.forEach(record => {
-      const month = record.date.toISOString().substring(0, 7); // YYYY-MM
-      const monthData = months.get(month) || { count: 0, types: new Map() };
-      monthData.count++;
-      monthData.types.set(record.type, (monthData.types.get(record.type) || 0) + 1);
-      months.set(month, monthData);
-    });
-    
-    console.log('Records by month:', months);
-    return months;
-  }, [records]);
+  // Memoized values
+  const recordCounts = useMemo(() => getRecordCountsByType(records), [records]);
+  const groupedByDate = useMemo(() => groupRecordsByDate(records, activeFilters), [records, activeFilters]);
+  const datesByYearAndMonth = useMemo(() => groupDatesByYearAndMonth(groupedByDate), [groupedByDate]);
+  const years = useMemo(() => Object.keys(datesByYearAndMonth).map(Number).sort((a, b) => b - a), [datesByYearAndMonth]);
+  const recordsByMonth = useMemo(() => getRecordsByMonth(records), [records]);
+  const allVisibleRecords = useMemo(() => getAllVisibleRecords(groupedByDate), [groupedByDate]);
+  const datesByMonth = useMemo(() => getDatesByMonth(groupedByDate), [groupedByDate]);
 
   const selectedMonth = useMemo(() => {
     if (!selectedDate) return null;
@@ -208,6 +281,64 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
     onRecordSelect?.(record.recordId);
   };
 
+  const selectRecord = useCallback((record: MedicalRecord) => {
+    setSelectedRecord(record);
+    const date = record.date.toISOString().split('T')[0];
+    setSelectedDate(date);
+    scrollRecordIntoView(record.recordId);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedRecord || !allVisibleRecords.length) return;
+
+      const currentIndex = allVisibleRecords.findIndex(
+        record => record.recordId === selectedRecord.recordId
+      );
+      if (currentIndex === -1) return;
+
+      const currentDate = selectedRecord.date.toISOString().split('T')[0];
+      const currentMonthIndex = getCurrentMonthIndex(datesByMonth, currentDate);
+
+      if (e.metaKey || e.ctrlKey) {
+        // Month-based navigation (Cmd/Ctrl + Arrow)
+        let direction: 'prev' | 'next';
+        
+        switch (e.key) {
+          case 'ArrowUp':
+            direction = 'prev';
+            e.preventDefault();
+            handleMonthNavigation(direction, currentMonthIndex, datesByMonth, selectRecord);
+            break;
+          case 'ArrowDown':
+            direction = 'next';
+            e.preventDefault();
+            handleMonthNavigation(direction, currentMonthIndex, datesByMonth, selectRecord);
+            break;
+        }
+      } else {
+        // Record-based navigation (Arrow keys)
+        let direction: 'prev' | 'next';
+        
+        switch (e.key) {
+          case 'ArrowUp':
+            direction = 'prev';
+            e.preventDefault();
+            handleRecordNavigation(direction, currentIndex, allVisibleRecords, selectRecord);
+            break;
+          case 'ArrowDown':
+            direction = 'next';
+            e.preventDefault();
+            handleRecordNavigation(direction, currentIndex, allVisibleRecords, selectRecord);
+            break;
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedRecord, allVisibleRecords, datesByMonth, selectRecord]);
+
   // Update selected record if it changes in the records array
   useEffect(() => {
     if (selectedRecord) {
@@ -230,122 +361,6 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
       }
     }
   }, [selectedRecordId, records]);
-
-  // Get all visible records in chronological order
-  const allVisibleRecords = useMemo(() => {
-    const sortedDates = Object.keys(groupedByDate).sort((a, b) => b.localeCompare(a));
-    return sortedDates.flatMap(date => groupedByDate[date]);
-  }, [groupedByDate]);
-
-  // Get dates grouped by month for navigation
-  const datesByMonth = useMemo(() => {
-    const months: { date: string; records: MedicalRecord[] }[] = [];
-    const sortedDates = Object.keys(groupedByDate).sort((a, b) => b.localeCompare(a));
-    
-    // Group records by month
-    sortedDates.forEach(date => {
-      const monthStart = date.substring(0, 7); // YYYY-MM format
-      const existingMonth = months.find(m => m.date.startsWith(monthStart));
-      
-      if (existingMonth) {
-        existingMonth.records.push(...groupedByDate[date]);
-      } else {
-        months.push({
-          date: date,
-          records: [...groupedByDate[date]]
-        });
-      }
-    });
-    
-    console.log('Dates grouped by month:', months);
-    return months;
-  }, [groupedByDate]);
-
-  // Handle keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!selectedRecord || !allVisibleRecords.length) return;
-
-      const currentIndex = allVisibleRecords.findIndex(record => record.recordId === selectedRecord.recordId);
-      if (currentIndex === -1) return;
-
-      // Get current record's month
-      const currentDate = selectedRecord.date.toISOString().split('T')[0];
-      const currentMonthIndex = datesByMonth.findIndex(m => 
-        m.date.substring(0, 7) === currentDate.substring(0, 7)
-      );
-
-      if (e.metaKey || e.ctrlKey) { // Cmd/Ctrl key is pressed
-        e.preventDefault();
-        let targetMonth: { date: string; records: MedicalRecord[] } | undefined;
-
-        switch (e.key) {
-          case 'ArrowUp':
-            // Move to previous month
-            if (currentMonthIndex > 0) {
-              targetMonth = datesByMonth[currentMonthIndex - 1];
-            }
-            break;
-          case 'ArrowDown':
-            // Move to next month
-            if (currentMonthIndex < datesByMonth.length - 1) {
-              targetMonth = datesByMonth[currentMonthIndex + 1];
-            }
-            break;
-        }
-
-        if (targetMonth) {
-          // Select the first record of the target month
-          const firstRecord = targetMonth.records[0];
-          setSelectedRecord(firstRecord);
-          const targetDate = firstRecord.date.toISOString().split('T')[0];
-          setSelectedDate(targetDate);
-          
-          // Scroll the record into view
-          const element = document.getElementById(`record-${firstRecord.recordId}`);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-        }
-      } else {
-        // Regular arrow key navigation
-        let nextIndex: number;
-        switch (e.key) {
-          case 'ArrowUp':
-            e.preventDefault();
-            nextIndex = currentIndex - 1;
-            if (nextIndex >= 0) {
-              const nextRecord = allVisibleRecords[nextIndex];
-              setSelectedRecord(nextRecord);
-              const nextDate = nextRecord.date.toISOString().split('T')[0];
-              setSelectedDate(nextDate);
-              const element = document.getElementById(`record-${nextRecord.recordId}`);
-              if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-              }
-            }
-            break;
-          case 'ArrowDown':
-            e.preventDefault();
-            nextIndex = currentIndex + 1;
-            if (nextIndex < allVisibleRecords.length) {
-              const nextRecord = allVisibleRecords[nextIndex];
-              setSelectedRecord(nextRecord);
-              const nextDate = nextRecord.date.toISOString().split('T')[0];
-              setSelectedDate(nextDate);
-              const element = document.getElementById(`record-${nextRecord.recordId}`);
-              if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-              }
-            }
-            break;
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedRecord, allVisibleRecords, datesByMonth]);
 
   const updateRecord = useUpdateMedicalRecord();
 
