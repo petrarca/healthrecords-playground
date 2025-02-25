@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { MedicalRecord, MedicalRecordType } from '../../types/medicalRecord';
 import { metadataService } from '../../services/metadataService';
+import { medicalRecordService } from '../../services/medicalRecordService';
 import { TimelineIcon } from './TimelineIcon';
 import { CardDropdown } from '../ui/cardDropdown';
 import { Plus, Pencil, Check, X, Trash } from 'lucide-react';
 import { useUpdateMedicalRecord, useAddMedicalRecord } from '../../hooks/useMedicalRecords';
-import { generateShortId } from '../../lib/utils';
 
 enum RecordState {
   VIEWING = 'viewing',
@@ -67,15 +67,10 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
   };
 
   const handleNewRecord = (type: MedicalRecordType) => {
-    const newRecord: MedicalRecord = {
-      id: generateShortId(),
-      patientId: record?.patientId || '', 
-      type,
-      date: new Date(),
-      title: '',
-      description: '',
-      details: {}
-    };
+    const newRecord = medicalRecordService.createRecord({
+      patientId: record?.patientId || '',
+      type
+    });
     setEditedRecord(newRecord);
     setRecordState(RecordState.CREATING);
   };
@@ -84,21 +79,29 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
     if (!editedRecord || !isValid) return;
 
     const saveRecord = (recordToSave: MedicalRecord) => {
-      const mutate = recordState === RecordState.CREATING ? addRecord : updateRecord;
-      mutate(recordToSave, {
-        onSuccess: () => {
-          if (recordState === RecordState.CREATING) {
+      if (recordState === RecordState.CREATING) {
+        addRecord(recordToSave, {
+          onSuccess: () => {
             onRecordAdded?.(recordToSave);
-          } else {
-            onUpdateRecord?.(recordToSave);
+            setRecordState(RecordState.VIEWING);
+            setEditedRecord(recordToSave);
+          },
+          onError: (error) => {
+            console.error('Failed to save record:', error);
           }
-          setRecordState(RecordState.VIEWING);
-          setEditedRecord(recordToSave);
-        },
-        onError: (error) => {
-          console.error('Failed to save record:', error);
-        }
-      });
+        });
+      } else {
+        updateRecord(recordToSave, {
+          onSuccess: () => {
+            onUpdateRecord?.(recordToSave);
+            setRecordState(RecordState.VIEWING);
+            setEditedRecord(recordToSave);
+          },
+          onError: (error) => {
+            console.error('Failed to save record:', error);
+          }
+        });
+      }
     };
 
     // When editing, ensure we're using the original record ID

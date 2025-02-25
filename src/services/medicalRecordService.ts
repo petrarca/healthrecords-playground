@@ -1,5 +1,14 @@
-import { MedicalRecord } from '../types/types';
+import { MedicalRecord, MedicalRecordType } from '../types/types';
 import { mockDataService } from './mockData';
+import { generateShortId } from '../lib/utils';
+
+interface CreateMedicalRecordParams {
+  patientId: string;
+  type: MedicalRecordType;
+  title?: string;
+  description?: string;
+  details?: Record<string, string | number>;
+}
 
 class MedicalRecordService {
   private records: MedicalRecord[] = [];
@@ -54,6 +63,19 @@ class MedicalRecordService {
       throw new Error('Record with this ID already exists');
     }
     this.records.push(newRecord);
+  }
+
+  createRecord(params: CreateMedicalRecordParams): MedicalRecord {
+    return {
+      id: generateShortId(),
+      recordId: generateShortId(),
+      patientId: params.patientId,
+      type: params.type,
+      date: new Date(),
+      title: params.title || '',
+      description: params.description || '',
+      details: params.details || {}
+    };
   }
 }
 
