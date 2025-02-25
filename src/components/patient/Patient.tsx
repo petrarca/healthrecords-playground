@@ -31,7 +31,9 @@ export function Patient() {
 
     // Set active tab based on URL
     const path = location.pathname;
-    if (path.includes('/timeline')) setActiveTab('timeline');
+    if (path.includes('/timeline')) {
+      setActiveTab('timeline');
+    }
     else if (path.includes('/demographics')) setActiveTab('demographics');
     else if (path.includes('/profile')) setActiveTab('profile');
     else setActiveTab('summary');
@@ -47,7 +49,7 @@ export function Patient() {
 
   return (
     <div className="flex flex-col h-full">
-        <PatientHeader patient={patient} />
+      <PatientHeader patient={patient} />
       
       {/* Navigation Tabs */}
       <div className="bg-white border-b border-gray-200">

@@ -1,21 +1,34 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { MedicalRecord } from '../../types/types';
+import { MedicalRecord, MedicalRecordType } from '../../types/types';
 import { TimelineFilters } from './TimelineFilters';
 import { TimelineYearSelector } from './TimelineYearSelector';
 import { TimelineList } from './TimelineList';
 import { TimelineEventDetails } from './TimelineEventDetails';
+import { useUpdateMedicalRecord } from '../../hooks/useMedicalRecords';
 
 interface MedicalTimelineProps {
   records: MedicalRecord[];
 }
 
 export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => {
+  console.log('MedicalTimeline rendered with records:', records);
+  
   const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null);
-  const [activeFilters, setActiveFilters] = useState<Set<MedicalRecord['type']>>(
-    new Set(['diagnosis', 'lab_result', 'complaint', 'vital_signs', 'medication'])
+  const [activeFilters, setActiveFilters] = useState<Set<MedicalRecordType>>(
+    new Set([
+      MedicalRecordType.DIAGNOSIS,
+      MedicalRecordType.LAB_RESULT,
+      MedicalRecordType.COMPLAINT,
+      MedicalRecordType.VITAL_SIGNS,
+      MedicalRecordType.MEDICATION
+    ])
   );
+  
+  console.log('Active filters:', Array.from(activeFilters));
+  
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<number>(() => {
+    if (!records.length) return new Date().getFullYear();
     return Math.max(...Object.keys(records.reduce((groups, record) => {
       const date = record.date.toISOString().split('T')[0];
       if (!groups[date]) {
@@ -29,15 +42,23 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
 
   // Count records by type
   const recordCounts = useMemo(() => {
-    return records.reduce((counts, record) => {
+    const counts = records.reduce((counts, record) => {
       counts[record.type] = (counts[record.type] || 0) + 1;
       return counts;
-    }, {} as Record<MedicalRecord['type'], number>);
+    }, {} as Record<MedicalRecordType, number>);
+    console.log('Record counts:', counts);
+    return counts;
   }, [records]);
 
   // Filter and group records by date
   const groupedByDate = useMemo(() => {
-    const filtered = records.filter(record => activeFilters.has(record.type));
+    console.log('Filtering records with active filters:', Array.from(activeFilters));
+    const filtered = records.filter(record => {
+      const included = activeFilters.has(record.type);
+      console.log('Record type:', record.type, 'included:', included);
+      return included;
+    });
+    console.log('Filtered records:', filtered);
     return filtered.reduce((groups, record) => {
       const date = record.date.toISOString().split('T')[0];
       if (!groups[date]) {
@@ -67,6 +88,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
       years[year][monthYear].push(date);
     });
 
+    console.log('Dates grouped by year and month:', years);
     return years;
   }, [groupedByDate]);
 
@@ -80,7 +102,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
   const recordsByMonth = useMemo(() => {
     const months = new Map<string, {
       count: number;
-      types: Map<MedicalRecord['type'], number>;
+      types: Map<MedicalRecordType, number>;
     }>();
     
     records.forEach(record => {
@@ -91,6 +113,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
       months.set(month, monthData);
     });
     
+    console.log('Records by month:', months);
     return months;
   }, [records]);
 
@@ -100,7 +123,13 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
   }, [selectedDate]);
 
   const allTypes = useMemo(() => 
-    ['diagnosis', 'lab_result', 'complaint', 'vital_signs', 'medication'] as const,
+    [
+      MedicalRecordType.DIAGNOSIS,
+      MedicalRecordType.LAB_RESULT,
+      MedicalRecordType.COMPLAINT,
+      MedicalRecordType.VITAL_SIGNS,
+      MedicalRecordType.MEDICATION
+    ] as const,
     []
   );
 
@@ -121,7 +150,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
     }
   };
 
-  const toggleFilter = (type: MedicalRecord['type']) => {
+  const toggleFilter = (type: MedicalRecordType) => {
     setActiveFilters(prev => {
       const next = new Set(prev);
       if (next.has(type)) {
@@ -192,6 +221,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
       }
     });
     
+    console.log('Dates grouped by month:', months);
     return months;
   }, [groupedByDate]);
 
@@ -281,6 +311,8 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedRecord, allVisibleRecords, datesByMonth]);
 
+  const updateRecord = useUpdateMedicalRecord();
+
   return (
     <div className="flex flex-col h-full">
       <div className="mb-3">
@@ -314,10 +346,21 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
             selectedDate={selectedDate}
             onRecordSelect={handleRecordSelect}
           />
-        </div>
-        
+        </div>        
         <div className="w-96">
-          <TimelineEventDetails record={selectedRecord} />
+          {selectedRecord && (
+            <TimelineEventDetails 
+              record={selectedRecord} 
+              onUpdateRecord={async (updatedRecord) => {
+                try {
+                  await updateRecord.mutateAsync(updatedRecord);
+                  setSelectedRecord(updatedRecord);
+                } catch (error) {
+                  console.error('Failed to update record:', error);
+                }
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

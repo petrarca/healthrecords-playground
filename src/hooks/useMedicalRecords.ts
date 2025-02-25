@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { MedicalRecord } from '../types/types';
 import { medicalRecordService } from '../services/medicalRecordService';
 
@@ -15,5 +15,25 @@ export const useSearchMedicalRecords = (query: string) => {
     queryKey: ['medicalRecords', 'search', query],
     queryFn: () => medicalRecordService.searchRecords(query),
     enabled: !!query,
+  });
+};
+
+export const useUpdateMedicalRecord = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (updatedRecord: MedicalRecord) => {
+      await medicalRecordService.updateRecord(updatedRecord);
+    },
+    onSuccess: (_, updatedRecord) => {
+      // Invalidate the patient's records query
+      queryClient.invalidateQueries({
+        queryKey: ['medicalRecords', updatedRecord.patientId],
+      });
+      // Invalidate any search queries
+      queryClient.invalidateQueries({
+        queryKey: ['medicalRecords', 'search'],
+      });
+    },
   });
 };

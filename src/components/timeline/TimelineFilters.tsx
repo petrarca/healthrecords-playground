@@ -1,11 +1,11 @@
 import React from 'react';
-import { MedicalRecord } from '../../types/types';
+import { MedicalRecordType } from '../../types/types';
 import { FilterButton } from './FilterButton';
 
 interface TimelineFiltersProps {
-  activeFilters: Set<MedicalRecord['type']>;
-  recordCounts: Record<MedicalRecord['type'], number>;
-  onToggleFilter: (type: MedicalRecord['type']) => void;
+  activeFilters: Set<MedicalRecordType>;
+  recordCounts: Record<MedicalRecordType, number>;
+  onToggleFilter: (type: MedicalRecordType) => void;
   onToggleAllFilters: () => void;
   allSelected: boolean;
 }
@@ -17,7 +17,13 @@ export const TimelineFilters: React.FC<TimelineFiltersProps> = ({
   onToggleAllFilters,
   allSelected
 }) => {
-  const allTypes = ['diagnosis', 'lab_result', 'complaint', 'vital_signs', 'medication'] as const;
+  const allTypes = [
+    MedicalRecordType.DIAGNOSIS,
+    MedicalRecordType.LAB_RESULT,
+    MedicalRecordType.COMPLAINT,
+    MedicalRecordType.VITAL_SIGNS,
+    MedicalRecordType.MEDICATION
+  ] as const;
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-sm">

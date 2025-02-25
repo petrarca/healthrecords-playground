@@ -5,62 +5,45 @@ class MedicalRecordService {
   private records: MedicalRecord[] = [];
   private initialized = false;
 
-  private async initialize() {
-    if (this.initialized) return;
-    this.records = await mockDataService.getMedicalRecords();
-    this.initialized = true;
+  async initialize() {
+    if (!this.initialized) {
+      this.records = await mockDataService.getMedicalRecords();
+      this.initialized = true;
+    }
   }
 
   async getPatientRecords(patientId: string): Promise<MedicalRecord[]> {
     await this.initialize();
     return this.records
       .filter(record => record.patientId === patientId)
-      .sort((a, b) => b.date.getTime() - a.date.getTime());
-  }
-
-  async getAllRecords(): Promise<MedicalRecord[]> {
-    await this.initialize();
-    return this.records;
+      .map(record => ({
+        ...record,
+        date: new Date(record.date)
+      }));
   }
 
   async searchRecords(query: string): Promise<MedicalRecord[]> {
     await this.initialize();
-    
-    if (!query || query.trim() === '') {
-      return [];
+    const searchTerm = query.toLowerCase();
+    return this.records
+      .filter(record => 
+        record.title.toLowerCase().includes(searchTerm) ||
+        record.description.toLowerCase().includes(searchTerm) ||
+        record.type.toLowerCase().includes(searchTerm)
+      )
+      .map(record => ({
+        ...record,
+        date: new Date(record.date)
+      }));
+  }
+
+  async updateRecord(updatedRecord: MedicalRecord): Promise<void> {
+    await this.initialize();
+    const index = this.records.findIndex(r => r.id === updatedRecord.id);
+    if (index !== -1) {
+      this.records[index] = updatedRecord;
     }
-
-    // Special case for "*" to return all records
-    if (query.trim() === '*') {
-      return this.records;
-    }
-
-    const searchTerms = query.toLowerCase().trim().split(' ').filter(term => term.length > 0);
-    
-    return this.records.filter(record => {
-      const searchableText = [
-        record.id,
-        record.patientId,
-        record.type,
-        record.title,
-        record.description,
-        JSON.stringify(record.details)
-      ].filter(Boolean).join(' ').toLowerCase();
-
-      return searchTerms.every(term => searchableText.includes(term));
-    });
   }
 }
-
-export const getEventTypeName = (type: MedicalRecord['type']): string => {
-  const names = {
-    diagnosis: 'Assessment',
-    lab_result: 'Laboratory Results',
-    complaint: 'Patient Complaint',
-    vital_signs: 'Vital Signs',
-    medication: 'Prescription & Medications'
-  };
-  return names[type];
-};
 
 export const medicalRecordService = new MedicalRecordService();

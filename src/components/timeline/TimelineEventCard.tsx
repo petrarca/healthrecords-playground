@@ -42,9 +42,9 @@ export const TimelineEventCard: React.FC<TimelineEventCardProps> = ({
         <p className="mt-1 text-sm text-gray-700 line-clamp-2">
           {record.description}
         </p>
-        {record.provider && (
+        {record.details?.provider && (
           <p className="mt-1.5 text-xs text-gray-500">
-            Provider: {record.provider}
+            Provider: {record.details.provider}
           </p>
         )}
       </div>

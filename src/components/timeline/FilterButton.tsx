@@ -1,9 +1,9 @@
 import React from 'react';
-import { MedicalRecord } from '../../types/types';
+import { MedicalRecordType } from '../../types/types';
 import { TimelineIcon } from './TimelineIcon';
 
 interface FilterButtonProps {
-  type: MedicalRecord['type'];
+  type: MedicalRecordType;
   active: boolean;
   onClick: () => void;
   count: number;
@@ -12,11 +12,11 @@ interface FilterButtonProps {
 export const FilterButton: React.FC<FilterButtonProps> = ({ type, active, onClick, count }) => {
   const baseClasses = "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-150";
   const activeClasses = {
-    diagnosis: "bg-red-50 text-red-700",
-    lab_result: "bg-blue-50 text-blue-700",
-    complaint: "bg-yellow-50 text-yellow-700",
-    vital_signs: "bg-green-50 text-green-700",
-    medication: "bg-purple-50 text-purple-700"
+    [MedicalRecordType.DIAGNOSIS]: "bg-red-50 text-red-700",
+    [MedicalRecordType.LAB_RESULT]: "bg-blue-50 text-blue-700",
+    [MedicalRecordType.COMPLAINT]: "bg-yellow-50 text-yellow-700",
+    [MedicalRecordType.VITAL_SIGNS]: "bg-green-50 text-green-700",
+    [MedicalRecordType.MEDICATION]: "bg-purple-50 text-purple-700"
   };
   const inactiveClasses = "bg-gray-50 text-gray-500 hover:bg-gray-100";
 
