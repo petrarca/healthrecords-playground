@@ -5,9 +5,9 @@ interface PatientData extends Omit<Patient, 'dateOfBirth'> {
   dateOfBirth: string;
 }
 
-interface MedicalRecordData extends Omit<MedicalRecord, 'date' | 'type'> {
-  date: string;
-  type: string;
+interface MedicalRecordData extends Omit<MedicalRecord, 'recordedAt' | 'recordType'> {
+  recordedAt: string;
+  recordType: string;
 }
 
 export class MockDataService {
@@ -43,8 +43,8 @@ export class MockDataService {
       
       this.medicalRecords = recordsData.records.map((record: MedicalRecordData) => ({
         ...record,
-        date: new Date(record.date),
-        type: this.convertToMedicalRecordType(record.type),
+        recordedAt: new Date(record.recordedAt),
+        recordType: this.convertToMedicalRecordType(record.recordType),
         details: record.details || {}
       }));
             
@@ -55,8 +55,8 @@ export class MockDataService {
     }
   }
 
-  private convertToMedicalRecordType(type: string): MedicalRecordType {
-    switch (type) {
+  private convertToMedicalRecordType(recordType: string): MedicalRecordType {
+    switch (recordType) {
       case 'diagnosis':
         return MedicalRecordType.DIAGNOSIS;
       case 'lab_result':
@@ -68,7 +68,7 @@ export class MockDataService {
       case 'medication':
         return MedicalRecordType.MEDICATION;
       default:
-        throw new Error(`Unknown medical record type: ${type}`);
+        throw new Error(`Unknown medical record type: ${recordType}`);
     }
   }
 

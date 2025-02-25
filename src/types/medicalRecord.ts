@@ -12,8 +12,8 @@ export interface MedicalRecord {
   id: string;
   patientId: string;
   recordId: string;
-  date: Date;
-  type: MedicalRecordType;
+  recordedAt: Date;
+  recordType: MedicalRecordType;
   title: string;
   description: string;
   details?: Record<string, string | number>;

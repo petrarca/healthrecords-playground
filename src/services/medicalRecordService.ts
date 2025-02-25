@@ -27,7 +27,7 @@ class MedicalRecordService {
       .filter(record => record.patientId === patientId)
       .map(record => ({
         ...record,
-        date: new Date(record.date)
+        date: new Date(record.recordedAt)
       }));
   }
 
@@ -38,11 +38,11 @@ class MedicalRecordService {
       .filter(record => 
         record.title.toLowerCase().includes(searchTerm) ||
         record.description.toLowerCase().includes(searchTerm) ||
-        record.type.toLowerCase().includes(searchTerm)
+        record.recordType.toLowerCase().includes(searchTerm)
       )
       .map(record => ({
         ...record,
-        date: new Date(record.date)
+        date: new Date(record.recordedAt)
       }));
   }
 
@@ -70,8 +70,8 @@ class MedicalRecordService {
       id: generateShortId(),
       recordId: generateShortId(),
       patientId: params.patientId,
-      type: params.type,
-      date: new Date(),
+      recordType: params.type,
+      recordedAt: new Date(),
       title: params.title ?? '',
       description: params.description ?? '',
       details: params.details ?? {}

@@ -14,23 +14,27 @@ export const TimelineEventCard: React.FC<TimelineEventCardProps> = ({
   onClick
 }) => {
   return (
-    <div
+    <button
       id={`record-${record.recordId}`}
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          onClick();
+        }
+      }}
       className={`
-        relative flex items-start gap-3 px-3 py-2.5 cursor-pointer
+        relative flex items-start gap-3 px-3 py-2.5 w-full text-left
         transition-colors duration-150
         ${isSelected ? 'bg-blue-50 border-none' : 'hover:bg-gray-50'}
       `}
-      tabIndex={0}
-      role="button"
-      aria-selected={isSelected}
+      aria-pressed={isSelected}
+      aria-label={`${record.title} - ${record.recordType}`}
     >
       {/* Timeline line */}
-      <div className="absolute left-[1.65rem] top-0 bottom-0 w-px bg-gray-200"></div>
+      <div className="absolute left-[1.65rem] top-0 bottom-0 w-px bg-gray-200" aria-hidden="true"></div>
       
       <div className="relative">
-        <TimelineIcon type={record.type} />
+        <TimelineIcon type={record.recordType} />
       </div>
 
       <div className="flex-1 min-w-0">
@@ -48,6 +52,6 @@ export const TimelineEventCard: React.FC<TimelineEventCardProps> = ({
           </p>
         )}
       </div>
-    </div>
+    </button>
   );
 };

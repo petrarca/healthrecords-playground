@@ -1,11 +1,11 @@
 {
   "records": [
     {
-      "id": "REC001",
-      "recordId": "lrm2p91kj4XkLmNp",
+      "id": "lrm2p91kj4XkLmN0",
+      "recordId": "m7kypotdpxuDGH00",
       "patientId": "4711",
-      "date": "2025-01-15T09:30:00",
-      "type": "vital_signs",
+      "recordedAt": "2025-01-15T09:30:00",
+      "recordType": "vital_signs",
       "title": "Routine Follow-up",
       "description": "Vital signs checked during routine follow-up visit.",
       "details": {
@@ -16,11 +16,11 @@
       }
     },
     {
-      "id": "REC002",
-      "recordId": "lrm2p91kj5PqRsTu",
+      "id": "lrm2p91kj5PqRsT0",
+      "recordId": "m7kypotdzZEK7b00",
       "patientId": "4711",
-      "date": "2025-01-15T09:45:00",
-      "type": "lab_result",
+      "recordedAt": "2025-01-15T09:45:00",
+      "recordType": "lab_result",
       "title": "Complete Blood Count",
       "description": "Complete blood count within normal ranges.",
       "details": {
@@ -31,11 +31,11 @@
       }
     },
     {
-      "id": "REC003",
-      "recordId": "lrm2p91kj6VwXyZa",
+      "id": "lrm2p91kj6VwXyZ0",
+      "recordId": "m7kypotdv53FmG00",
       "patientId": "4711",
-      "date": "2025-01-15T10:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-01-15T10:00:00",
+      "recordType": "diagnosis",
       "title": "Hypertension Assessment",
       "description": "Regular assessment of hypertension condition.",
       "details": {
@@ -45,11 +45,11 @@
       }
     },
     {
-      "id": "REC101",
-      "recordId": "lrm2p91kj7BcDeFg",
+      "id": "lrm2p91kj8BcDeF0",
+      "recordId": "m7kypotd4t9Lzk00",
       "patientId": "4711",
-      "date": "2024-10-15T10:00:00",
-      "type": "lab_result",
+      "recordedAt": "2024-10-15T10:00:00",
+      "recordType": "lab_result",
       "title": "Lipid Panel",
       "description": "Cholesterol levels showing improvement with statin therapy.",
       "details": {
@@ -60,11 +60,11 @@
       }
     },
     {
-      "id": "REC102",
-      "recordId": "lrm2p91kj8HiJkLm",
+      "id": "lrm2p91kj8HiJkL0",
+      "recordId": "m7kypotdvlerZR00",
       "patientId": "4711",
-      "date": "2024-07-20T10:15:00",
-      "type": "diagnosis",
+      "recordedAt": "2024-07-20T10:15:00",
+      "recordType": "diagnosis",
       "title": "Annual Physical",
       "description": "Annual check-up shows good progress. Cholesterol levels improved.",
       "details": {
@@ -74,11 +74,11 @@
       }
     },
     {
-      "id": "REC103",
-      "recordId": "lrm2p91kj9NoPqRs",
+      "id": "lrm2p91kj1NoPqR0",
+      "recordId": "m7kypotedygSop00",
       "patientId": "4711",
-      "date": "2024-04-12T14:30:00",
-      "type": "complaint",
+      "recordedAt": "2024-04-12T14:30:00",
+      "recordType": "complaint",
       "title": "Headache and Dizziness",
       "description": "Patient reports occasional headaches and dizziness. BP slightly elevated.",
       "details": {
@@ -88,11 +88,11 @@
       }
     },
     {
-      "id": "REC104",
-      "recordId": "lrm2p91kjaBcDeFg",
+      "id": "lrm2p91kjaBcDeF0",
+      "recordId": "m7kypotetcIVxG00",
       "patientId": "4711",
-      "date": "2024-01-05T09:15:00",
-      "type": "vital_signs",
+      "recordedAt": "2024-01-05T09:15:00",
+      "recordType": "vital_signs",
       "title": "BP Check",
       "description": "Blood pressure elevated. Increasing Lisinopril dosage.",
       "details": {
@@ -103,11 +103,11 @@
       }
     },
     {
-      "id": "REC105",
-      "recordId": "lrm2p91kjbHiJkLm",
-      "patientId": "4711",
-      "date": "2023-10-20T11:30:00",
-      "type": "lab_result",
+      "id": "lrm2p91kj9HiJkL0",
+      "recordId": "m7kypoteTvGqsj00",
+      "patientId": "4712",
+      "recordedAt": "2023-10-20T11:30:00",
+      "recordType": "lab_result",
       "title": "Comprehensive Metabolic Panel",
       "description": "All values within normal range except slightly elevated cholesterol.",
       "details": {
@@ -118,11 +118,11 @@
       }
     },
     {
-      "id": "REC106",
-      "recordId": "lrm2p91kjcNoPqRs",
-      "patientId": "4711",
-      "date": "2023-07-15T10:00:00",
-      "type": "diagnosis",
+      "id": "lrmap91kj9NoPqR0",
+      "recordId": "m7kypotekG7snN00",
+      "patientId": "4712",
+      "recordedAt": "2023-07-15T10:00:00",
+      "recordType": "diagnosis",
       "title": "Annual Physical",
       "description": "Initial diagnosis of hypertension. Starting medication.",
       "details": {
@@ -132,11 +132,11 @@
       }
     },
     {
-      "id": "REC107",
-      "recordId": "lrm2p91kjdBcDeFg",
+      "id": "lrm2p91kjeHiJkL0",
+      "recordId": "m7kypotevaLe1Y00",
       "patientId": "4712",
-      "date": "2025-02-10T14:20:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-10T14:20:00",
+      "recordType": "diagnosis",
       "title": "Emergency Visit - Allergic Reaction",
       "description": "Patient experienced anaphylaxis after latex exposure. Administered epinephrine.",
       "details": {
@@ -146,11 +146,11 @@
       }
     },
     {
-      "id": "REC108",
-      "recordId": "lrm2p91kjeHiJkLm",
+      "id": "lrm2p91kjfNoPqR0",
+      "recordId": "m7kypoteii8EJe00",
       "patientId": "4712",
-      "date": "2024-11-05T15:45:00",
-      "type": "vital_signs",
+      "recordedAt": "2024-11-05T15:45:00",
+      "recordType": "vital_signs",
       "title": "Allergy Follow-up",
       "description": "Review of allergy management plan. No recent reactions.",
       "details": {
@@ -161,11 +161,11 @@
       }
     },
     {
-      "id": "REC109",
-      "recordId": "lrm2p91kjfNoPqRs",
+      "id": "lrm2p91kjgVwXyZ0",
+      "recordId": "m7kypotetubMPW00",
       "patientId": "4712",
-      "date": "2024-08-20T09:30:00",
-      "type": "lab_result",
+      "recordedAt": "2024-08-20T09:30:00",
+      "recordType": "lab_result",
       "title": "Allergy Panel Results",
       "description": "Confirmed allergies to latex and various pollens.",
       "details": {
@@ -176,11 +176,11 @@
       }
     },
     {
-      "id": "REC110",
-      "recordId": "lrm2p91kj6VwXyZa",
+      "id": "lrm2p91kjhBcDeF0",
+      "recordId": "m7kypoteXdovEN00",
       "patientId": "4712",
-      "date": "2024-05-15T13:20:00",
-      "type": "complaint",
+      "recordedAt": "2024-05-15T13:20:00",
+      "recordType": "complaint",
       "title": "Seasonal Allergies",
       "description": "Increased allergy symptoms during spring season.",
       "details": {
@@ -190,11 +190,11 @@
       }
     },
     {
-      "id": "REC111",
-      "recordId": "lrm2p91kjgBcDeFg",
+      "id": "lrm2p91kjiHiJkL0",
+      "recordId": "m7kypote107FKm00",
       "patientId": "4712",
-      "date": "2024-02-10T10:15:00",
-      "type": "diagnosis",
+      "recordedAt": "2024-02-10T10:15:00",
+      "recordType": "diagnosis",
       "title": "Annual Physical",
       "description": "Routine check-up. Allergy management plan reviewed and updated.",
       "details": {
@@ -204,11 +204,11 @@
       }
     },
     {
-      "id": "REC112",
-      "recordId": "lrm2p91kjhHiJkLm",
+      "id": "lrm2p91kjjNoPaR0",
+      "recordId": "m7kypoteUe332L00",
       "patientId": "4712",
-      "date": "2023-09-30T16:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2023-09-30T16:00:00",
+      "recordType": "diagnosis",
       "title": "Emergency Visit",
       "description": "Moderate allergic reaction to unknown trigger.",
       "details": {
@@ -218,11 +218,11 @@
       }
     },
     {
-      "id": "REC113",
-      "recordId": "lrm2p91kjiNoPqRs",
+      "id": "lrm2p91kjkNoPqR0",
+      "recordId": "m7kypoteViiW4f00",
       "patientId": "4712",
-      "date": "2023-06-15T11:30:00",
-      "type": "vital_signs",
+      "recordedAt": "2023-06-15T11:30:00",
+      "recordType": "vital_signs",
       "title": "Follow-up Visit",
       "description": "Regular check of BP and joint function.",
       "details": {
@@ -233,11 +233,11 @@
       }
     },
     {
-      "id": "REC114",
-      "recordId": "lrm2p91kjjBcDeFg",
+      "id": "arm2p91kj9NoPqR0",
+      "recordId": "m7kypoteJ0pEBe00",
       "patientId": "4713",
-      "date": "2025-01-30T11:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-01-30T11:00:00",
+      "recordType": "diagnosis",
       "title": "Arthritis Management",
       "description": "Joint pain in hands and knees. Prescribed new anti-inflammatory.",
       "details": {
@@ -247,11 +247,11 @@
       }
     },
     {
-      "id": "REC115",
-      "recordId": "lrm2p91kjkHiJkLm",
+      "id": "lrm2p91kjaHiJkL0",
+      "recordId": "m7kypoteNqxNtZ00",
       "patientId": "4713",
-      "date": "2024-11-15T14:45:00",
-      "type": "vital_signs",
+      "recordedAt": "2024-11-15T14:45:00",
+      "recordType": "vital_signs",
       "title": "BP and Joint Check",
       "description": "Blood pressure stable. Joint pain increased with cold weather.",
       "details": {
@@ -262,11 +262,11 @@
       }
     },
     {
-      "id": "REC116",
-      "recordId": "lrm2p91kjNoPqRs",
+      "id": "lrm2pa1kj9NoPqR0",
+      "recordId": "m7kypotez9o4pB00",
       "patientId": "4713",
-      "date": "2024-08-20T10:30:00",
-      "type": "lab_result",
+      "recordedAt": "2024-08-20T10:30:00",
+      "recordType": "lab_result",
       "title": "Rheumatoid Factor Test",
       "description": "RF and anti-CCP antibodies negative. Consistent with osteoarthritis.",
       "details": {
@@ -277,11 +277,11 @@
       }
     },
     {
-      "id": "REC117",
-      "recordId": "lrm2p91kjpBcDeFg",
+      "id": "lrm2p91kjbNoPqR0",
+      "recordId": "m7kypote6zZ90900",
       "patientId": "4713",
-      "date": "2024-05-10T09:15:00",
-      "type": "complaint",
+      "recordedAt": "2024-05-10T09:15:00",
+      "recordType": "complaint",
       "title": "Increased Joint Pain",
       "description": "Reports increased pain in knees after starting new exercise routine.",
       "details": {
@@ -291,11 +291,11 @@
       }
     },
     {
-      "id": "REC118",
-      "recordId": "lrm2p91kjqHiJkLm",
+      "id": "lrm2p91kjcBcDeF0",
+      "recordId": "m7kypote0cncvv00",
       "patientId": "4713",
-      "date": "2024-02-15T13:30:00",
-      "type": "diagnosis",
+      "recordedAt": "2024-02-15T13:30:00",
+      "recordType": "diagnosis",
       "title": "Annual Physical",
       "description": "Yearly check-up. Arthritis symptoms progressing slowly.",
       "details": {
@@ -305,11 +305,11 @@
       }
     },
     {
-      "id": "REC119",
-      "recordId": "lrm2p91kjrNoPqRs",
+      "id": "lrm2p91kjrNoPqR0",
+      "recordId": "m7kypoteiBnUmk00",
       "patientId": "4713",
-      "date": "2023-11-20T15:00:00",
-      "type": "vital_signs",
+      "recordedAt": "2024-11-20T15:00:00",
+      "recordType": "vital_signs",
       "title": "Follow-up Visit",
       "description": "Regular check of BP and joint function.",
       "details": {
@@ -320,11 +320,11 @@
       }
     },
     {
-      "id": "REC120",
-      "recordId": "lrm2p91kjsBcDeFg",
+      "id": "lrm2p91kjsBcDeF0",
+      "recordId": "m7kypoteBuDsGm00",
       "patientId": "4713",
-      "date": "2023-08-05T11:45:00",
-      "type": "lab_result",
+      "recordedAt": "2023-08-05T11:45:00",
+      "recordType": "lab_result",
       "title": "Comprehensive Panel",
       "description": "Routine blood work to monitor medication effects.",
       "details": {
@@ -335,11 +335,11 @@
       }
     },
     {
-      "id": "REC005",
-      "recordId": "lrm2p91kjtHiJkLm",
+      "id": "lrm2p91kjtHiJkL0",
+      "recordId": "m7kypoteXpq2Q200",
       "patientId": "4714",
-      "date": "2025-02-15T15:45:00",
-      "type": "vital_signs",
+      "recordedAt": "2025-02-15T15:45:00",
+      "recordType": "vital_signs",
       "title": "Asthma Follow-up",
       "description": "Increased frequency of rescue inhaler use. Adjusting maintenance medication.",
       "details": {
@@ -350,11 +350,11 @@
       }
     },
     {
-      "id": "REC006",
-      "recordId": "lrm2p91kj7BcDeFg",
+      "id": "lrm2p91kj7BcDeF0",
+      "recordId": "m7kypoteUBwu8t00",
       "patientId": "4715",
-      "date": "2025-02-01T13:30:00",
-      "type": "lab_result",
+      "recordedAt": "2025-02-01T13:30:00",
+      "recordType": "lab_result",
       "title": "Diabetes Check",
       "description": "A1C slightly elevated. Adjusting medication dosage.",
       "details": {
@@ -365,11 +365,11 @@
       }
     },
     {
-      "id": "REC007",
-      "recordId": "lrm2p91kjuNoPqRs",
+      "id": "lrm2p91kjuNoPqR0",
+      "recordId": "m7kypoteqUHNPK00",
       "patientId": "4716",
-      "date": "2025-02-20T16:15:00",
-      "type": "complaint",
+      "recordedAt": "2025-02-20T16:15:00",
+      "recordType": "complaint",
       "title": "Migraine Episode",
       "description": "Severe migraine with aura. IV medications administered.",
       "details": {
@@ -379,11 +379,11 @@
       }
     },
     {
-      "id": "REC008",
-      "recordId": "lrm2p91kjuBcDeFg",
+      "id": "lrm2p91kjeBcDeF0",
+      "recordId": "m7kypote0Tvu2h00",
       "patientId": "4717",
-      "date": "2025-02-05T10:30:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-05T10:30:00",
+      "recordType": "diagnosis",
       "title": "Cardiology Follow-up",
       "description": "Stress test shows stable condition. Continuing current treatment plan.",
       "details": {
@@ -393,11 +393,11 @@
       }
     },
     {
-      "id": "REC009",
-      "recordId": "lrm2p91kjuHiJkLm",
+      "id": "lrm2p91kjvHiJkL0",
+      "recordId": "m7kypote1mXGts00",
       "patientId": "4718",
-      "date": "2025-02-18T14:00:00",
-      "type": "lab_result",
+      "recordedAt": "2025-02-18T14:00:00",
+      "recordType": "lab_result",
       "title": "Thyroid Function Test",
       "description": "TSH levels normalized with current medication.",
       "details": {
@@ -408,11 +408,11 @@
       }
     },
     {
-      "id": "REC010",
-      "recordId": "lrm2p91kjuNoPqRs",
+      "id": "lrm2p91kjvNoPqR0",
+      "recordId": "m7kypoteKKs7hO00",
       "patientId": "4719",
-      "date": "2025-02-12T20:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-12T20:00:00",
+      "recordType": "diagnosis",
       "title": "Sleep Study Results",
       "description": "CPAP pressure adjusted. Patient reports improved sleep quality.",
       "details": {
@@ -422,11 +422,11 @@
       }
     },
     {
-      "id": "REC011",
-      "recordId": "lrm2p91kjuBcDeFg",
+      "id": "lxm2p91kjuBcDeFg",
+      "recordId": "m7kypoteZJj10C00",
       "patientId": "4720",
-      "date": "2025-02-08T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-08T00:00:00",
+      "recordType": "diagnosis",
       "title": "Psychiatry Follow-up",
       "description": "Symptoms improving with current treatment plan. Continue therapy.",
       "details": {
@@ -436,11 +436,11 @@
       }
     },
     {
-      "id": "REC012",
-      "recordId": "lrm2p91kjuHiJkLm",
+      "id": "lrm2p91kjuHiJkLm",
+      "recordId": "m7kypoteKhTKGh00",
       "patientId": "4721",
-      "date": "2025-01-25T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-01-25T00:00:00",
+      "recordType": "diagnosis",
       "title": "Osteoporosis Follow-up",
       "description": "DEXA scan shows improvement. Continue current treatment.",
       "details": {
@@ -450,11 +450,11 @@
       }
     },
     {
-      "id": "REC013",
-      "recordId": "lrm2p91kjuNoPqRs",
+      "id": "lrm2p91kjxNoPqR0",
+      "recordId": "m7kypoteIZURXJ00",
       "patientId": "4722",
-      "date": "2025-02-14T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-14T00:00:00",
+      "recordType": "diagnosis",
       "title": "Rheumatology Follow-up",
       "description": "Joint swelling decreased. Maintaining current treatment plan.",
       "details": {
@@ -464,11 +464,11 @@
       }
     },
     {
-      "id": "REC014",
-      "recordId": "lrm2p91kjuBcDeFg",
+      "id": "lrm2p91kjxBcDeF0",
+      "recordId": "m7kypote3JNnv200",
       "patientId": "4723",
-      "date": "2025-02-03T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-03T00:00:00",
+      "recordType": "diagnosis",
       "title": "Nephrology Follow-up",
       "description": "Creatinine stable. Dietary compliance good.",
       "details": {
@@ -478,11 +478,11 @@
       }
     },
     {
-      "id": "REC015",
-      "recordId": "lrm2p91kjuHiJkLm",
+      "id": "lrm2p91kjyHiJkL0",
+      "recordId": "m7kypotehDhDUU00",
       "patientId": "4724",
-      "date": "2025-02-16T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-16T00:00:00",
+      "recordType": "diagnosis",
       "title": "Gastroenterology Follow-up",
       "description": "Maintaining strict gluten-free diet. Symptoms well controlled.",
       "details": {
@@ -492,11 +492,11 @@
       }
     },
     {
-      "id": "REC016",
-      "recordId": "lrm2p91kjuNoPqRs",
+      "id": "lrm2p91kjyNoPqR0",
+      "recordId": "m7kypote3XOmfv00",
       "patientId": "4725",
-      "date": "2025-02-07T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-07T00:00:00",
+      "recordType": "diagnosis",
       "title": "Dermatology Follow-up",
       "description": "Skin lesions improving with current treatment.",
       "details": {
@@ -506,11 +506,11 @@
       }
     },
     {
-      "id": "REC017",
-      "recordId": "lrm2p91kjuBcDeFg",
+      "id": "lrm2p91kjzBcDeF0",
+      "recordId": "m7kypote23BRaA00",
       "patientId": "4726",
-      "date": "2025-02-19T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-19T00:00:00",
+      "recordType": "diagnosis",
       "title": "Gynecology Follow-up",
       "description": "Pain well managed with current treatment plan.",
       "details": {
@@ -520,11 +520,11 @@
       }
     },
     {
-      "id": "REC018",
-      "recordId": "lrm2p91kjuHiJkLm",
+      "id": "lrm2p91kjzHiJkL0",
+      "recordId": "m7kypotenqNy9p00",
       "patientId": "4727",
-      "date": "2025-02-11T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-11T00:00:00",
+      "recordType": "diagnosis",
       "title": "Pulmonology Follow-up",
       "description": "Breathing improved with current regimen.",
       "details": {
@@ -534,11 +534,11 @@
       }
     },
     {
-      "id": "REC019",
-      "recordId": "lrm2p91kj8HiJkLm",
+      "id": "lrm2p91kj4HiJkL0",
+      "recordId": "m7kypoteKEFhZu00",
       "patientId": "4728",
-      "date": "2025-02-13T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-13T00:00:00",
+      "recordType": "diagnosis",
       "title": "Neurology Follow-up",
       "description": "MRI stable. Continuing current treatment plan.",
       "details": {
@@ -548,11 +548,11 @@
       }
     },
     {
-      "id": "REC020",
-      "recordId": "lrm2p91kjuNoPqRs",
+      "id": "lrm2p91kj4NoPqR0",
+      "recordId": "m7kypotejOMuho00",
       "patientId": "4729",
-      "date": "2025-02-17T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-17T00:00:00",
+      "recordType": "diagnosis",
       "title": "Neurology Follow-up",
       "description": "Tremor well controlled. Adjusting medication timing.",
       "details": {
@@ -562,11 +562,11 @@
       }
     },
     {
-      "id": "REC021",
-      "recordId": "lrm2p91kjuBcDeFg",
+      "id": "lrm2p91kjuBcDeFg",
+      "recordId": "m7kypotecvcRXY00",
       "patientId": "4730",
-      "date": "2025-02-09T00:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-09T00:00:00",
+      "recordType": "diagnosis",
       "title": "Rheumatology Follow-up",
       "description": "Disease activity stable. Maintaining current medications.",
       "details": {
@@ -576,11 +576,11 @@
       }
     },
     {
-      "id": "REC201",
-      "recordId": "lrm2p91kj4XkLmNp",
+      "id": "lrm2p91kjjNoPqR0",
+      "recordId": "m7kypoteokcUw100",
       "patientId": "4713",
-      "date": "2025-02-15T09:00:00",
-      "type": "complaint",
+      "recordedAt": "2025-02-15T09:00:00",
+      "recordType": "complaint",
       "title": "Joint Pain Assessment",
       "description": "Patient reports increasing joint pain in knees and hands.",
       "details": {
@@ -590,11 +590,11 @@
       }
     },
     {
-      "id": "REC202",
-      "recordId": "lrm2p91kj5PqRsTu",
+      "id": "lrm2p91kjkBcDeF0",
+      "recordId": "m7kypoten2IZ5900",
       "patientId": "4713",
-      "date": "2025-02-15T09:15:00",
-      "type": "lab_result",
+      "recordedAt": "2025-02-15T09:15:00",
+      "recordType": "lab_result",
       "title": "Rheumatoid Factor Test",
       "description": "Blood work to assess for rheumatoid arthritis.",
       "details": {
@@ -605,11 +605,11 @@
       }
     },
     {
-      "id": "REC203",
-      "recordId": "lrm2p91kj9NoPqRs",
+      "id": "lrm2p91kjlHiJkL0",
+      "recordId": "m7kypoteevmh6j00",
       "patientId": "4713",
-      "date": "2025-02-15T10:00:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-15T10:00:00",
+      "recordType": "diagnosis",
       "title": "Initial RA Diagnosis",
       "description": "Diagnosed with early-stage rheumatoid arthritis based on symptoms and lab results.",
       "details": {
@@ -619,11 +619,11 @@
       }
     },
     {
-      "id": "REC301",
-      "recordId": "lrm2p91kjaBcDeFg",
+      "id": "lrm2p91kjfBcDeF0",
+      "recordId": "m7kypoteinlbab00",
       "patientId": "4714",
-      "date": "2025-02-22T14:00:00",
-      "type": "vital_signs",
+      "recordedAt": "2025-02-22T14:00:00",
+      "recordType": "vital_signs",
       "title": "Emergency Room Visit",
       "description": "Patient presented with chest pain and shortness of breath.",
       "details": {
@@ -634,11 +634,11 @@
       }
     },
     {
-      "id": "REC302",
-      "recordId": "lrm2p91kjbHiJkLm",
+      "id": "lrm2p91kj2HiJkL0",
+      "recordId": "m7kypoteoFMU4f00",
       "patientId": "4714",
-      "date": "2025-02-22T14:15:00",
-      "type": "lab_result",
+      "recordedAt": "2025-02-22T14:15:00",
+      "recordType": "lab_result",
       "title": "Cardiac Enzymes",
       "description": "Urgent cardiac panel ordered.",
       "details": {
@@ -649,11 +649,11 @@
       }
     },
     {
-      "id": "REC303",
-      "recordId": "lrm2p91kjcNoPqRs",
+      "id": "lrm2p91kj2NoPqR0",
+      "recordId": "m7kypotejcCuum00",
       "patientId": "4714",
-      "date": "2025-02-22T14:45:00",
-      "type": "diagnosis",
+      "recordedAt": "2025-02-22T14:45:00",
+      "recordType": "diagnosis",
       "title": "Acute Coronary Syndrome",
       "description": "Diagnosed with NSTEMI based on symptoms and lab results.",
       "details": {
@@ -663,11 +663,11 @@
       }
     },
     {
-      "id": "REC304",
-      "recordId": "lrm2p91kjdBcDeFg",
+      "id": "lrm2p91kjfHiJkL0",
+      "recordId": "m7kypotew5swtg00",
       "patientId": "4714",
-      "date": "2025-02-22T15:00:00",
-      "type": "vital_signs",
+      "recordedAt": "2025-02-22T15:00:00",
+      "recordType": "vital_signs",
       "title": "CCU Admission Vitals",
       "description": "Initial vital signs upon CCU admission.",
       "details": {
@@ -678,11 +678,11 @@
       }
     },
     {
-      "id": "REC201",
-      "recordId": "lrm2p91kj4XkLmNp",
+      "id": "lrm2p91kj4XkLmNp",
+      "recordId": "m7kypoteYaLVfQ00",
       "patientId": "4711",
-      "date": "2025-02-23T10:00:00",
-      "type": "medication",
+      "recordedAt": "2025-02-23T10:00:00",
+      "recordType": "medication",
       "title": "Lisinopril Prescription",
       "description": "Antihypertensive medication for blood pressure control.",
       "details": {
@@ -693,11 +693,11 @@
       }
     },
     {
-      "id": "REC202",
-      "recordId": "lrm2p91kj5PqRsTu",
+      "id": "lrm2p91kj6NoPqR0",
+      "recordId": "m7kypotefEYtJ300",
       "patientId": "4711",
-      "date": "2025-02-23T10:00:00",
-      "type": "medication",
+      "recordedAt": "2025-02-23T10:00:00",
+      "recordType": "medication",
       "title": "Atorvastatin Prescription",
       "description": "Statin medication for cholesterol management.",
       "details": {
@@ -708,11 +708,11 @@
       }
     },
     {
-      "id": "REC203",
-      "recordId": "lrm2p91kj9NoPqRs",
+      "id": "lrm2p91kj7NoPqR0",
+      "recordId": "m7kypote5LpJVf00",
       "patientId": "4712",
-      "date": "2025-02-20T14:30:00",
-      "type": "medication",
+      "recordedAt": "2025-02-20T14:30:00",
+      "recordType": "medication",
       "title": "Metformin Prescription",
       "description": "Oral diabetes medication for blood sugar control.",
       "details": {
@@ -720,6 +720,92 @@
         "dosage": "500mg",
         "frequency": "Twice daily",
         "duration": "Ongoing"
+      }
+    },
+    {
+      "id": "lrm2p91kjmNoPqR0",
+      "recordId": "m7kypoteFiBEKd00",
+      "patientId": "4713",
+      "recordedAt": "2025-02-15T09:00:00",
+      "recordType": "complaint",
+      "title": "Joint Pain Assessment",
+      "description": "Patient reports increasing joint pain in knees and hands.",
+      "details": {
+        "symptom": "Increased joint pain",
+        "severity": "Moderate",
+        "duration": "2 weeks"
+      }
+    },
+    {
+      "id": "lrm2p91kjnBcDeF0",
+      "recordId": "m7kypotevfcq6k00",
+      "patientId": "4713",
+      "recordedAt": "2025-02-15T09:15:00",
+      "recordType": "lab_result",
+      "title": "Rheumatoid Factor Test",
+      "description": "Blood work to assess for rheumatoid arthritis.",
+      "details": {
+        "test_name": "Rheumatoid Factor",
+        "value": "Elevated",
+        "unit": "",
+        "reference_range": ""
+      }
+    },
+    {
+      "id": "lrm2p91kjoHiJkL0",
+      "recordId": "m7kypoteJwaBTp00",
+      "patientId": "4713",
+      "recordedAt": "2025-02-15T10:00:00",
+      "recordType": "diagnosis",
+      "title": "Initial RA Diagnosis",
+      "description": "Diagnosed with early-stage rheumatoid arthritis based on symptoms and lab results.",
+      "details": {
+        "condition": "Rheumatoid Arthritis",
+        "severity": "Moderate",
+        "status": "Active"
+      }
+    },
+    {
+      "id": "lrm2p91kjpNoPqR0",
+      "recordId": "m7kypoteceVTMF00",
+      "patientId": "4713",
+      "recordedAt": "2025-02-15T09:00:00",
+      "recordType": "complaint",
+      "title": "Joint Pain Assessment",
+      "description": "Patient reports increasing joint pain in knees and hands.",
+      "details": {
+        "symptom": "Increased joint pain",
+        "severity": "Moderate",
+        "duration": "2 weeks"
+      }
+    },
+    {
+      "id": "lrm2p91kjqBcDeF0",
+      "recordId": "m7kypotee4Cihm00",
+      "patientId": "4713",
+      "recordedAt": "2025-02-15T09:15:00",
+      "recordType": "lab_result",
+      "title": "Rheumatoid Factor Test",
+      "description": "Blood work to assess for rheumatoid arthritis.",
+      "details": {
+        "test_name": "Rheumatoid Factor",
+        "value": "Elevated",
+        "unit": "",
+        "reference_range": ""
+      }
+    },
+    {
+      "id": "lrm2p91kjrHiJkL0",
+      "recordId": "m7kypotekBXUAP00",
+      "patientId": "4713",
+      "recordedAt": "2025-02-15T10:00:00",
+      "recordType": "diagnosis",
+      "title": "Initial RA Diagnosis",
+      "description": "Diagnosed with early-stage rheumatoid arthritis based on symptoms and lab results.",
+      "details": {
+        "condition": "Rheumatoid Arthritis",
+        "severity": "Moderate",
+        "status": "Active"
       }
     }
   ]

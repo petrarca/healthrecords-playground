@@ -41,9 +41,9 @@ interface HeaderProps {
 
 const RecordForm: React.FC<RecordFormProps> = ({ record, onUpdateField }) => {
   const renderMetadataFields = () => {
-    if (!record.type) return null;
+    if (!record.recordType) return null;
 
-    const metadata = metadataService.getMetaDataForType(record.type);
+    const metadata = metadataService.getMetaDataForType(record.recordType);
     return Object.entries(metadata.fields).map(([fieldName, fieldMeta]) => (
       <div key={fieldName}>
         <label className="block text-sm font-medium text-gray-700">{fieldMeta.label}</label>
@@ -111,7 +111,7 @@ const RecordForm: React.FC<RecordFormProps> = ({ record, onUpdateField }) => {
         />
         {!record.description && <p className="mt-1 text-sm text-red-500">Description is required</p>}
       </div>
-      {record.type && <div className="space-y-4">{renderMetadataFields()}</div>}
+      {record.recordType && <div className="space-y-4">{renderMetadataFields()}</div>}
     </div>
   );
 };
@@ -123,7 +123,7 @@ const RecordView: React.FC<{ record: MedicalRecord }> = ({ record }) => (
       <div className="border-t border-gray-200 pt-4">
         <dl className="grid grid-cols-1 gap-y-3">
           {Object.entries(record.details).map(([key, value]) => {
-            const fieldMeta = record.type && metadataService.getMetaDataForType(record.type).fields[key];
+            const fieldMeta = record.recordType && metadataService.getMetaDataForType(record.recordType).fields[key];
             return (
               <div key={key}>
                 <dt className="text-sm font-medium text-gray-500">{fieldMeta?.label || key}</dt>
@@ -157,7 +157,8 @@ const Header: React.FC<HeaderProps> = ({
     {
       value: 'delete',
       label: 'Delete Record',
-      icon: <Trash size={14} className="text-gray-500" />
+      icon: <Trash size={14} className="text-gray-500" />,
+      disabled: true
     }
   ];
 
@@ -189,7 +190,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
       <div className="flex items-center gap-3">
-        {currentRecord?.type && (
+        {currentRecord?.recordType && (
           <button 
             className="p-2 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" 
             onClick={onEdit}
@@ -198,7 +199,7 @@ const Header: React.FC<HeaderProps> = ({
             }}
             aria-label="Edit record"
           >
-            <TimelineIcon type={currentRecord.type} size="md" />
+            <TimelineIcon type={currentRecord.recordType} size="md" />
           </button>
         )}
         <div>
@@ -206,10 +207,10 @@ const Header: React.FC<HeaderProps> = ({
             {getHeaderText()}
           </h3>
           <p className="text-sm text-gray-500">
-            {currentRecord?.type && (
+            {currentRecord?.recordType && (
               <>
-                {metadataService.getTypeName(currentRecord.type)} • {
-                  currentRecord.date && new Date(currentRecord.date).toLocaleDateString()
+                {metadataService.getTypeName(currentRecord.recordType)} • {
+                  currentRecord.recordedAt && new Date(currentRecord.recordedAt).toLocaleDateString()
                 }
               </>
             )}

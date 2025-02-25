@@ -7,7 +7,7 @@ interface TimelineYearSelectorProps {
   onYearChange: (year: number) => void;
   recordsByMonth: Map<string, {
     count: number;
-    types: Map<MedicalRecord['type'], number>;
+    types: Map<MedicalRecord['recordType'], number>;
   }>;
   selectedMonth: string | null;
   onMonthSelect: (month: string) => void;

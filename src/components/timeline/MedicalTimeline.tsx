@@ -18,7 +18,7 @@ const getInitialYear = (records: MedicalRecord[]): number => {
   if (!records.length) return new Date().getFullYear();
   
   const recordGroups = records.reduce((groups, record) => {
-    const date = record.date.toISOString().split('T')[0];
+    const date = record.recordedAt.toISOString().split('T')[0];
     if (!groups[date]) {
       groups[date] = [];
     }
@@ -31,17 +31,17 @@ const getInitialYear = (records: MedicalRecord[]): number => {
 
 const getRecordCountsByType = (records: MedicalRecord[]): Record<MedicalRecordType, number> => {
   return records.reduce((counts, record) => {
-    counts[record.type] = (counts[record.type] ?? 0) + 1;
+    counts[record.recordType] = (counts[record.recordType] ?? 0) + 1;
     return counts;
   }, {} as Record<MedicalRecordType, number>);
 };
 
 const groupRecordsByDate = (records: MedicalRecord[], activeFilters: Set<MedicalRecordType>): Record<string, MedicalRecord[]> => {
-  const filtered = records.filter(record => activeFilters.has(record.type));
-  const sortedRecords = [...filtered].sort((a, b) => b.date.getTime() - a.date.getTime());
+  const filtered = records.filter(record => activeFilters.has(record.recordType));
+  const sortedRecords = [...filtered].sort((a, b) => b.recordedAt.getTime() - a.recordedAt.getTime());
   
   return sortedRecords.reduce((groups, record) => {
-    const date = record.date.toISOString().split('T')[0];
+    const date = record.recordedAt.toISOString().split('T')[0];
     if (!groups[date]) {
       groups[date] = [];
     }
@@ -83,10 +83,10 @@ const groupDatesByYearAndMonth = (groupedByDate: Record<string, MedicalRecord[]>
 
 const getRecordsByMonth = (records: MedicalRecord[]): Map<string, { count: number; types: Map<MedicalRecordType, number> }> => {
   return records.reduce((months, record) => {
-    const month = record.date.toISOString().substring(0, 7); // YYYY-MM
+    const month = record.recordedAt.toISOString().substring(0, 7); // YYYY-MM
     const monthData = months.get(month) ?? { count: 0, types: new Map() };
     monthData.count++;
-    monthData.types.set(record.type, (monthData.types.get(record.type) ?? 0) + 1);
+    monthData.types.set(record.recordType, (monthData.types.get(record.recordType) ?? 0) + 1);
     months.set(month, monthData);
     return months;
   }, new Map());
@@ -258,11 +258,11 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
   const handleMonthSelect = (month: string) => {
     // Find first record for this month
     const firstRecord = records.find(record => 
-      record.date.toISOString().startsWith(month)
+      record.recordedAt.toISOString().startsWith(month)
     );
     if (firstRecord) {
       setSelectedRecord(firstRecord);
-      setSelectedDate(firstRecord.date.toISOString().split('T')[0]);
+      setSelectedDate(firstRecord.recordedAt.toISOString().split('T')[0]);
       const element = document.getElementById(`record-${firstRecord.recordId}`);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -279,7 +279,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
 
   const selectRecord = useCallback((record: MedicalRecord) => {
     setSelectedRecord(record);
-    const date = record.date.toISOString().split('T')[0];
+    const date = record.recordedAt.toISOString().split('T')[0];
     setSelectedDate(date);
     scrollRecordIntoView(record.recordId);
   }, []);
@@ -293,7 +293,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
       );
       if (currentIndex === -1) return;
 
-      const currentDate = selectedRecord.date.toISOString().split('T')[0];
+      const currentDate = selectedRecord.recordedAt.toISOString().split('T')[0];
       const currentMonthIndex = getCurrentMonthIndex(datesByMonth, currentDate);
 
       if (e.metaKey || e.ctrlKey) {
@@ -351,9 +351,9 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
       const record = records.find(r => r.recordId === selectedRecordId);
       if (record) {
         setSelectedRecord(record);
-        const recordDate = record.date.toISOString().split('T')[0];
-        setSelectedDate(recordDate);
-        setSelectedYear(new Date(recordDate).getFullYear());
+        const recordedAt = record.recordedAt.toISOString().split('T')[0];
+        setSelectedDate(recordedAt);
+        setSelectedYear(new Date(recordedAt).getFullYear());
       }
     }
   }, [selectedRecordId, records]);

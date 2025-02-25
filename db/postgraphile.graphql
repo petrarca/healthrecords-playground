@@ -1,0 +1,2316 @@
+{
+  "data": {
+    "__schema": {
+      "types": [
+        {
+          "kind": "OBJECT",
+          "name": "Query",
+          "description": "The root query type which gives access points into the data universe.",
+          "fields": [
+            {
+              "name": "query",
+              "description": "Exposes the root query type nested one level down. This is helpful for Relay 1\nwhich can only query top level fields if they are in a particular form.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Query"
+                }
+              }
+            },
+            {
+              "name": "nodeId",
+              "description": "The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID"
+                }
+              }
+            },
+            {
+              "name": "node",
+              "description": "Fetches an object given its globally unique `ID`.",
+              "type": {
+                "kind": "INTERFACE",
+                "name": "Node",
+                "ofType": null
+              }
+            },
+            {
+              "name": "allAddresses",
+              "description": "Reads and enables pagination through a set of `Address`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "AddressesConnection",
+                "ofType": null
+              }
+            },
+            {
+              "name": "allMedicalRecords",
+              "description": "Reads and enables pagination through a set of `MedicalRecord`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecordsConnection",
+                "ofType": null
+              }
+            },
+            {
+              "name": "allPatients",
+              "description": "Reads and enables pagination through a set of `Patient`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "PatientsConnection",
+                "ofType": null
+              }
+            },
+            {
+              "name": "addressById",
+              "description": null,
+              "type": {
+                "kind": "OBJECT",
+                "name": "Address",
+                "ofType": null
+              }
+            },
+            {
+              "name": "medicalRecordById",
+              "description": null,
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecord",
+                "ofType": null
+              }
+            },
+            {
+              "name": "medicalRecordByRecordId",
+              "description": null,
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecord",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientById",
+              "description": null,
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientByPatientId",
+              "description": null,
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "address",
+              "description": "Reads a single `Address` using its globally unique `ID`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Address",
+                "ofType": null
+              }
+            },
+            {
+              "name": "medicalRecord",
+              "description": "Reads a single `MedicalRecord` using its globally unique `ID`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecord",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patient",
+              "description": "Reads a single `Patient` using its globally unique `ID`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "INTERFACE",
+          "name": "Node",
+          "description": "An object with a globally unique `ID`.",
+          "fields": [
+            {
+              "name": "nodeId",
+              "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "SCALAR",
+          "name": "ID",
+          "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "AddressesConnection",
+          "description": "A connection to a list of `Address` values.",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "A list of `Address` objects.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "edges",
+              "description": "A list of edges which contains the `Address` and cursor to aid in pagination.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PageInfo"
+                }
+              }
+            },
+            {
+              "name": "totalCount",
+              "description": "The count of *all* `Address` you could get from the connection.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "Address",
+          "description": null,
+          "fields": [
+            {
+              "name": "nodeId",
+              "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID"
+                }
+              }
+            },
+            {
+              "name": "id",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "UUID"
+                }
+              }
+            },
+            {
+              "name": "patientId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "UUID"
+                }
+              }
+            },
+            {
+              "name": "addressType",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "addressLine",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "street",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "city",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "state",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "zipCode",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "country",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "createdAt",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Datetime"
+                }
+              }
+            },
+            {
+              "name": "updatedAt",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Datetime"
+                }
+              }
+            },
+            {
+              "name": "patientByPatientId",
+              "description": "Reads a single `Patient` that is related to this `Address`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "SCALAR",
+          "name": "UUID",
+          "description": "A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).",
+          "fields": null
+        },
+        {
+          "kind": "SCALAR",
+          "name": "String",
+          "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+          "fields": null
+        },
+        {
+          "kind": "SCALAR",
+          "name": "Datetime",
+          "description": "A point in time as described by the [ISO\n8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "Patient",
+          "description": null,
+          "fields": [
+            {
+              "name": "nodeId",
+              "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID"
+                }
+              }
+            },
+            {
+              "name": "id",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "UUID"
+                }
+              }
+            },
+            {
+              "name": "patientId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "firstName",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "lastName",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "dateOfBirth",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Date"
+                }
+              }
+            },
+            {
+              "name": "sex",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "bloodType",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "height",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "weight",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "primaryPhysician",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "insuranceProvider",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "insuranceNumber",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "primaryAddressType",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "phone",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "email",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "allergies",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "createdAt",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Datetime"
+                }
+              }
+            },
+            {
+              "name": "updatedAt",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Datetime"
+                }
+              }
+            },
+            {
+              "name": "addressesByPatientId",
+              "description": "Reads and enables pagination through a set of `Address`.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "AddressesConnection"
+                }
+              }
+            },
+            {
+              "name": "medicalRecordsByPatientId",
+              "description": "Reads and enables pagination through a set of `MedicalRecord`.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "MedicalRecordsConnection"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "SCALAR",
+          "name": "Date",
+          "description": "The day, does not include a time.",
+          "fields": null
+        },
+        {
+          "kind": "SCALAR",
+          "name": "Int",
+          "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
+          "fields": null
+        },
+        {
+          "kind": "SCALAR",
+          "name": "Cursor",
+          "description": "A location in a connection that can be used for resuming pagination.",
+          "fields": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "AddressesOrderBy",
+          "description": "Methods to use when ordering `Address`.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "AddressCondition",
+          "description": "A condition to be used against `Address` object types. All fields are tested for equality and combined with a logical ‘and.’",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "MedicalRecordsConnection",
+          "description": "A connection to a list of `MedicalRecord` values.",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "A list of `MedicalRecord` objects.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "edges",
+              "description": "A list of edges which contains the `MedicalRecord` and cursor to aid in pagination.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PageInfo"
+                }
+              }
+            },
+            {
+              "name": "totalCount",
+              "description": "The count of *all* `MedicalRecord` you could get from the connection.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "MedicalRecord",
+          "description": null,
+          "fields": [
+            {
+              "name": "nodeId",
+              "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID"
+                }
+              }
+            },
+            {
+              "name": "id",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "UUID"
+                }
+              }
+            },
+            {
+              "name": "recordId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "patientId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "UUID"
+                }
+              }
+            },
+            {
+              "name": "recordType",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "recordedAt",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Datetime"
+                }
+              }
+            },
+            {
+              "name": "title",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "details",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              }
+            },
+            {
+              "name": "createdAt",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Datetime"
+                }
+              }
+            },
+            {
+              "name": "updatedAt",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Datetime"
+                }
+              }
+            },
+            {
+              "name": "patientByPatientId",
+              "description": "Reads a single `Patient` that is related to this `MedicalRecord`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "SCALAR",
+          "name": "JSON",
+          "description": "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "MedicalRecordsEdge",
+          "description": "A `MedicalRecord` edge in the connection.",
+          "fields": [
+            {
+              "name": "cursor",
+              "description": "A cursor for use in pagination.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Cursor",
+                "ofType": null
+              }
+            },
+            {
+              "name": "node",
+              "description": "The `MedicalRecord` at the end of the edge.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecord",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "PageInfo",
+          "description": "Information about pagination in a connection.",
+          "fields": [
+            {
+              "name": "hasNextPage",
+              "description": "When paginating forwards, are there more items?",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean"
+                }
+              }
+            },
+            {
+              "name": "hasPreviousPage",
+              "description": "When paginating backwards, are there more items?",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean"
+                }
+              }
+            },
+            {
+              "name": "startCursor",
+              "description": "When paginating backwards, the cursor to continue.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Cursor",
+                "ofType": null
+              }
+            },
+            {
+              "name": "endCursor",
+              "description": "When paginating forwards, the cursor to continue.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Cursor",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "SCALAR",
+          "name": "Boolean",
+          "description": "The `Boolean` scalar type represents `true` or `false`.",
+          "fields": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "MedicalRecordsOrderBy",
+          "description": "Methods to use when ordering `MedicalRecord`.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "MedicalRecordCondition",
+          "description": "A condition to be used against `MedicalRecord` object types. All fields are\ntested for equality and combined with a logical ‘and.’",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "AddressesEdge",
+          "description": "A `Address` edge in the connection.",
+          "fields": [
+            {
+              "name": "cursor",
+              "description": "A cursor for use in pagination.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Cursor",
+                "ofType": null
+              }
+            },
+            {
+              "name": "node",
+              "description": "The `Address` at the end of the edge.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Address",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "PatientsConnection",
+          "description": "A connection to a list of `Patient` values.",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "A list of `Patient` objects.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "edges",
+              "description": "A list of edges which contains the `Patient` and cursor to aid in pagination.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PageInfo"
+                }
+              }
+            },
+            {
+              "name": "totalCount",
+              "description": "The count of *all* `Patient` you could get from the connection.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "PatientsEdge",
+          "description": "A `Patient` edge in the connection.",
+          "fields": [
+            {
+              "name": "cursor",
+              "description": "A cursor for use in pagination.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Cursor",
+                "ofType": null
+              }
+            },
+            {
+              "name": "node",
+              "description": "The `Patient` at the end of the edge.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "ENUM",
+          "name": "PatientsOrderBy",
+          "description": "Methods to use when ordering `Patient`.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "PatientCondition",
+          "description": "A condition to be used against `Patient` object types. All fields are tested for equality and combined with a logical ‘and.’",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "Mutation",
+          "description": "The root mutation type which contains root level fields which mutate data.",
+          "fields": [
+            {
+              "name": "createAddress",
+              "description": "Creates a single `Address`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "CreateAddressPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "createMedicalRecord",
+              "description": "Creates a single `MedicalRecord`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "CreateMedicalRecordPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "createPatient",
+              "description": "Creates a single `Patient`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "CreatePatientPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "updateAddress",
+              "description": "Updates a single `Address` using its globally unique id and a patch.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdateAddressPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "updateAddressById",
+              "description": "Updates a single `Address` using a unique key and a patch.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdateAddressPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "updateMedicalRecord",
+              "description": "Updates a single `MedicalRecord` using its globally unique id and a patch.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdateMedicalRecordPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "updateMedicalRecordById",
+              "description": "Updates a single `MedicalRecord` using a unique key and a patch.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdateMedicalRecordPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "updateMedicalRecordByRecordId",
+              "description": "Updates a single `MedicalRecord` using a unique key and a patch.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdateMedicalRecordPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "updatePatient",
+              "description": "Updates a single `Patient` using its globally unique id and a patch.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdatePatientPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "updatePatientById",
+              "description": "Updates a single `Patient` using a unique key and a patch.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdatePatientPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "updatePatientByPatientId",
+              "description": "Updates a single `Patient` using a unique key and a patch.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdatePatientPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deleteAddress",
+              "description": "Deletes a single `Address` using its globally unique id.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "DeleteAddressPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deleteAddressById",
+              "description": "Deletes a single `Address` using a unique key.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "DeleteAddressPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deleteMedicalRecord",
+              "description": "Deletes a single `MedicalRecord` using its globally unique id.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "DeleteMedicalRecordPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deleteMedicalRecordById",
+              "description": "Deletes a single `MedicalRecord` using a unique key.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "DeleteMedicalRecordPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deleteMedicalRecordByRecordId",
+              "description": "Deletes a single `MedicalRecord` using a unique key.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "DeleteMedicalRecordPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deletePatient",
+              "description": "Deletes a single `Patient` using its globally unique id.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "DeletePatientPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deletePatientById",
+              "description": "Deletes a single `Patient` using a unique key.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "DeletePatientPayload",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deletePatientByPatientId",
+              "description": "Deletes a single `Patient` using a unique key.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "DeletePatientPayload",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "CreateAddressPayload",
+          "description": "The output of our create `Address` mutation.",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "The exact same `clientMutationId` that was provided in the mutation input,\nunchanged and unused. May be used by a client to track mutations.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "address",
+              "description": "The `Address` that was created by this mutation.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Address",
+                "ofType": null
+              }
+            },
+            {
+              "name": "query",
+              "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientByPatientId",
+              "description": "Reads a single `Patient` that is related to this `Address`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "addressEdge",
+              "description": "An edge for our `Address`. May be used by Relay 1.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "AddressesEdge",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "CreateAddressInput",
+          "description": "All input for the create `Address` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "AddressInput",
+          "description": "An input for mutations affecting `Address`",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "CreateMedicalRecordPayload",
+          "description": "The output of our create `MedicalRecord` mutation.",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "The exact same `clientMutationId` that was provided in the mutation input,\nunchanged and unused. May be used by a client to track mutations.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "medicalRecord",
+              "description": "The `MedicalRecord` that was created by this mutation.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecord",
+                "ofType": null
+              }
+            },
+            {
+              "name": "query",
+              "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientByPatientId",
+              "description": "Reads a single `Patient` that is related to this `MedicalRecord`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "medicalRecordEdge",
+              "description": "An edge for our `MedicalRecord`. May be used by Relay 1.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecordsEdge",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "CreateMedicalRecordInput",
+          "description": "All input for the create `MedicalRecord` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "MedicalRecordInput",
+          "description": "An input for mutations affecting `MedicalRecord`",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "CreatePatientPayload",
+          "description": "The output of our create `Patient` mutation.",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "The exact same `clientMutationId` that was provided in the mutation input,\nunchanged and unused. May be used by a client to track mutations.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patient",
+              "description": "The `Patient` that was created by this mutation.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "query",
+              "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientEdge",
+              "description": "An edge for our `Patient`. May be used by Relay 1.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "PatientsEdge",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "CreatePatientInput",
+          "description": "All input for the create `Patient` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "PatientInput",
+          "description": "An input for mutations affecting `Patient`",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UpdateAddressPayload",
+          "description": "The output of our update `Address` mutation.",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "The exact same `clientMutationId` that was provided in the mutation input,\nunchanged and unused. May be used by a client to track mutations.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "address",
+              "description": "The `Address` that was updated by this mutation.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Address",
+                "ofType": null
+              }
+            },
+            {
+              "name": "query",
+              "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientByPatientId",
+              "description": "Reads a single `Patient` that is related to this `Address`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "addressEdge",
+              "description": "An edge for our `Address`. May be used by Relay 1.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "AddressesEdge",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdateAddressInput",
+          "description": "All input for the `updateAddress` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "AddressPatch",
+          "description": "Represents an update to a `Address`. Fields that are set will be updated.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdateAddressByIdInput",
+          "description": "All input for the `updateAddressById` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UpdateMedicalRecordPayload",
+          "description": "The output of our update `MedicalRecord` mutation.",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "The exact same `clientMutationId` that was provided in the mutation input,\nunchanged and unused. May be used by a client to track mutations.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "medicalRecord",
+              "description": "The `MedicalRecord` that was updated by this mutation.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecord",
+                "ofType": null
+              }
+            },
+            {
+              "name": "query",
+              "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientByPatientId",
+              "description": "Reads a single `Patient` that is related to this `MedicalRecord`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "medicalRecordEdge",
+              "description": "An edge for our `MedicalRecord`. May be used by Relay 1.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecordsEdge",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdateMedicalRecordInput",
+          "description": "All input for the `updateMedicalRecord` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "MedicalRecordPatch",
+          "description": "Represents an update to a `MedicalRecord`. Fields that are set will be updated.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdateMedicalRecordByIdInput",
+          "description": "All input for the `updateMedicalRecordById` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdateMedicalRecordByRecordIdInput",
+          "description": "All input for the `updateMedicalRecordByRecordId` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UpdatePatientPayload",
+          "description": "The output of our update `Patient` mutation.",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "The exact same `clientMutationId` that was provided in the mutation input,\nunchanged and unused. May be used by a client to track mutations.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patient",
+              "description": "The `Patient` that was updated by this mutation.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "query",
+              "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientEdge",
+              "description": "An edge for our `Patient`. May be used by Relay 1.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "PatientsEdge",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdatePatientInput",
+          "description": "All input for the `updatePatient` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "PatientPatch",
+          "description": "Represents an update to a `Patient`. Fields that are set will be updated.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdatePatientByIdInput",
+          "description": "All input for the `updatePatientById` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdatePatientByPatientIdInput",
+          "description": "All input for the `updatePatientByPatientId` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "DeleteAddressPayload",
+          "description": "The output of our delete `Address` mutation.",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "The exact same `clientMutationId` that was provided in the mutation input,\nunchanged and unused. May be used by a client to track mutations.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "address",
+              "description": "The `Address` that was deleted by this mutation.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Address",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deletedAddressId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            {
+              "name": "query",
+              "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientByPatientId",
+              "description": "Reads a single `Patient` that is related to this `Address`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "addressEdge",
+              "description": "An edge for our `Address`. May be used by Relay 1.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "AddressesEdge",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "DeleteAddressInput",
+          "description": "All input for the `deleteAddress` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "DeleteAddressByIdInput",
+          "description": "All input for the `deleteAddressById` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "DeleteMedicalRecordPayload",
+          "description": "The output of our delete `MedicalRecord` mutation.",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "The exact same `clientMutationId` that was provided in the mutation input,\nunchanged and unused. May be used by a client to track mutations.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "medicalRecord",
+              "description": "The `MedicalRecord` that was deleted by this mutation.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecord",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deletedMedicalRecordId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            {
+              "name": "query",
+              "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientByPatientId",
+              "description": "Reads a single `Patient` that is related to this `MedicalRecord`.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "medicalRecordEdge",
+              "description": "An edge for our `MedicalRecord`. May be used by Relay 1.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "MedicalRecordsEdge",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "DeleteMedicalRecordInput",
+          "description": "All input for the `deleteMedicalRecord` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "DeleteMedicalRecordByIdInput",
+          "description": "All input for the `deleteMedicalRecordById` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "DeleteMedicalRecordByRecordIdInput",
+          "description": "All input for the `deleteMedicalRecordByRecordId` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "DeletePatientPayload",
+          "description": "The output of our delete `Patient` mutation.",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "The exact same `clientMutationId` that was provided in the mutation input,\nunchanged and unused. May be used by a client to track mutations.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patient",
+              "description": "The `Patient` that was deleted by this mutation.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Patient",
+                "ofType": null
+              }
+            },
+            {
+              "name": "deletedPatientId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            {
+              "name": "query",
+              "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "ofType": null
+              }
+            },
+            {
+              "name": "patientEdge",
+              "description": "An edge for our `Patient`. May be used by Relay 1.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "PatientsEdge",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "DeletePatientInput",
+          "description": "All input for the `deletePatient` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "DeletePatientByIdInput",
+          "description": "All input for the `deletePatientById` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "DeletePatientByPatientIdInput",
+          "description": "All input for the `deletePatientByPatientId` mutation.",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "__Schema",
+          "description": "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
+          "fields": [
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "types",
+              "description": "A list of all types supported by this server.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "queryType",
+              "description": "The type that query operations will be rooted at.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "__Type"
+                }
+              }
+            },
+            {
+              "name": "mutationType",
+              "description": "If this server supports mutation, the type that mutation operations will be rooted at.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "__Type",
+                "ofType": null
+              }
+            },
+            {
+              "name": "subscriptionType",
+              "description": "If this server support subscription, the type that subscription operations will be rooted at.",
+              "type": {
+                "kind": "OBJECT",
+                "name": "__Type",
+                "ofType": null
+              }
+            },
+            {
+              "name": "directives",
+              "description": "A list of all directives supported by this server.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "__Type",
+          "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+          "fields": [
+            {
+              "name": "kind",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "__TypeKind"
+                }
+              }
+            },
+            {
+              "name": "name",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "specifiedByUrl",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "fields",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "interfaces",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "possibleTypes",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "enumValues",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "inputFields",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "ofType",
+              "description": null,
+              "type": {
+                "kind": "OBJECT",
+                "name": "__Type",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "ENUM",
+          "name": "__TypeKind",
+          "description": "An enum describing what kind of type a given `__Type` is.",
+          "fields": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "__Field",
+          "description": "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
+          "fields": [
+            {
+              "name": "name",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "args",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "type",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "__Type"
+                }
+              }
+            },
+            {
+              "name": "isDeprecated",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean"
+                }
+              }
+            },
+            {
+              "name": "deprecationReason",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "__InputValue",
+          "description": "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
+          "fields": [
+            {
+              "name": "name",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "type",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "__Type"
+                }
+              }
+            },
+            {
+              "name": "defaultValue",
+              "description": "A GraphQL-formatted string representing the default value for this input value.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "isDeprecated",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean"
+                }
+              }
+            },
+            {
+              "name": "deprecationReason",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "__EnumValue",
+          "description": "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
+          "fields": [
+            {
+              "name": "name",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "isDeprecated",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean"
+                }
+              }
+            },
+            {
+              "name": "deprecationReason",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "__Directive",
+          "description": "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
+          "fields": [
+            {
+              "name": "name",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            {
+              "name": "isRepeatable",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean"
+                }
+              }
+            },
+            {
+              "name": "locations",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            },
+            {
+              "name": "args",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "ENUM",
+          "name": "__DirectiveLocation",
+          "description": "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
+          "fields": null
+        }
+      ]
+    }
+  }
+}

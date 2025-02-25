@@ -32,7 +32,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
   }, [addresses]);
 
   const getNextAvailableAddressType = (): AddressType => {
-    const existingTypes = new Set(editedAddresses.map(addr => addr.label));
+    const existingTypes = new Set(editedAddresses.map(addr => addr.addressType));
     
     if (!existingTypes.has('HOME')) return 'HOME';
     if (!existingTypes.has('WORK')) return 'WORK';
@@ -42,7 +42,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
   const handleAddAddress = () => {
     const newAddress: EditableAddress = {
       tempId: crypto.randomUUID(),
-      label: getNextAvailableAddressType(),
+      addressType: getNextAvailableAddressType(),
       addressLine: '',
       street: '',
       city: '',
@@ -57,14 +57,14 @@ export const AddressCard: React.FC<AddressCardProps> = ({
     const updatedAddresses = [...editedAddresses];
     const index = updatedAddresses.findIndex(addr => addr.tempId === address.tempId);
     if (index !== -1) {
-      if (field === 'label') {
+      if (field === 'addressType') {
         // Check if the address type already exists
-        const typeExists = updatedAddresses.some((addr, i) => i !== index && addr.label === value);
+        const typeExists = updatedAddresses.some((addr, i) => i !== index && addr.addressType === value);
         if (typeExists) {
           setAddressError(`An address of type ${value} already exists`);
           return;
         }
-        updatedAddresses[index] = { ...updatedAddresses[index], label: value as AddressType };
+        updatedAddresses[index] = { ...updatedAddresses[index], addressType: value as AddressType };
       } else if (field === 'addressLine') {
         updatedAddresses[index] = { 
           ...updatedAddresses[index], 
@@ -86,7 +86,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
     const updatedAddresses = editedAddresses.filter(addr => addr.tempId !== address.tempId);
     setEditedAddresses(updatedAddresses);
     // If the deleted address was primary, clear the primary address type
-    if (address.label === primaryAddressType) {
+    if (address.addressType === primaryAddressType) {
       onUpdatePrimaryAddress?.(undefined);
     }
   };
@@ -105,7 +105,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
 
   const getAddressKey = (address: Address): string => {
     const parts = [
-      address.label,
+      address.addressType,
       address.addressLine ?? '',
       address.street ?? '',
       address.city ?? '',
@@ -150,10 +150,10 @@ export const AddressCard: React.FC<AddressCardProps> = ({
                 },
                 ...(addresses.length > 0 ? [
                   ...addresses
-                    .filter(addr => addr.addressLine?.trim() && addr.label !== primaryAddressType)
+                    .filter(addr => addr.addressLine?.trim() && addr.addressType !== primaryAddressType)
                     .map(addr => ({
-                      value: `setPrimary_${addr.label}`,
-                      label: `Set ${addr.label} as Primary`,
+                      value: `setPrimary_${addr.addressType}`,
+                      label: `Set ${addr.addressType} as Primary`,
                       icon: <Pin size={14} className="text-gray-500" />
                     })),
                   ...(primaryAddressType ? [
@@ -213,8 +213,8 @@ export const AddressCard: React.FC<AddressCardProps> = ({
                     <div className="relative">
                       <select
                         id={`address-type-${address.tempId}`}
-                        value={address.label}
-                        onChange={(e) => handleUpdateAddress(address, 'label', e.target.value as AddressType)}
+                        value={address.addressType}
+                        onChange={(e) => handleUpdateAddress(address, 'addressType', e.target.value as AddressType)}
                         className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-green-400 border-gray-300"
                       >
                         <option value="HOME">🏠 Home</option>
@@ -262,10 +262,10 @@ export const AddressCard: React.FC<AddressCardProps> = ({
               <div className="text-gray-500 italic">No addresses defined</div>
             ) : (
               addresses.map((address) => {
-                const isPrimary = address.label === primaryAddressType;
+                const isPrimary = address.addressType === primaryAddressType;
                 return (
                   <div key={getAddressKey(address)} className="flex gap-4">
-                    <span className="text-gray-500 w-20">{address.label}:</span>
+                    <span className="text-gray-500 w-20">{address.addressType}:</span>
                     <span className="flex-1 flex items-center gap-2">
                       <span>{address.addressLine ?? ''}</span>
                       {isPrimary && (

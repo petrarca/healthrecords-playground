@@ -1,10 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { MapPin, MoreVertical } from 'lucide-react';
+import { MoreVertical } from 'lucide-react';
 
 interface CardDropdownOption {
   value: string;
   label: string;
   icon?: React.ReactNode;
+  disabled?: boolean;
+  className?: string;
 }
 
 interface CardDropdownProps {
@@ -47,15 +49,18 @@ export function CardDropdown({ options, onSelect, className = '', icon }: CardDr
             <button
               key={option.value}
               onClick={() => {
-                onSelect(option.value);
-                setIsOpen(false);
+                if (!option.disabled) {
+                  onSelect(option.value);
+                  setIsOpen(false);
+                }
               }}
-              className="w-full flex items-center gap-2 px-3 py-1.5 text-sm whitespace-nowrap hover:bg-gray-50 text-gray-700"
+              className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2
+                ${option.disabled ? 'opacity-50 cursor-not-allowed' : ''}
+                ${option.className || ''}`}
+              disabled={option.disabled}
             >
-              <div className="w-4 h-4 flex-shrink-0">
-                {option.icon || <MapPin size={14} className="text-gray-500" />}
-              </div>
-              <span>{option.label}</span>
+              {option.icon}
+              {option.label}
             </button>
           ))}
         </div>
