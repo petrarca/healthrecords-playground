@@ -194,7 +194,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
     if (firstRecord) {
       setSelectedRecord(firstRecord);
       setSelectedDate(firstRecord.date.toISOString().split('T')[0]);
-      const element = document.getElementById(`record-${firstRecord.id}`);
+      const element = document.getElementById(`record-${firstRecord.recordId}`);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
@@ -204,14 +204,14 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
   const handleRecordSelect = (record: MedicalRecord) => {
     setSelectedRecord(record);
     // Update URL when record is selected
-    navigate(`/patients/${patientId}/timeline/${record.id}`, { replace: true });
-    onRecordSelect?.(record.id);
+    navigate(`/patients/${patientId}/timeline/${record.recordId}`, { replace: true });
+    onRecordSelect?.(record.recordId);
   };
 
   // Update selected record if it changes in the records array
   useEffect(() => {
     if (selectedRecord) {
-      const updatedRecord = records.find(r => r.id === selectedRecord.id);
+      const updatedRecord = records.find(r => r.recordId === selectedRecord.recordId);
       if (updatedRecord && JSON.stringify(updatedRecord) !== JSON.stringify(selectedRecord)) {
         setSelectedRecord(updatedRecord);
       }
@@ -221,7 +221,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
   // Effect to handle selectedRecordId
   useEffect(() => {
     if (selectedRecordId) {
-      const record = records.find(r => r.id === selectedRecordId);
+      const record = records.find(r => r.recordId === selectedRecordId);
       if (record) {
         setSelectedRecord(record);
         const recordDate = record.date.toISOString().split('T')[0];
@@ -266,7 +266,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!selectedRecord || !allVisibleRecords.length) return;
 
-      const currentIndex = allVisibleRecords.findIndex(record => record.id === selectedRecord.id);
+      const currentIndex = allVisibleRecords.findIndex(record => record.recordId === selectedRecord.recordId);
       if (currentIndex === -1) return;
 
       // Get current record's month
@@ -302,7 +302,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
           setSelectedDate(targetDate);
           
           // Scroll the record into view
-          const element = document.getElementById(`record-${firstRecord.id}`);
+          const element = document.getElementById(`record-${firstRecord.recordId}`);
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
@@ -319,7 +319,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
               setSelectedRecord(nextRecord);
               const nextDate = nextRecord.date.toISOString().split('T')[0];
               setSelectedDate(nextDate);
-              const element = document.getElementById(`record-${nextRecord.id}`);
+              const element = document.getElementById(`record-${nextRecord.recordId}`);
               if (element) {
                 element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
               }
@@ -333,7 +333,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
               setSelectedRecord(nextRecord);
               const nextDate = nextRecord.date.toISOString().split('T')[0];
               setSelectedDate(nextDate);
-              const element = document.getElementById(`record-${nextRecord.id}`);
+              const element = document.getElementById(`record-${nextRecord.recordId}`);
               if (element) {
                 element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
               }

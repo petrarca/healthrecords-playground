@@ -15,7 +15,7 @@ export const TimelineEventCard: React.FC<TimelineEventCardProps> = ({
 }) => {
   return (
     <div
-      id={`record-${record.id}`}
+      id={`record-${record.recordId}`}
       onClick={onClick}
       className={`
         relative flex items-start gap-3 px-3 py-2.5 cursor-pointer
