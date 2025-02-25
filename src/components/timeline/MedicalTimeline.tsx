@@ -361,8 +361,8 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
         />
       </div>
       
-      <div className="flex gap-4 h-[calc(100vh-300px)]">
-        <div className="flex flex-col">
+      <div className="flex h-[calc(100vh-300px)]">
+        <div className="flex-[0.7] min-w-[250px]">
           <TimelineYearSelector
             years={years}
             selectedYear={selectedYear}
@@ -372,8 +372,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
             onMonthSelect={handleMonthSelect}
           />
         </div>
-        
-        <div ref={timelineRef} className="flex-1 flex flex-col bg-white rounded-lg shadow-sm border border-gray-200">
+        <div ref={timelineRef} className="flex-[2] flex flex-col bg-white rounded-lg shadow-sm border border-gray-200 min-w-[400px] ml-4">
           <TimelineList
             groupedByDate={groupedByDate}
             datesByYearAndMonth={datesByYearAndMonth}
@@ -383,7 +382,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
             onRecordSelect={handleRecordSelect}
           />
         </div>        
-        <div className="w-96">
+        <div className="flex-[1.5] min-w-[350px] ml-4">
           <TimelineEventDetails 
             record={selectedRecord || undefined}
             onUpdateRecord={async (updatedRecord) => {

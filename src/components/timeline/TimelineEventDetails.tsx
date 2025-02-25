@@ -311,13 +311,16 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
             <p className="text-sm text-gray-700 mb-4">{record?.description}</p>
             {record?.details && Object.entries(record.details).length > 0 && (
               <div className="border-t border-gray-200 pt-4">
-                <dl className="grid grid-cols-1 gap-x-4 gap-y-2">
-                  {Object.entries(record.details).map(([key, value]) => (
-                    <div key={key} className="flex justify-between">
-                      <dt className="text-sm font-medium text-gray-500">{key}</dt>
-                      <dd className="text-sm text-gray-900">{value}</dd>
-                    </div>
-                  ))}
+                <dl className="grid grid-cols-1 gap-y-3">
+                  {Object.entries(record.details).map(([key, value]) => {
+                    const fieldMeta = record.type && metadataService.getMetaDataForType(record.type).fields[key];
+                    return (
+                      <div key={key}>
+                        <dt className="text-sm font-medium text-gray-500">{fieldMeta?.label || key}</dt>
+                        <dd className="text-sm text-gray-900 mt-1">{value}</dd>
+                      </div>
+                    );
+                  })}
                 </dl>
               </div>
             )}
