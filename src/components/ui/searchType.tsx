@@ -34,8 +34,8 @@ export function SearchType({ value, onChange, options, className = '' }: SearchT
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="h-[42px] w-[42px] flex items-center justify-center rounded-lg border border-gray-300 bg-white text-sm shadow-sm
-          hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-400"
+        className="h-[46px] w-[46px] flex items-center justify-center rounded-lg border-2 border-gray-200 bg-blue-50 text-sm shadow-sm
+          hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
         title="Select search type"
       >
         {selectedOption?.icon}

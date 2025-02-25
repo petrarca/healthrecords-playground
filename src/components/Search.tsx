@@ -244,7 +244,7 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
           <input
             type="search"
             placeholder="Search patients, records, or type a question..."
-            className="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg bg-white"
+            className="w-full px-5 py-2.5 pr-12 border-2 border-gray-200 rounded-lg bg-blue-50 focus:outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-300 text-base"
             value={searchTerm}
             onChange={handleSearch}
             onKeyDown={handleKeyDown}

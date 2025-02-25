@@ -17,7 +17,7 @@
       "insuranceNumber": "BC123456789",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "123 Oak Street, San Francisco, CA 94105, USA",
           "street": "123 Oak Street",
           "city": "San Francisco",
@@ -26,7 +26,7 @@
           "country": "USA"
         },
         {
-          "label": "WORK",
+          "addressType": "WORK",
           "addressLine": "555 Market Street, San Francisco, CA 94105, USA",
           "street": "555 Market Street",
           "city": "San Francisco",
@@ -56,7 +56,7 @@
       "insuranceNumber": "AE987654321",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "456 Pine Avenue, San Francisco, CA 94110, USA",
           "street": "456 Pine Avenue",
           "city": "San Francisco",
@@ -86,7 +86,7 @@
       "insuranceNumber": "MC456789123",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "789 Market Street, Apt 4B, San Francisco, CA 94103, USA",
           "street": "789 Market Street, Apt 4B",
           "city": "San Francisco",
@@ -116,7 +116,7 @@
       "insuranceNumber": "UH789123456",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "321 Hayes Street, San Francisco, CA 94102, USA",
           "street": "321 Hayes Street",
           "city": "San Francisco",
@@ -146,7 +146,7 @@
       "insuranceNumber": "KP159753468",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "901 Valencia Street, San Francisco, CA 94110, USA",
           "street": "901 Valencia Street",
           "city": "San Francisco",
@@ -176,7 +176,7 @@
       "insuranceNumber": "CG852963741",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "2345 Mission Street, San Francisco, CA 94110, USA",
           "street": "2345 Mission Street",
           "city": "San Francisco",
@@ -206,7 +206,7 @@
       "insuranceNumber": "HU963852741",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "3456 Folsom Street, San Francisco, CA 94110, USA",
           "street": "3456 Folsom Street",
           "city": "San Francisco",
@@ -236,7 +236,7 @@
       "insuranceNumber": "BS741852963",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "4567 24th Street, San Francisco, CA 94110, USA",
           "street": "4567 24th Street",
           "city": "San Francisco",
@@ -266,7 +266,7 @@
       "insuranceNumber": "AN159753468",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "5678 Guerrero Street, San Francisco, CA 94110, USA",
           "street": "5678 Guerrero Street",
           "city": "San Francisco",
@@ -296,7 +296,7 @@
       "insuranceNumber": "UH951753684",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "6789 Dolores Street, San Francisco, CA 94110, USA",
           "street": "6789 Dolores Street",
           "city": "San Francisco",
@@ -326,7 +326,7 @@
       "insuranceNumber": "MC357159852",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "7890 19th Street, San Francisco, CA 94110, USA",
           "street": "7890 19th Street",
           "city": "San Francisco",
@@ -356,7 +356,7 @@
       "insuranceNumber": "AE753951852",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "8901 20th Street, San Francisco, CA 94110, USA",
           "street": "8901 20th Street",
           "city": "San Francisco",
@@ -386,7 +386,7 @@
       "insuranceNumber": "HU456123789",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "9012 21st Street, San Francisco, CA 94110, USA",
           "street": "9012 21st Street",
           "city": "San Francisco",
@@ -416,7 +416,7 @@
       "insuranceNumber": "KP789456123",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "2345 22nd Street, San Francisco, CA 94110, USA",
           "street": "2345 22nd Street",
           "city": "San Francisco",
@@ -446,7 +446,7 @@
       "insuranceNumber": "BC951357846",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "3456 23rd Street, San Francisco, CA 94110, USA",
           "street": "3456 23rd Street",
           "city": "San Francisco",
@@ -476,7 +476,7 @@
       "insuranceNumber": "CG357951846",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "4567 24th Street, San Francisco, CA 94110, USA",
           "street": "4567 24th Street",
           "city": "San Francisco",
@@ -506,7 +506,7 @@
       "insuranceNumber": "MC159357846",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "5678 25th Street, San Francisco, CA 94110, USA",
           "street": "5678 25th Street",
           "city": "San Francisco",
@@ -536,7 +536,7 @@
       "insuranceNumber": "AN753159846",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "6789 26th Street, San Francisco, CA 94110, USA",
           "street": "6789 26th Street",
           "city": "San Francisco",
@@ -566,7 +566,7 @@
       "insuranceNumber": "UH357951846",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "7890 27th Street, San Francisco, CA 94110, USA",
           "street": "7890 27th Street",
           "city": "San Francisco",
@@ -596,7 +596,7 @@
       "insuranceNumber": "BS951357846",
       "addresses": [
         {
-          "label": "HOME",
+          "addressType": "HOME",
           "addressLine": "8901 28th Street, San Francisco, CA 94110, USA",
           "street": "8901 28th Street",
           "city": "San Francisco",

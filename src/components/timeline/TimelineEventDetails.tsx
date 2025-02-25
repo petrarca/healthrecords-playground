@@ -341,7 +341,7 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-lg shadow-sm">
       <Header
         recordState={recordState}
         record={record || null}
