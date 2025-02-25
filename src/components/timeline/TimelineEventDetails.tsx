@@ -123,8 +123,8 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
             </div>
           )}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">
-              {isEditMode ? (editedRecord?.title || 'New Record') : record?.title || 'New Record'}
+            <h3 className={`font-semibold text-gray-900 ${!record && !isEditMode ? 'text-base' : 'text-lg'}`}>
+              {isEditMode ? (editedRecord?.title || 'New Record') : (!record && !isEditMode ? 'Select entry in timeline or add new one' : record?.title || 'New Record')}
             </h3>
             <p className="text-sm text-gray-500">
               {(isEditMode ? editedRecord?.type : record?.type) && (
@@ -169,7 +169,7 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
                 Cancel
               </button>
             </div>
-          ) : (
+          ) : (record && (
             <CardDropdown
               options={actionOptions}
               onSelect={(value) => {
@@ -177,7 +177,7 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
                 if (value === 'delete') handleDelete();
               }}
             />
-          )}
+          ))}
         </div>
       </div>
 
