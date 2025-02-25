@@ -11,6 +11,7 @@ export type MedicalRecordType = typeof MedicalRecordType[keyof typeof MedicalRec
 export interface MedicalRecord {
   id: string;
   patientId: string;
+  recordId: string;
   date: Date;
   type: MedicalRecordType;
   title: string;

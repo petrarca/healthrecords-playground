@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Check, X } from 'lucide-react';
+import { Phone, Check, X, Pencil } from 'lucide-react';
 import { Card } from '../../ui/Card';
 import { CardDropdown } from '../../ui/cardDropdown';
 
@@ -95,7 +95,13 @@ export const ContactCard: React.FC<ContactCardProps> = ({
             </div>
           ) : (
             <CardDropdown
-              options={[{ value: 'edit', label: 'Edit' }]}
+              options={[
+                { 
+                  value: 'edit', 
+                  label: 'Edit Contacts',
+                  icon: <Pencil size={14} className="text-gray-500" />
+                }
+              ]}
               onSelect={() => setIsEditMode(true)}
               className="text-gray-500"
             />

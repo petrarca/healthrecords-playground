@@ -3,7 +3,7 @@ import { MedicalRecord, MedicalRecordType } from '../../types/medicalRecord';
 import { metadataService } from '../../services/metadataService';
 import { TimelineIcon } from './TimelineIcon';
 import { CardDropdown } from '../ui/cardDropdown';
-import { Plus, MapPin, Check, X } from 'lucide-react';
+import { Plus, Pencil, Check, X, Trash } from 'lucide-react';
 import { useUpdateMedicalRecord, useAddMedicalRecord } from '../../hooks/useMedicalRecords';
 import { generateShortId } from '../../lib/utils';
 
@@ -128,12 +128,12 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
     {
       value: 'edit',
       label: 'Edit Record',
-      icon: <MapPin size={14} className="text-gray-500" />
+      icon: <Pencil size={14} className="text-gray-500" />
     },
     {
       value: 'delete',
       label: 'Delete Record',
-      icon: <MapPin size={14} className="text-gray-500" />
+      icon: <Trash size={14} className="text-gray-500" />
     }
   ];
 

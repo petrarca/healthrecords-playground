@@ -27,7 +27,7 @@ export const TimelineEventCard: React.FC<TimelineEventCardProps> = ({
       aria-selected={isSelected}
     >
       {/* Timeline line */}
-      <div className="absolute left-[1.4rem] top-0 bottom-0 w-px bg-gray-200"></div>
+      <div className="absolute left-[1.65rem] top-0 bottom-0 w-px bg-gray-200"></div>
       
       <div className="relative">
         <TimelineIcon type={record.type} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Plus, Check, X } from 'lucide-react';
+import { Home, Plus, Check, X, Pencil, Pin, PinOff } from 'lucide-react';
 import { Card } from '../../ui/Card';
 import { CardDropdown } from '../../ui/cardDropdown';
 import { Address, AddressType } from '../../../types/patient';
@@ -119,8 +119,39 @@ export const AddressCard: React.FC<AddressCardProps> = ({
             </div>
           ) : (
             <CardDropdown
-              options={[{ value: 'edit', label: 'Edit' }]}
-              onSelect={() => setIsEditMode(true)}
+              options={[
+                { 
+                  value: 'edit', 
+                  label: 'Edit Addresses',
+                  icon: <Pencil size={14} className="text-gray-500" />
+                },
+                ...(addresses.length > 0 ? [
+                  ...addresses
+                    .filter(addr => addr.addressLine?.trim() && addr.label !== primaryAddressType)
+                    .map(addr => ({
+                      value: `setPrimary_${addr.label}`,
+                      label: `Set ${addr.label} as Primary`,
+                      icon: <Pin size={14} className="text-gray-500" />
+                    })),
+                  ...(primaryAddressType ? [
+                    { 
+                      value: 'clearPrimary', 
+                      label: 'Clear Primary Address',
+                      icon: <PinOff size={14} className="text-gray-500" />
+                    }
+                  ] : [])
+                ] : [])
+              ]}
+              onSelect={(action) => {
+                if (action === 'edit') {
+                  setIsEditMode(true);
+                } else if (action === 'clearPrimary') {
+                  onUpdatePrimaryAddress?.(undefined);
+                } else if (action.startsWith('setPrimary_')) {
+                  const addressType = action.split('_')[1] as AddressType;
+                  onUpdatePrimaryAddress?.(addressType);
+                }
+              }}
               className="text-gray-500"
             />
           )
