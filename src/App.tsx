@@ -30,6 +30,7 @@ function AppContent() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/patients/:id" element={<Patient />} />
         <Route path="/patients/:id/timeline" element={<Patient />} />
+        <Route path="/patients/:id/timeline/:recordId" element={<Patient />} />
         <Route path="/patients/:id/demographics" element={<Patient />} />
         <Route path="/patients/:id/summary" element={<Patient />} />
         <Route path="/patients/:id/profile" element={<Patient />} />

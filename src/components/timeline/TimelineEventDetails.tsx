@@ -16,11 +16,13 @@ enum RecordState {
 interface TimelineEventDetailsProps {
   record?: MedicalRecord;
   onUpdateRecord?: (record: MedicalRecord) => void;
+  onClose?: () => void;
 }
 
 export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
   record,
   onUpdateRecord,
+  onClose,
 }) => {
   const [recordState, setRecordState] = useState<RecordState>(record ? RecordState.VIEWING : RecordState.SELECTING);
   const [editedRecord, setEditedRecord] = useState<MedicalRecord | null>(record || null);
@@ -209,6 +211,16 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
               >
                 <X size={14} />
                 Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setRecordState(RecordState.VIEWING);
+                  onClose?.();
+                }}
+                className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                <X className="h-4 w-4 mr-2" />
+                Close
               </button>
             </div>
           ) : (record && (

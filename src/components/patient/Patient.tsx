@@ -11,7 +11,7 @@ import { useMedicalRecords } from '../../hooks/useMedicalRecords';
 type TabType = 'timeline' | 'demographics' | 'summary' | 'profile';
 
 export function Patient() {
-  const { id } = useParams<{ id: string }>();
+  const { id, recordId } = useParams<{ id: string; recordId?: string }>();
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<TabType>('summary');
@@ -99,18 +99,10 @@ export function Patient() {
 
       {/* Tab Content */}
       <div className="flex-1 bg-gray-50 pt-4 overflow-hidden">
-        {activeTab === 'timeline' && records && (
-          <MedicalTimeline records={records} />
-        )}
-        {activeTab === 'demographics' && (
-          <PatientDemographics patient={patient} onUpdatePatient={updatePatient} />
-        )}
-        {activeTab === 'summary' && (
-          <PatientSummary patient={patient} />
-        )}
-        {activeTab === 'profile' && (
-          <MedicalProfile patient={patient} />
-        )}
+        {activeTab === 'summary' && <PatientSummary patient={patient} />}
+        {activeTab === 'timeline' && <MedicalTimeline records={records || []} selectedRecordId={recordId} />}
+        {activeTab === 'demographics' && <PatientDemographics patient={patient} onUpdatePatient={updatePatient} />}
+        {activeTab === 'profile' && <MedicalProfile patient={patient} />}
       </div>
     </div>
   );

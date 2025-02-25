@@ -26,12 +26,13 @@ class NavigationService {
     }
   }
 
-  public navigateToPatientTimeline(id: string) {
+  public navigateToPatientTimeline(id: string, recordId?: string) {
     if (!this.navigate) {
       console.error('Navigation not initialized');
       return;
     }
-    this.navigate(`/patients/${id}/timeline`, { replace: true });
+    const path = recordId ? `/patients/${id}/timeline/${recordId}` : `/patients/${id}/timeline`;
+    this.navigate(path, { replace: true });
   }
 }
 

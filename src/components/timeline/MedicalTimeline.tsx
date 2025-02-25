@@ -5,14 +5,18 @@ import { TimelineYearSelector } from './TimelineYearSelector';
 import { TimelineList } from './TimelineList';
 import { TimelineEventDetails } from './TimelineEventDetails';
 import { useUpdateMedicalRecord } from '../../hooks/useMedicalRecords';
+import { useParams, useNavigate } from 'react-router-dom';
 
 interface MedicalTimelineProps {
   records: MedicalRecord[];
+  selectedRecordId?: string;
 }
 
-export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => {
+export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selectedRecordId }) => {
   console.log('MedicalTimeline rendered with records:', records);
   
+  const { id: patientId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null);
   const [activeFilters, setActiveFilters] = useState<Set<MedicalRecordType>>(
     new Set([
@@ -197,12 +201,15 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
   };
 
   const handleRecordSelect = (record: MedicalRecord) => {
-    const currentRecord = records.find(r => r.id === record.id);
-    if (currentRecord) {
-      setSelectedRecord(currentRecord);
-      const date = currentRecord.date.toISOString().split('T')[0];
-      setSelectedDate(date);
-    }
+    setSelectedRecord(record);
+    // Update URL when record is selected
+    navigate(`/patients/${patientId}/timeline/${record.id}`, { replace: true });
+  };
+
+  const handleRecordClose = () => {
+    setSelectedRecord(null);
+    // Remove record ID from URL when record is closed
+    navigate(`/patients/${patientId}/timeline`, { replace: true });
   };
 
   // Update selected record if it changes in the records array
@@ -214,6 +221,19 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
       }
     }
   }, [records, selectedRecord]);
+
+  // Effect to handle selectedRecordId
+  useEffect(() => {
+    if (selectedRecordId) {
+      const record = records.find(r => r.id === selectedRecordId);
+      if (record) {
+        setSelectedRecord(record);
+        const recordDate = record.date.toISOString().split('T')[0];
+        setSelectedDate(recordDate);
+        setSelectedYear(new Date(recordDate).getFullYear());
+      }
+    }
+  }, [selectedRecordId, records]);
 
   // Get all visible records in chronological order
   const allVisibleRecords = useMemo(() => {
@@ -378,6 +398,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
                 console.error('Failed to update record:', error);
               }
             }}
+            onClose={handleRecordClose}
           />
         </div>
       </div>
