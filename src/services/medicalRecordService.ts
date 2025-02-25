@@ -72,9 +72,9 @@ class MedicalRecordService {
       patientId: params.patientId,
       type: params.type,
       date: new Date(),
-      title: params.title || '',
-      description: params.description || '',
-      details: params.details || {}
+      title: params.title ?? '',
+      description: params.description ?? '',
+      details: params.details ?? {}
     };
   }
 }

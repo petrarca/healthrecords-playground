@@ -1,8 +1,8 @@
 /** @jsxImportSource react */
-import React, { useState, useCallback, useRef, useEffect } from "react"
-import { SearchResult, SearchResultType } from "../types/search"
-import { searchService } from "../services/searchService"
-import { SearchType } from "./ui/searchType"
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { SearchResult, SearchResultType } from "../types/search";
+import { searchService } from "../services/searchService";
+import { SearchType } from "./ui/searchType";
 
 const searchTypeOptions = [
   { 
@@ -28,8 +28,8 @@ const searchTypeOptions = [
 const MIN_SEARCH_LENGTH = 3;
 
 interface SearchProps {
-  onResultSelect?: (result: SearchResult) => void;
-  className?: string;
+  readonly onResultSelect?: (result: SearchResult) => void;
+  readonly className?: string;
 }
 
 export function Search({ onResultSelect, className = '' }: SearchProps) {
@@ -39,7 +39,7 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const selectedItemRef = useRef<HTMLDivElement>(null);
+  const selectedItemRef = useRef<HTMLButtonElement>(null);
 
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -126,6 +126,72 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
     }
   }, [isSearching, results, selectedIndex, searchTerm, executeSearch, selectResult]);
 
+  const getSearchResultContent = () => {
+    if (results.length > 0) {
+      return (
+        <div className="divide-y divide-gray-100">
+          {results.reduce((acc: React.ReactElement[], result, index) => {
+            // Add type header if needed
+            if (index === 0 || results[index - 1].type !== result.type) {
+              acc.push(
+                <div key={`header-${result.type}`} className="px-4 py-2 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {result.type}
+                </div>
+              );
+            }
+            
+            // Add the result item
+            acc.push(
+              <button 
+                key={result.id}
+                ref={index === selectedIndex ? selectedItemRef : null}
+                className={`w-full text-left px-4 py-3 border-b border-gray-100 last:border-b-0 ${
+                  index === selectedIndex ? 'bg-blue-50' : 'hover:bg-gray-50'
+                }`}
+                onClick={() => selectResult(result)}
+                onMouseEnter={() => setSelectedIndex(index)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    selectResult(result);
+                  }
+                }}
+              >
+                <div className="flex items-center">
+                  <div>
+                    <div className="font-medium text-gray-900">
+                      {result.title}
+                    </div>
+                    {result.subtitle && (
+                      <div className="text-sm text-gray-500">
+                        {result.subtitle}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </button>
+            );
+            
+            return acc;
+          }, [])}
+        </div>
+      );
+    }
+    
+    if (searchTerm.length >= MIN_SEARCH_LENGTH) {
+      return (
+        <div className="px-4 py-3 text-sm text-gray-500">
+          No results found
+        </div>
+      );
+    }
+    
+    return (
+      <div className="px-4 py-3 text-sm text-gray-500">
+        Please enter at least {MIN_SEARCH_LENGTH} characters to search
+      </div>
+    );
+  };
+
   // Ensure selected item is visible
   useEffect(() => {
     if (selectedItemRef.current) {
@@ -184,63 +250,9 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
       {isSearching && (
         <div 
           ref={dropdownRef}
-          className="absolute top-full mt-1 w-full bg-white rounded-lg shadow-lg overflow-hidden"
+          className="absolute top-full mt-1 w-full bg-white rounded-md shadow-lg max-h-96 overflow-y-auto"
         >
-          {results.length > 0 ? (
-            <div className="max-h-[400px] overflow-y-auto">
-              {results.reduce((acc: React.ReactNode[], result, index) => {
-                const provider = searchService.getProviderByType(result.type);
-                
-                // Add header if this is the first result of its type
-                if (!results.slice(0, index).find(r => r.type === result.type)) {
-                  acc.push(
-                    <div key={`header-${result.type}`} className="px-4 py-2 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
-                      <span className="text-lg">{provider?.getIcon() || ''}</span>
-                      <span className="font-medium text-sm text-gray-700">
-                        {provider?.getDisplayName()}
-                      </span>
-                    </div>
-                  );
-                }
-                
-                // Add the result item
-                acc.push(
-                  <div 
-                    key={result.id}
-                    ref={index === selectedIndex ? selectedItemRef : null}
-                    className={`px-4 py-3 cursor-pointer border-b border-gray-100 last:border-b-0 ${
-                      index === selectedIndex ? 'bg-blue-50' : 'hover:bg-gray-50'
-                    }`}
-                    onClick={() => selectResult(result)}
-                    onMouseEnter={() => setSelectedIndex(index)}
-                  >
-                    <div className="flex items-center">
-                      <div>
-                        <div className="font-medium text-gray-900">
-                          {result.title}
-                        </div>
-                        {result.subtitle && (
-                          <div className="text-sm text-gray-500">
-                            {result.subtitle}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-                
-                return acc;
-              }, [])}
-            </div>
-          ) : searchTerm.length >= MIN_SEARCH_LENGTH ? (
-            <div className="px-4 py-3 text-sm text-gray-500">
-              No results found
-            </div>
-          ) : (
-            <div className="px-4 py-3 text-sm text-gray-500">
-              Please enter at least {MIN_SEARCH_LENGTH} characters to search
-            </div>
-          )}
+          {getSearchResultContent()}
         </div>
       )}
     </div>

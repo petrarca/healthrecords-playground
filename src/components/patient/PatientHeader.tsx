@@ -7,6 +7,25 @@ interface PatientHeaderProps {
   patient: Patient;
 }
 
+const getGenderTextColor = (sex: 'M' | 'F' | 'Other') => {
+  switch (sex) {
+    case 'M':
+      return 'text-blue-700';
+    case 'F':
+      return 'text-pink-700';
+    default:
+      return 'text-purple-700';
+  }
+};
+
+const getAllergiesText = (allergies: string[] | undefined) => {
+  if (!allergies?.length) {
+    return 'No Known Allergies';
+  }
+  const count = allergies.length;
+  return `${count} Known ${count === 1 ? 'Allergy' : 'Allergies'}`;
+};
+
 export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
   const age = calculateAge(new Date(patient.dateOfBirth));
   const navigate = useNavigate();
@@ -18,10 +37,9 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
         <div className="px-4 py-3">
           <div className="flex items-center justify-between">
             {/* Patient Basic Info */}
-            <div 
-              className="cursor-pointer hover:bg-gray-50 transition-colors"
+            <button 
+              className="cursor-pointer hover:bg-gray-50 transition-colors text-left w-full"
               onClick={() => navigate(`/patients/${patient.id}/demographics`)}
-              role="button"
               aria-label="View patient demographics"
             >
               <div>
@@ -34,18 +52,16 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
                 <div className="mt-1 flex items-center gap-2 text-sm text-gray-600">
                   <span className="font-medium">{age} years</span>
                   <span>•</span>
-                  <span className={`font-medium ${
-                    patient.sex === 'M' ? 'text-blue-700' :
-                    patient.sex === 'F' ? 'text-pink-700' :
-                    'text-purple-700'
-                  }`}>{patient.sex}</span>
+                  <span className={`font-medium ${getGenderTextColor(patient.sex)}`}>
+                    {patient.sex}
+                  </span>
                   <span>•</span>
                   <span className="font-medium text-red-700">{patient.bloodType}</span>
                   <span>•</span>
                   <span>DOB: {patient.dateOfBirth.toLocaleDateString()}</span>
                 </div>
               </div>
-            </div>
+            </button>
             {/* Care Team */}
             <div className="flex items-center gap-6">
               <div className="text-right">
@@ -60,10 +76,9 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
       {/* Extended Info Grid */}
       <div className="grid grid-cols-4 divide-x divide-gray-100 border-b border-gray-200">
         {/* Vitals & Measurements */}
-        <div 
-          className="px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors"
+        <button 
+          className="px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors text-left w-full"
           onClick={() => navigate(`/patients/${patient.id}/profile`)}
-          role="button"
           aria-label="View patient profile and measurements"
         >
           <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Measurements</h3>
@@ -72,7 +87,8 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-gray-900">
                   {(() => {
-                    const match = patient.height.match(/(\d+)\[(\w+)\]/);
+                    const heightRegex = /(\d+)\[(\w+)\]/;
+                    const match = heightRegex.exec(patient.height);
                     return match ? `${match[1]} ${match[2]}` : '';
                   })()}
                 </span>
@@ -83,7 +99,8 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-gray-900">
                   {(() => {
-                    const match = patient.weight.match(/(\d+)\[(\w+)\]/);
+                    const weightRegex = /(\d+)\[(\w+)\]/;
+                    const match = weightRegex.exec(patient.weight);
                     return match ? `${match[1]} ${match[2]}` : '';
                   })()}
                 </span>
@@ -91,13 +108,12 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
               </div>
             )}
           </div>
-        </div>
+        </button>
 
         {/* Allergies & Alerts */}
-        <div 
-          className="px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors"
+        <button 
+          className="px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors text-left w-full"
           onClick={() => navigate(`/patients/${patient.id}/profile`)}
-          role="button"
           aria-label="View patient profile and alerts"
         >
           <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Alerts</h3>
@@ -106,12 +122,10 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <span className="text-sm text-gray-900">
-              {patient.allergies?.length ? 
-                `${patient.allergies.length} Known ${patient.allergies.length === 1 ? 'Allergy' : 'Allergies'}` :
-                'No Known Allergies'}
+              {getAllergiesText(patient.allergies)}
             </span>
           </div>
-        </div>
+        </button>
 
         {/* Insurance/Coverage */}
         <div className="px-4 py-3">

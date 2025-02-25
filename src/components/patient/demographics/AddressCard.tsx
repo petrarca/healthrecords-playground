@@ -11,6 +11,10 @@ interface AddressCardProps {
   onUpdatePrimaryAddress?: (type: AddressType | undefined) => void;
 }
 
+interface EditableAddress extends Address {
+  tempId: string;
+}
+
 export const AddressCard: React.FC<AddressCardProps> = ({
   addresses = [],
   primaryAddressType,
@@ -18,11 +22,13 @@ export const AddressCard: React.FC<AddressCardProps> = ({
   onUpdatePrimaryAddress
 }) => {
   const [isEditMode, setIsEditMode] = React.useState(false);
-  const [editedAddresses, setEditedAddresses] = React.useState<Address[]>(addresses);
+  const [editedAddresses, setEditedAddresses] = React.useState<EditableAddress[]>(
+    addresses.map(addr => ({ ...addr, tempId: crypto.randomUUID() }))
+  );
   const [addressError, setAddressError] = React.useState('');
 
   React.useEffect(() => {
-    setEditedAddresses(addresses);
+    setEditedAddresses(addresses.map(addr => ({ ...addr, tempId: crypto.randomUUID() })));
   }, [addresses]);
 
   const getNextAvailableAddressType = (): AddressType => {
@@ -34,7 +40,8 @@ export const AddressCard: React.FC<AddressCardProps> = ({
   };
 
   const handleAddAddress = () => {
-    const newAddress: Address = {
+    const newAddress: EditableAddress = {
+      tempId: crypto.randomUUID(),
       label: getNextAvailableAddressType(),
       addressLine: '',
       street: '',
@@ -46,51 +53,67 @@ export const AddressCard: React.FC<AddressCardProps> = ({
     setEditedAddresses([...editedAddresses, newAddress]);
   };
 
-  const handleUpdateAddress = (index: number, field: keyof Address, value: string) => {
+  const handleUpdateAddress = (address: EditableAddress, field: keyof Address, value: string) => {
     const updatedAddresses = [...editedAddresses];
-    if (field === 'label') {
-      // Check if the address type already exists
-      const typeExists = updatedAddresses.some((addr, i) => i !== index && addr.label === value);
-      if (typeExists) {
-        setAddressError(`An address of type ${value} already exists`);
-        return;
+    const index = updatedAddresses.findIndex(addr => addr.tempId === address.tempId);
+    if (index !== -1) {
+      if (field === 'label') {
+        // Check if the address type already exists
+        const typeExists = updatedAddresses.some((addr, i) => i !== index && addr.label === value);
+        if (typeExists) {
+          setAddressError(`An address of type ${value} already exists`);
+          return;
+        }
+        updatedAddresses[index] = { ...updatedAddresses[index], label: value as AddressType };
+      } else if (field === 'addressLine') {
+        updatedAddresses[index] = { 
+          ...updatedAddresses[index], 
+          addressLine: value,
+          // Clear other fields since we're using addressLine only
+          street: '',
+          city: '',
+          state: '',
+          zipCode: '',
+          country: ''
+        };
       }
-      updatedAddresses[index] = { ...updatedAddresses[index], label: value as AddressType };
-    } else if (field === 'addressLine') {
-      updatedAddresses[index] = { 
-        ...updatedAddresses[index], 
-        addressLine: value,
-        // Clear other fields since we're using addressLine only
-        street: '',
-        city: '',
-        state: '',
-        zipCode: '',
-        country: ''
-      };
+      setEditedAddresses(updatedAddresses);
+      setAddressError('');
     }
-    setEditedAddresses(updatedAddresses);
-    setAddressError('');
   };
 
-  const handleDeleteAddress = (index: number) => {
-    const updatedAddresses = editedAddresses.filter((_, i) => i !== index);
+  const handleDeleteAddress = (address: EditableAddress) => {
+    const updatedAddresses = editedAddresses.filter(addr => addr.tempId !== address.tempId);
     setEditedAddresses(updatedAddresses);
     // If the deleted address was primary, clear the primary address type
-    if (editedAddresses[index].label === primaryAddressType) {
+    if (address.label === primaryAddressType) {
       onUpdatePrimaryAddress?.(undefined);
     }
   };
 
   const handleSave = () => {
-    onUpdateAddresses?.(editedAddresses);
+    onUpdateAddresses?.(editedAddresses.map(addr => ({ ...addr, tempId: undefined })));
     setIsEditMode(false);
     setAddressError('');
   };
 
   const handleCancel = () => {
-    setEditedAddresses(addresses);
+    setEditedAddresses(addresses.map(addr => ({ ...addr, tempId: crypto.randomUUID() })));
     setAddressError('');
     setIsEditMode(false);
+  };
+
+  const getAddressKey = (address: Address): string => {
+    const parts = [
+      address.label,
+      address.addressLine ?? '',
+      address.street ?? '',
+      address.city ?? '',
+      address.state ?? '',
+      address.zipCode ?? '',
+      address.country ?? ''
+    ];
+    return parts.join('-');
   };
 
   return (
@@ -161,44 +184,58 @@ export const AddressCard: React.FC<AddressCardProps> = ({
       <div className="grid gap-2 text-sm">
         {isEditMode ? (
           <div className="grid gap-4">
-            {editedAddresses.map((address, index) => (
-              <div key={index} className="border rounded-lg p-3 bg-white shadow-sm">
+            {editedAddresses.map((address) => (
+              <div key={address.tempId} className="border rounded-lg p-3 bg-white shadow-sm">
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
-                    <label className="block text-gray-500 mb-1">Address</label>
+                    <label 
+                      htmlFor={`address-line-${address.tempId}`}
+                      className="block text-gray-500 mb-1"
+                    >
+                      Address
+                    </label>
                     <input
+                      id={`address-line-${address.tempId}`}
                       type="text"
-                      value={address.addressLine || ''}
-                      onChange={(e) => handleUpdateAddress(index, 'addressLine', e.target.value)}
+                      value={address.addressLine ?? ''}
+                      onChange={(e) => handleUpdateAddress(address, 'addressLine', e.target.value)}
                       placeholder="Enter address..."
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-green-400 border-gray-300"
                     />
                   </div>
-                  <div className="w-32">
-                    <label className="block text-gray-500 mb-1">Type</label>
+                  <div>
+                    <label 
+                      htmlFor={`address-type-${address.tempId}`}
+                      className="block text-gray-500 mb-1"
+                    >
+                      Address Type
+                    </label>
                     <div className="relative">
                       <select
+                        id={`address-type-${address.tempId}`}
                         value={address.label}
-                        onChange={(e) => handleUpdateAddress(index, 'label', e.target.value as AddressType)}
+                        onChange={(e) => handleUpdateAddress(address, 'label', e.target.value as AddressType)}
                         className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-green-400 border-gray-300"
                       >
                         <option value="HOME">🏠 Home</option>
                         <option value="WORK">💼 Work</option>
                         <option value="OTHER">📍 Other</option>
                       </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 text-gray-400">
-                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </div>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-gray-500 mb-1">&nbsp;</label>
+                    <label 
+                      htmlFor={`delete-address-${address.tempId}`}
+                      className="block text-gray-500 mb-1"
+                    >
+                      Actions
+                    </label>
                     <button
-                      onClick={() => handleDeleteAddress(index)}
+                      id={`delete-address-${address.tempId}`}
+                      onClick={() => handleDeleteAddress(address)}
                       className="h-8 w-8 flex items-center justify-center rounded-md border border-gray-200 bg-white text-sm hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500/20 transition-colors"
                       title="Delete address"
+                      aria-label="Delete address"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -224,13 +261,13 @@ export const AddressCard: React.FC<AddressCardProps> = ({
             {(!addresses || addresses.length === 0) ? (
               <div className="text-gray-500 italic">No addresses defined</div>
             ) : (
-              addresses.map((address, index) => {
+              addresses.map((address) => {
                 const isPrimary = address.label === primaryAddressType;
                 return (
-                  <div key={index} className="flex gap-4">
+                  <div key={getAddressKey(address)} className="flex gap-4">
                     <span className="text-gray-500 w-20">{address.label}:</span>
                     <span className="flex-1 flex items-center gap-2">
-                      <span>{address.addressLine || ''}</span>
+                      <span>{address.addressLine ?? ''}</span>
                       {isPrimary && (
                         <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded whitespace-nowrap">
                           Primary Address

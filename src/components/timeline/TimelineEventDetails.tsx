@@ -68,7 +68,7 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
 
   const handleNewRecord = (type: MedicalRecordType) => {
     const newRecord = medicalRecordService.createRecord({
-      patientId: record?.patientId || '',
+      patientId: record?.patientId ?? '',
       type
     });
     setEditedRecord(newRecord);
@@ -153,11 +153,11 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
 
     switch (recordState) {
       case RecordState.CREATING:
-        return editedRecord?.title || 'New Record';
+        return editedRecord?.title ?? 'New Record';
       case RecordState.EDITING:
-        return editedRecord?.title || record?.title || 'Edit Record';
+        return editedRecord?.title ?? record?.title ?? 'Edit Record';
       case RecordState.VIEWING:
-        return record?.title || '';
+        return record?.title ?? '';
       default:
         return 'Select entry in timeline or add new one';
     }
@@ -169,12 +169,18 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
       <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
         <div className="flex items-center gap-3">
           {(isEditMode ? editedRecord?.type : record?.type) && (
-            <div 
-              className="cursor-pointer" 
+            <button 
+              className="p-2 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" 
               onClick={handleEdit}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleEdit();
+                }
+              }}
+              aria-label="Edit record"
             >
               <TimelineIcon type={isEditMode ? editedRecord!.type : record!.type} size="md" />
-            </div>
+            </button>
           )}
           <div>
             <h3 className={`font-semibold text-gray-900 ${recordState === RecordState.SELECTING ? 'text-base' : 'text-lg'}`}>
@@ -240,33 +246,36 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
         {isEditMode && editedRecord ? (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label htmlFor="record-title" className="block text-sm font-medium text-gray-700">
                 Title <span className="text-red-500">*</span>
               </label>
               <input
+                id="record-title"
                 type="text"
-                className={`mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 sm:text-sm ${
-                  !editedRecord.title ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'
+                className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                  !editedRecord.title ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                 }`}
-                value={editedRecord.title || ''}
+                value={editedRecord.title}
                 onChange={(e) => handleUpdateField('title', e.target.value)}
-                placeholder="Enter title"
+                required
               />
               {!editedRecord.title && (
                 <p className="mt-1 text-sm text-red-500">Title is required</p>
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label htmlFor="record-description" className="block text-sm font-medium text-gray-700">
                 Description <span className="text-red-500">*</span>
               </label>
               <textarea
-                className={`mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 sm:text-sm ${
-                  !editedRecord.description ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'
+                id="record-description"
+                className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                  !editedRecord.description ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                 }`}
-                value={editedRecord.description || ''}
+                value={editedRecord.description}
                 onChange={(e) => handleUpdateField('description', e.target.value)}
                 rows={4}
+                required
               />
               {!editedRecord.description && (
                 <p className="mt-1 text-sm text-red-500">Description is required</p>
@@ -280,8 +289,8 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
                     <label className="block text-sm font-medium text-gray-700">{fieldMeta.label}</label>
                     {fieldMeta.type === 'enum' ? (
                       <select
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        value={editedRecord.details?.[fieldName] || ''}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        value={editedRecord.details?.[fieldName] ?? ''}
                         onChange={(e) => {
                           const newDetails = { ...editedRecord.details, [fieldName]: e.target.value };
                           handleUpdateField('details', newDetails);
@@ -295,8 +304,8 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
                     ) : (
                       <input
                         type={fieldMeta.type === 'number' ? 'number' : 'text'}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        value={editedRecord.details?.[fieldName] || ''}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        value={editedRecord.details?.[fieldName] ?? ''}
                         onChange={(e) => {
                           const value = fieldMeta.type === 'number' ? parseFloat(e.target.value) : e.target.value;
                           const newDetails = { ...editedRecord.details, [fieldName]: value };
