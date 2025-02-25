@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, MoreVertical } from 'lucide-react';
 
 interface CardDropdownOption {
   value: string;
@@ -11,9 +11,10 @@ interface CardDropdownProps {
   options: CardDropdownOption[];
   onSelect: (value: string) => void;
   className?: string;
+  icon?: React.ReactNode;
 }
 
-export function CardDropdown({ options, onSelect, className = '' }: CardDropdownProps) {
+export function CardDropdown({ options, onSelect, className = '', icon }: CardDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -35,9 +36,9 @@ export function CardDropdown({ options, onSelect, className = '' }: CardDropdown
         onClick={() => setIsOpen(!isOpen)}
         className="h-7 w-7 flex items-center justify-center rounded border border-gray-300 bg-white text-sm shadow-sm
           hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-400"
-        title="Card actions"
+        title="More options"
       >
-        <MapPin size={14} className="text-gray-500" />
+        {icon || <MoreVertical size={14} className="text-gray-500" />}
       </button>
 
       {isOpen && (

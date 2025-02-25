@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { MedicalRecord } from '../../types/types';
+import { MedicalRecord, MedicalRecordType } from '../../types/medicalRecord';
 import { metadataService } from '../../services/metadataService';
 import { TimelineIcon } from './TimelineIcon';
+import { CardDropdown } from '../ui/cardDropdown';
+import { Plus, MapPin, Check, X } from 'lucide-react';
+import { useUpdateMedicalRecord, useAddMedicalRecord } from '../../hooks/useMedicalRecords';
 
 interface TimelineEventDetailsProps {
-  record: MedicalRecord;
+  record?: MedicalRecord;
   onUpdateRecord?: (record: MedicalRecord) => void;
 }
 
@@ -12,165 +15,252 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
   record,
   onUpdateRecord,
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editedRecord, setEditedRecord] = useState<MedicalRecord>(record);
+  const [isCreatingNew, setIsCreatingNew] = useState(!record);
+  const [editedRecord, setEditedRecord] = useState<MedicalRecord | null>(record || null);
+  const { mutate: updateRecord } = useUpdateMedicalRecord();
+  const { mutate: addRecord } = useAddMedicalRecord();
 
-  if (!record) {
+  const isValid = editedRecord?.title && editedRecord.title.trim() !== '' && 
+                 editedRecord.description && editedRecord.description.trim() !== '';
+
+  if (!record && !isCreatingNew) {
     return null;
   }
 
   const handleEdit = () => {
-    setIsMenuOpen(false);
-    setIsEditMode(true);
+    if (record) {
+      setIsEditMode(true);
+      setIsCreatingNew(false);
+      setEditedRecord(record);
+    }
   };
 
   const handleDelete = () => {
-    setIsMenuOpen(false);
     // TODO: Implement delete functionality
   };
 
+  const handleNewRecord = (type: MedicalRecordType) => {
+    const newRecord: MedicalRecord = {
+      id: crypto.randomUUID(),
+      patientId: record?.patientId || '', 
+      type,
+      date: new Date(),
+      title: '',
+      description: '',
+      details: {}
+    };
+    setEditedRecord(newRecord);
+    setIsCreatingNew(true);
+    setIsEditMode(true);
+  };
+
   const handleSave = () => {
-    if (onUpdateRecord) {
-      onUpdateRecord(editedRecord);
+    if (editedRecord) {
+      const mutate = isCreatingNew ? addRecord : updateRecord;
+      
+      mutate(editedRecord, {
+        onSuccess: () => {
+          if (onUpdateRecord) {
+            onUpdateRecord(editedRecord);
+          }
+          setIsEditMode(false);
+          setIsCreatingNew(false);
+        }
+      });
     }
-    setIsEditMode(false);
   };
 
   const handleCancel = () => {
-    setEditedRecord(record);
+    setEditedRecord(record || null);
     setIsEditMode(false);
+    setIsCreatingNew(false);
   };
 
   const handleUpdateField = (field: keyof MedicalRecord, value: string | number | boolean | Record<string, string | number>) => {
     setEditedRecord({ ...editedRecord, [field]: value });
   };
 
+  const actionOptions = [
+    {
+      value: 'edit',
+      label: 'Edit Record',
+      icon: <MapPin size={14} className="text-gray-500" />
+    },
+    {
+      value: 'delete',
+      label: 'Delete Record',
+      icon: <MapPin size={14} className="text-gray-500" />
+    }
+  ];
+
+  const newEntryOptions = metadataService.getAllTypes().map(type => ({
+    value: type,
+    label: metadataService.getTypeName(type),
+    icon: <TimelineIcon type={type} size="sm" />
+  }));
+
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       {/* Header */}
       <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          {record.type && <TimelineIcon type={record.type} size="md" />}
+          {(isEditMode ? editedRecord?.type : record?.type) && (
+            <div 
+              className="cursor-pointer" 
+              onClick={handleEdit}
+            >
+              <TimelineIcon type={isEditMode ? editedRecord!.type : record!.type} size="md" />
+            </div>
+          )}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">{record.title}</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {isEditMode ? (editedRecord?.title || 'New Record') : record?.title || 'New Record'}
+            </h3>
             <p className="text-sm text-gray-500">
-              {record.type && metadataService.getTypeName(record.type)} • {record.date && new Date(record.date).toLocaleDateString()}
+              {(isEditMode ? editedRecord?.type : record?.type) && (
+                <>
+                  {metadataService.getTypeName(isEditMode ? editedRecord!.type : record!.type)} • {
+                    (isEditMode ? editedRecord?.date : record?.date) && 
+                    new Date(isEditMode ? editedRecord!.date : record!.date).toLocaleDateString()
+                  }
+                </>
+              )}
             </p>
           </div>
         </div>
-        <div className="relative">
+        <div className="flex items-center gap-2">
+          {!isEditMode && (
+            <CardDropdown
+              options={newEntryOptions}
+              onSelect={(value) => handleNewRecord(value as MedicalRecordType)}
+              className="text-green-600"
+              icon={<Plus size={14} className="text-green-600" />}
+            />
+          )}
           {isEditMode ? (
             <div className="flex gap-2">
               <button
                 onClick={handleSave}
-                className="p-2 text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                title="Save changes"
+                disabled={!isValid}
+                className={`
+                  flex items-center gap-1 px-2 py-1 rounded-md text-sm font-medium
+                  ${isValid ? 'text-green-700 hover:bg-green-50' : 'text-gray-400 cursor-not-allowed'}
+                `}
+                title={isValid ? 'Save changes' : 'Fill in required fields'}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
+                <Check size={14} />
+                Save
               </button>
               <button
                 onClick={handleCancel}
-                className="p-2 text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                title="Cancel editing"
+                className="flex items-center gap-1 px-2 py-1 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <X size={14} />
+                Cancel
               </button>
             </div>
           ) : (
-            <>
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 hover:bg-gray-100 rounded-full"
-              >
-                <svg
-                  className="w-5 h-5 text-gray-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                </svg>
-              </button>
-
-              {/* Dropdown Menu */}
-              {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200">
-                  <div className="py-1">
-                    <button
-                      onClick={handleEdit}
-                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-                    >
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                      Edit Record
-                    </button>
-                    <button
-                      onClick={handleDelete}
-                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center"
-                    >
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                      Delete Record
-                    </button>
-                  </div>
-                </div>
-              )}
-            </>
+            <CardDropdown
+              options={actionOptions}
+              onSelect={(value) => {
+                if (value === 'edit') handleEdit();
+                if (value === 'delete') handleDelete();
+              }}
+            />
           )}
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        <div className="mb-4">
-          {isEditMode ? (
-            <textarea
-              value={editedRecord?.description || ''}
-              onChange={(e) => handleUpdateField('description', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-              rows={4}
-            />
-          ) : (
-            <p className="text-sm text-gray-700">{record.description}</p>
-          )}
-        </div>
+      <div className="p-4">
+        {isEditMode && editedRecord ? (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Title <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                className={`mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 sm:text-sm ${
+                  !editedRecord.title ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'
+                }`}
+                value={editedRecord.title || ''}
+                onChange={(e) => handleUpdateField('title', e.target.value)}
+                placeholder="Enter title"
+              />
+              {!editedRecord.title && (
+                <p className="mt-1 text-sm text-red-500">Title is required</p>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Description <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                className={`mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 sm:text-sm ${
+                  !editedRecord.description ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-indigo-500'
+                }`}
+                value={editedRecord.description || ''}
+                onChange={(e) => handleUpdateField('description', e.target.value)}
+                rows={4}
+              />
+              {!editedRecord.description && (
+                <p className="mt-1 text-sm text-red-500">Description is required</p>
+              )}
+            </div>
 
-        {record.details && Object.keys(record.details).length > 0 && (
-          <div className="border-t border-gray-200 pt-4">
-            <dl className="grid grid-cols-1 gap-x-4 gap-y-2">
-              {(() => {
-                const typeMetadata = record.type ? metadataService.getMetaDataForType(record.type).fields : null;
-                return Object.entries(record.details).map(([key, value]) => (
-                  <div key={key} className="flex justify-between">
-                    <dt className="text-sm text-gray-500">
-                      {typeMetadata?.[key]?.label || key.replace(/_/g, ' ')}
-                    </dt>
-                    {isEditMode ? (
-                      <input
-                        type="text"
-                        value={editedRecord.details?.[key] || ''}
+            {editedRecord.type && (
+              <div className="space-y-4">
+                {Object.entries(metadataService.getMetaDataForType(editedRecord.type).fields).map(([fieldName, fieldMeta]) => (
+                  <div key={fieldName}>
+                    <label className="block text-sm font-medium text-gray-700">{fieldMeta.label}</label>
+                    {fieldMeta.type === 'enum' ? (
+                      <select
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        value={editedRecord.details?.[fieldName] || ''}
                         onChange={(e) => {
-                          const updatedDetails = {
-                            ...(editedRecord.details || {}),
-                            [key]: e.target.value
-                          };
-                          handleUpdateField('details', updatedDetails);
+                          const newDetails = { ...editedRecord.details, [fieldName]: e.target.value };
+                          handleUpdateField('details', newDetails);
                         }}
-                        className="text-sm text-gray-900 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                      />
+                      >
+                        <option value="">Select...</option>
+                        {fieldMeta.enumValues?.map(value => (
+                          <option key={value} value={value}>{value}</option>
+                        ))}
+                      </select>
                     ) : (
-                      <dd className="text-sm text-gray-900">{value}</dd>
+                      <input
+                        type={fieldMeta.type === 'number' ? 'number' : 'text'}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        value={editedRecord.details?.[fieldName] || ''}
+                        onChange={(e) => {
+                          const value = fieldMeta.type === 'number' ? parseFloat(e.target.value) : e.target.value;
+                          const newDetails = { ...editedRecord.details, [fieldName]: value };
+                          handleUpdateField('details', newDetails);
+                        }}
+                      />
                     )}
                   </div>
-                ));
-              })()}
-            </dl>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div>
+            <p className="text-sm text-gray-700 mb-4">{record?.description}</p>
+            {record?.details && Object.entries(record.details).length > 0 && (
+              <div className="border-t border-gray-200 pt-4">
+                <dl className="grid grid-cols-1 gap-x-4 gap-y-2">
+                  {Object.entries(record.details).map(([key, value]) => (
+                    <div key={key} className="flex justify-between">
+                      <dt className="text-sm font-medium text-gray-500">{key}</dt>
+                      <dd className="text-sm text-gray-900">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
           </div>
         )}
       </div>

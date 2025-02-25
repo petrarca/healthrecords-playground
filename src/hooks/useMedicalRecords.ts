@@ -37,3 +37,23 @@ export const useUpdateMedicalRecord = () => {
     },
   });
 };
+
+export const useAddMedicalRecord = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (newRecord: MedicalRecord) => {
+      await medicalRecordService.addRecord(newRecord);
+    },
+    onSuccess: (_, newRecord) => {
+      // Invalidate the patient's records query
+      queryClient.invalidateQueries({
+        queryKey: ['medicalRecords', newRecord.patientId],
+      });
+      // Invalidate any search queries
+      queryClient.invalidateQueries({
+        queryKey: ['medicalRecords', 'search'],
+      });
+    },
+  });
+};

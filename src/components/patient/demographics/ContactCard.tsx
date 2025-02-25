@@ -1,6 +1,7 @@
 import React from 'react';
-import { Phone } from 'lucide-react';
+import { Phone, Pencil, Check, X } from 'lucide-react';
 import { Card } from '../../ui/Card';
+import { CardDropdown } from '../../ui/cardDropdown';
 
 interface ContactCardProps {
   phone: string;
@@ -79,38 +80,25 @@ export const ContactCard: React.FC<ContactCardProps> = ({
             <div className="flex gap-2">
               <button
                 onClick={handleSave}
-                className="p-2 text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                title="Save changes"
+                className="flex items-center gap-1 px-2 py-1 rounded-md text-sm font-medium text-green-700 hover:bg-green-50"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
+                <Check size={14} />
+                Save
               </button>
               <button
                 onClick={handleCancel}
-                className="p-2 text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                title="Cancel editing"
+                className="flex items-center gap-1 px-2 py-1 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <X size={14} />
+                Cancel
               </button>
             </div>
           ) : (
-            <div className="relative">
-              <button
-                onClick={() => setIsEditMode(true)}
-                className="p-2 hover:bg-gray-100 rounded-full"
-              >
-                <svg
-                  className="w-5 h-5 text-gray-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                </svg>
-              </button>
-            </div>
+            <CardDropdown
+              options={[{ value: 'edit', label: 'Edit' }]}
+              onSelect={() => setIsEditMode(true)}
+              className="text-gray-500"
+            />
           )
         )
       }

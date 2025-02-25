@@ -59,7 +59,11 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
       return included;
     });
     console.log('Filtered records:', filtered);
-    return filtered.reduce((groups, record) => {
+    
+    // Sort records by date (newest first) before grouping
+    const sortedRecords = [...filtered].sort((a, b) => b.date.getTime() - a.date.getTime());
+    
+    return sortedRecords.reduce((groups, record) => {
       const date = record.date.toISOString().split('T')[0];
       if (!groups[date]) {
         groups[date] = [];
@@ -69,23 +73,32 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
     }, {} as Record<string, MedicalRecord[]>);
   }, [records, activeFilters]);
 
-  // Group dates by year and month
+  // Group dates by year and month (newest first)
   const datesByYearAndMonth = useMemo(() => {
     const years: Record<number, Record<string, string[]>> = {};
     
-    Object.keys(groupedByDate).forEach(date => {
-      const dateObj = new Date(date);
-      const year = dateObj.getFullYear();
-      const month = dateObj.toLocaleDateString(undefined, { month: 'long' });
-      const monthYear = `${month} ${year}`;
-      
-      if (!years[year]) {
-        years[year] = {};
-      }
-      if (!years[year][monthYear]) {
-        years[year][monthYear] = [];
-      }
-      years[year][monthYear].push(date);
+    Object.keys(groupedByDate)
+      .sort((a, b) => b.localeCompare(a)) // Sort dates in descending order
+      .forEach(date => {
+        const dateObj = new Date(date);
+        const year = dateObj.getFullYear();
+        const month = dateObj.toLocaleDateString(undefined, { month: 'long' });
+        const monthYear = `${month} ${year}`;
+        
+        if (!years[year]) {
+          years[year] = {};
+        }
+        if (!years[year][monthYear]) {
+          years[year][monthYear] = [];
+        }
+        years[year][monthYear].push(date);
+      });
+
+    // Sort dates within each month (newest first)
+    Object.values(years).forEach(yearData => {
+      Object.values(yearData).forEach(dates => {
+        dates.sort((a, b) => b.localeCompare(a));
+      });
     });
 
     console.log('Dates grouped by year and month:', years);
@@ -348,19 +361,23 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records }) => 
           />
         </div>        
         <div className="w-96">
-          {selectedRecord && (
-            <TimelineEventDetails 
-              record={selectedRecord} 
-              onUpdateRecord={async (updatedRecord) => {
-                try {
+          <TimelineEventDetails 
+            record={selectedRecord || undefined}
+            onUpdateRecord={async (updatedRecord) => {
+              try {
+                if (selectedRecord) {
                   await updateRecord.mutateAsync(updatedRecord);
                   setSelectedRecord(updatedRecord);
-                } catch (error) {
-                  console.error('Failed to update record:', error);
+                } else {
+                  // This is a new record
+                  await updateRecord.mutateAsync(updatedRecord);
+                  setSelectedRecord(updatedRecord);
                 }
-              }}
-            />
-          )}
+              } catch (error) {
+                console.error('Failed to update record:', error);
+              }
+            }}
+          />
         </div>
       </div>
     </div>

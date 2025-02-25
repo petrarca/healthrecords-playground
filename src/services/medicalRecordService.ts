@@ -42,7 +42,18 @@ class MedicalRecordService {
     const index = this.records.findIndex(r => r.id === updatedRecord.id);
     if (index !== -1) {
       this.records[index] = updatedRecord;
+    } else {
+      throw new Error('Record not found');
     }
+  }
+
+  async addRecord(newRecord: MedicalRecord): Promise<void> {
+    await this.initialize();
+    const existingRecord = this.records.find(r => r.id === newRecord.id);
+    if (existingRecord) {
+      throw new Error('Record with this ID already exists');
+    }
+    this.records.push(newRecord);
   }
 }
 
