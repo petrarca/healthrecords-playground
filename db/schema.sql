@@ -85,3 +85,12 @@ CREATE TRIGGER update_medical_records_updated_at
     BEFORE UPDATE ON medical_records
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
+
+-- Version table
+DROP TABLE IF EXISTS versions;
+CREATE TABLE versions (
+    version VARCHAR(50) PRIMARY KEY
+);
+
+-- Insert initial version
+INSERT INTO versions (version) VALUES ('0.1');

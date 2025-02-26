@@ -26,7 +26,12 @@ export async function initializeSupabase() {
     client = createClient(supabaseUrl, supabaseAnonKey)
     
     // Test the connection
-    await client.from('health_records').select('count').limit(1)
+    const { data, error, status } = await client.from('versions').select().limit(1)
+    if (error || status !== 200) {
+      throw new Error(`Failed to connect to Supabase: ${error?.message || `Status: ${status}`}`)
+    }
+
+    console.debug('Supabase connection successful:', { status, data})
     
     initializationError = null
     return client

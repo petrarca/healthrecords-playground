@@ -396,7 +396,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
         <div className="flex-[1.5] min-w-[350px] ml-4">
           <TimelineEventDetails 
             record={selectedRecord || undefined}
-            patientId={patientId || ''}
+            patientId={patientId ?? ''}
             onUpdateRecord={async (updatedRecord) => {
               try {
                 await updateRecord.mutateAsync(updatedRecord);

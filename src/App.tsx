@@ -1,8 +1,7 @@
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { Shell } from './components/Shell';
 import { LandingPage } from './components/LandingPage';
 import { Patient } from './components/patient/Patient';
-import { useNavigate } from 'react-router-dom';
 import { navigationService } from './services/navigationService';
 import { useEffect } from 'react';
 import './services/patientSearchProviders'; // Import to register providers

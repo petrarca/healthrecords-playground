@@ -3,7 +3,7 @@ import { initializeSupabase, isInitialized } from '../lib/supabase'
 import { OfflinePage } from './OfflinePage'
 
 interface SupabaseProviderProps {
-  children: React.ReactNode
+  readonly children: React.ReactNode
 }
 
 export function SupabaseProvider({ children }: SupabaseProviderProps) {
@@ -15,7 +15,7 @@ export function SupabaseProvider({ children }: SupabaseProviderProps) {
       try {
         await initializeSupabase()
         setIsOnline(true)
-      } catch (error) {
+      } catch {
         setIsOnline(false)
       } finally {
         setIsLoading(false)
