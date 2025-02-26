@@ -105,31 +105,36 @@ INSERT INTO versions (version) VALUES ('0.1');
 DROP FUNCTION IF EXISTS search_patients(text[]);
 
 -- Create a function to search patients with full text search
-CREATE FUNCTION search_patients(search_terms text[])
+CREATE OR REPLACE FUNCTION search_patients(search_terms text[])
 RETURNS TABLE (
   id uuid,
   patient_id varchar(50),
   first_name varchar(100),
   last_name varchar(100),
-  date_of_birth date  -- Changed to DATE to match the schema
+  date_of_birth date
 ) AS $$
 BEGIN
-  -- Convert search terms array to tsquery string with & between terms
-  -- Each term is processed to handle partial matches
   RETURN QUERY
-  WITH processed_terms AS (
-    SELECT string_agg(quote_literal(term) || ':*', ' & ') as search_query
-    FROM unnest(search_terms) as term
+  WITH term_patterns AS (
+    SELECT term, 
+           term || ':*' AS prefix_term,
+           '%' || term || '%' AS like_pattern
+    FROM unnest(search_terms) AS term
+    WHERE trim(term) != ''
   )
   SELECT DISTINCT p.id, p.patient_id, p.first_name, p.last_name, p.date_of_birth
-  FROM patients p, processed_terms pt
-  WHERE 
-    -- Search in first_name
-    to_tsvector('english', coalesce(p.first_name, '')) @@ to_tsquery('english', pt.search_query)
-    -- Search in last_name
-    OR to_tsvector('english', coalesce(p.last_name, '')) @@ to_tsquery('english', pt.search_query)
-    -- Search in patient_id (exact matches for ID)
-    OR p.patient_id ILIKE ANY (SELECT '%' || term || '%' FROM unnest(search_terms) as term)
+  FROM patients p
+  WHERE EXISTS (
+    SELECT 1 FROM term_patterns t
+    WHERE 
+      -- Full text search on names
+      to_tsvector('simple', coalesce(p.first_name, '')) @@ to_tsquery('simple', t.prefix_term)
+      OR to_tsvector('simple', coalesce(p.last_name, '')) @@ to_tsquery('simple', t.prefix_term)
+      -- ILIKE search for partial matches on all fields
+      OR p.first_name ILIKE t.like_pattern
+      OR p.last_name ILIKE t.like_pattern
+      OR p.patient_id ILIKE t.like_pattern
+  )
   ORDER BY p.last_name, p.first_name
   LIMIT 100;
 END;
