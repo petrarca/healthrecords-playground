@@ -101,10 +101,22 @@ CREATE TABLE versions (
 -- Insert initial version
 INSERT INTO versions (version) VALUES ('0.1');
 
--- Drop the function if it exists
+/*
+* search_patients - Searches for patients where ALL provided terms match
+*
+* This function implements a strict AND-based search where all terms must match each patient.
+* For each term in search_terms:
+*   - Checks if the term appears in first_name, last_name, or patient_id
+*   - Uses both full-text search (with prefix matching) and ILIKE for flexible matching
+*   - Only returns patients matching ALL provided search terms
+*   - Empty terms are filtered out
+*
+* Performance considerations:
+*   - Consider adding GIN indexes on to_tsvector('simple', first_name) and last_name
+*   - Results are limited to 100 records
+*/
 DROP FUNCTION IF EXISTS search_patients(text[]);
 
--- Create a function to search patients with full text search
 CREATE OR REPLACE FUNCTION search_patients(search_terms text[])
 RETURNS TABLE (
   id uuid,
@@ -124,8 +136,13 @@ BEGIN
   )
   SELECT DISTINCT p.id, p.patient_id, p.first_name, p.last_name, p.date_of_birth
   FROM patients p
-  WHERE EXISTS (
-    SELECT 1 FROM term_patterns t
+  WHERE (
+    SELECT COUNT(*)
+    FROM term_patterns t
+  ) = (
+    -- This subquery counts how many of the search terms match for each patient
+    SELECT COUNT(*)
+    FROM term_patterns t
     WHERE 
       -- Full text search on names
       to_tsvector('simple', coalesce(p.first_name, '')) @@ to_tsquery('simple', t.prefix_term)
@@ -138,4 +155,4 @@ BEGIN
   ORDER BY p.last_name, p.first_name
   LIMIT 100;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql; 
