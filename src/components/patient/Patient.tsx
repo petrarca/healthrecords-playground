@@ -16,12 +16,12 @@ export function Patient() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState<TabType>('summary');
 
-  const { data: patient, isLoading: patientLoading, error: patientError } = usePatient(id || '');
-  const { data: records, isLoading: recordsLoading } = useMedicalRecords(id || '');
+  const { data: patient, isLoading: patientLoading, error: patientError } = usePatient(id ?? '');
+  const { data: records, isLoading: recordsLoading } = useMedicalRecords(id ?? '');
   const { mutate: updatePatient } = useUpdatePatient();
 
   const loading = patientLoading || recordsLoading;
-  const error = patientError?.message || null;
+  const error = patientError?.message ?? null;
 
   useEffect(() => {
     if (!id) {
@@ -44,7 +44,7 @@ export function Patient() {
   }
 
   if (error || !patient) {
-    return <div className="p-4 text-red-600">Error: {error || 'Patient not found'}</div>;
+    return <div className="p-4 text-red-600">Error: {error ?? 'Patient not found'}</div>;
   }
 
   return (

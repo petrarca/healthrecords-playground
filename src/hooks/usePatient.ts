@@ -1,9 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Patient } from '../types/types';
 import { patientService } from '../services/patientService';
+import { searchPatients } from '../services/search//patientSearch';
 
 export const usePatient = (patientId: string) => {
-  return useQuery<Patient | undefined>({
+  return useQuery<Patient | null>({
     queryKey: ['patient', patientId],
     queryFn: () => patientService.getPatient(patientId),
     gcTime: 0,
@@ -13,7 +14,7 @@ export const usePatient = (patientId: string) => {
 export const useSearchPatients = (query: string) => {
   return useQuery<Patient[]>({
     queryKey: ['patients', 'search', query],
-    queryFn: () => patientService.searchPatients(query),
+    queryFn: () => searchPatients(query),
     enabled: !!query,
   });
 };

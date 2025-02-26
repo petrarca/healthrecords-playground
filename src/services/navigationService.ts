@@ -32,6 +32,7 @@ class NavigationService {
       return;
     }
     const path = recordId ? `/patients/${id}/timeline/${recordId}` : `/patients/${id}/timeline`;
+
     this.navigate(path, { replace: true });
   }
 }

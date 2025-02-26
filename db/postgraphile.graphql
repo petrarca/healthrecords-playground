@@ -462,7 +462,7 @@
               }
             },
             {
-              "name": "sex",
+              "name": "gender",
               "description": null,
               "type": {
                 "kind": "NON_NULL",

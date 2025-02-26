@@ -10,17 +10,20 @@ export interface Address {
   country?: string;
 }
 
+export type Gender = 'male' | 'female' | 'other' | 'unknown';
+
 export interface Patient {
   id: string;
   patientId: string;
   firstName: string;
   lastName: string;
   dateOfBirth: Date;
-  sex: 'M' | 'F' | 'Other';
+  gender: Gender;
   bloodType?: string;
   height?: string;
   weight?: string;
   allergies?: string[];
+  conditions?: string[];
   primaryPhysician?: string;
   insuranceProvider?: string;
   insuranceNumber?: string;

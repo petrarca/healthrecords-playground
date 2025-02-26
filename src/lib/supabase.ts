@@ -27,8 +27,11 @@ export async function initializeSupabase() {
     
     // Test the connection
     const { data, error, status } = await client.from('versions').select().limit(1)
-    if (error || status !== 200) {
-      throw new Error(`Failed to connect to Supabase: ${error?.message || `Status: ${status}`}`)
+    if (error) {
+      throw new Error(`Failed to connect to Supabase: ${error.message}`)
+    }
+    if (status !== 200) {
+      throw new Error(`Failed to connect to Supabase: Status ${status}`)
     }
 
     console.debug('Supabase connection successful:', { status, data})

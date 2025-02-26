@@ -6,14 +6,14 @@ interface PersonalInfoCardProps {
   firstName: string;
   lastName: string;
   dateOfBirth: Date;
-  sex: string;
+  gender: string;
 }
 
 export const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
   firstName,
   lastName,
   dateOfBirth,
-  sex
+  gender
 }) => {
   return (
     <Card title="Personal Information" icon={<User2 size={16} />} variant="blue">
@@ -27,8 +27,8 @@ export const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
           <span className="text-gray-900">{dateOfBirth.toLocaleDateString()}</span>
         </div>
         <div className="flex gap-4">
-          <span className="text-gray-500 w-20">Sex:</span>
-          <span className="text-gray-900">{sex}</span>
+          <span className="text-gray-500 w-20">Gender:</span>
+          <span className="text-gray-900">{gender}</span>
         </div>
       </div>
     </Card>

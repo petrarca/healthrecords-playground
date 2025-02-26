@@ -1,7 +1,7 @@
 /** @jsxImportSource react */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { SearchResult, SearchResultType } from "../types/search";
-import { searchService } from "../services/searchService";
+import { searchService } from "../services/search/searchService";
 import { SearchType } from "./ui/searchType";
 
 const searchTypeOptions = [

@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 
 interface Patient {
     patientId: string;
@@ -13,10 +14,19 @@ interface Patient {
     primaryPhysician: string;
     insuranceProvider: string;
     insuranceNumber: string;
+    primaryAddressType: string;
+    phone: string;
+    email: string;
+    conditions: string[];
     allergies: string[];
     addresses: Array<{
-        label: string;
+        addressType: string;
         addressLine: string;
+        street: string;
+        city: string;
+        state: string;
+        zipCode: string;
+        country: string;
     }>;
 }
 
@@ -47,21 +57,23 @@ TRUNCATE TABLE patients CASCADE;`,
     patient: `
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), :patientId, :firstName, :lastName, :dateOfBirth,
     :gender, :bloodType, :height, :weight, :primaryPhysician,
-    :insuranceProvider, :insuranceNumber, ARRAY[:allergies]::VARCHAR[]
+    :insuranceProvider, :insuranceNumber, :primaryAddressType,
+    :phone, :email, :conditions, :allergies
 );`,
     
     address: `
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = :patientId),
-    :addressType,
-    :addressLine
+    :addressType, :addressLine, :street, :city, :state, :zipCode, :country
 );`,
     
     medicalRecord: `
@@ -87,8 +99,10 @@ function escapeSqlString(str: string | null | undefined): string {
 
 // Helper function to format array values
 function formatArrayValues(arr: string[]): string {
-    if (!arr || arr.length === 0) return '';
-    return arr.map(item => escapeSqlString(item)).join(', ');
+    if (arr.length === 0) {
+        return "ARRAY[]::varchar[]";
+    }
+    return `ARRAY[${arr.map(v => `${escapeSqlString(v)}`).join(', ')}]::varchar[]`;
 }
 
 // Process patient data
@@ -105,7 +119,11 @@ function generatePatientSql(patient: Patient): string {
         .replace(':primaryPhysician', escapeSqlString(patient.primaryPhysician))
         .replace(':insuranceProvider', escapeSqlString(patient.insuranceProvider))
         .replace(':insuranceNumber', escapeSqlString(patient.insuranceNumber))
-        .replace(':allergies', formatArrayValues(patient.allergies || []));
+        .replace(':primaryAddressType', escapeSqlString(patient.primaryAddressType))
+        .replace(':phone', escapeSqlString(patient.phone))
+        .replace(':email', escapeSqlString(patient.email))
+        .replace(':conditions', formatArrayValues(patient.conditions))
+        .replace(':allergies', formatArrayValues(patient.allergies));
 
     let fullSql = sql;
 
@@ -114,8 +132,13 @@ function generatePatientSql(patient: Patient): string {
         patient.addresses.forEach((addr) => {
             const addressSql = templates.address
                 .replace(':patientId', escapeSqlString(patient.patientId))
-                .replace(':addressType', escapeSqlString(addr.label))
-                .replace(':addressLine', escapeSqlString(addr.addressLine));
+                .replace(':addressType', escapeSqlString(addr.addressType))
+                .replace(':addressLine', escapeSqlString(addr.addressLine))
+                .replace(':street', escapeSqlString(addr.street))
+                .replace(':city', escapeSqlString(addr.city))
+                .replace(':state', escapeSqlString(addr.state))
+                .replace(':zipCode', escapeSqlString(addr.zipCode))
+                .replace(':country', escapeSqlString(addr.country));
             fullSql += '\n' + addressSql;
         });
     }
@@ -139,10 +162,10 @@ function generateMedicalRecordSql(record: MedicalRecord): string {
 async function generateTestData() {
     // Read input files
     const patientsData = JSON.parse(fs.readFileSync(
-        path.join(__dirname, '../public/data/patients.json'), 'utf8'
+        path.join(fileURLToPath(import.meta.url), '../../public/data/patients.json'), 'utf8'
     )) as PatientsData;
     const medicalRecordsData = JSON.parse(fs.readFileSync(
-        path.join(__dirname, '../public/data/medical_records.json'), 'utf8'
+        path.join(fileURLToPath(import.meta.url), '../../public/data/medical_records.json'), 'utf8'
     )) as MedicalRecordsData;
 
     // Generate SQL statements
@@ -175,7 +198,7 @@ async function generateTestData() {
     sqlStatements.push('', 'COMMIT;');
 
     // Write to output file
-    const outputPath = path.join(__dirname, '../db/test_data.sql');
+    const outputPath = path.join(fileURLToPath(import.meta.url), '../../db/test_data.sql');
     fs.writeFileSync(outputPath, sqlStatements.join('\n'));
     console.log(`SQL file generated at: ${outputPath}`);
 }

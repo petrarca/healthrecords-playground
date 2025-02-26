@@ -1,49 +1,11 @@
-import { SearchProvider, SearchResult, SearchResultType } from '../types/search';
-import { mockDataService } from './mockData';
+import { SearchProvider, SearchResult, SearchResultType } from '../../types/search';
 
 export interface SearchOptions {
   type?: SearchResultType | 'ALL';
 }
 
-const patientProvider: SearchProvider = {
-  type: SearchResultType.PATIENT,
-  search: async (query: string) => {
-    const patients = await mockDataService.getPatients();
-    const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
-    
-    return patients
-      .filter(patient => {
-        const searchableText = [
-          patient.id,
-          patient.firstName,
-          patient.lastName,
-          patient.dateOfBirth.toLocaleDateString(),
-          patient.insuranceProvider,
-          patient.primaryPhysician,
-          patient.bloodType,
-          ...(patient.allergies || [])
-        ].filter(Boolean).join(' ').toLowerCase();
-        
-        return searchTerms.every(term => searchableText.includes(term));
-      })
-      .map(patient => ({
-        id: patient.id,
-        title: `${patient.firstName} ${patient.lastName}`,
-        subtitle: `DOB: ${patient.dateOfBirth.toLocaleDateString()}`,
-        type: SearchResultType.PATIENT,
-        data: patient
-      }));
-  },
-  getDisplayName: () => 'Patients',
-  getIcon: () => '👤'
-};
-
 class SearchService {
   private readonly providers: SearchProvider[] = [];
-
-  constructor() {
-    this.registerProvider(patientProvider);
-  }
 
   registerProvider(provider: SearchProvider) {
     this.providers.push(provider);

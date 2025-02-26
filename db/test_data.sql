@@ -1,5 +1,5 @@
 -- Generated test data SQL
--- Generated at: 2025-02-25T20:53:05.901Z
+-- Generated at: 2025-02-26T18:50:20.949Z
 
 -- Begin transaction
 BEGIN;
@@ -13,370 +13,410 @@ TRUNCATE TABLE patients CASCADE;
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4711', 'John', 'Smith', '1975-03-15',
-    'Male', 'A+', '180[cm]', '75[kg]', 'Dr. Anderson',
-    'Blue Cross', 'BC123456789', ARRAY['Penicillin']::VARCHAR[]
+    'male', 'A+', '180[cm]', '75[kg]', 'Dr. Anderson',
+    'Blue Cross', 'BC123456789', 'HOME',
+    '(415) 555-0123', 'john.smith@email.com', ARRAY['Hypertension', 'High Cholesterol']::varchar[], ARRAY['Penicillin']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4711'),
-    'HOME',
-    '123 Oak Street, San Francisco, CA 94105, USA'
+    'HOME', '123 Oak Street, San Francisco, CA 94105, USA', '123 Oak Street', 'San Francisco', 'CA', '94105', 'USA'
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4711'),
-    'WORK',
-    '555 Market Street, San Francisco, CA 94105, USA'
+    'WORK', '555 Market Street, San Francisco, CA 94105, USA', '555 Market Street', 'San Francisco', 'CA', '94105', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4712', 'Emma', 'Johnson', '1988-07-22',
-    'Female', 'O-', '', '', 'Dr. Martinez',
-    'Aetna', 'AE987654321', ARRAY['Latex', 'Pollen']::VARCHAR[]
+    'female', 'O-', '', '', 'Dr. Martinez',
+    'Aetna', 'AE987654321', 'HOME',
+    '(415) 555-0124', 'emma.johnson@email.com', ARRAY['Severe Allergies']::varchar[], ARRAY['Latex', 'Pollen']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4712'),
-    'HOME',
-    '456 Pine Avenue, San Francisco, CA 94110, USA'
+    'HOME', '456 Pine Avenue, San Francisco, CA 94110, USA', '456 Pine Avenue', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4713', 'Michael', 'Williams', '1962-11-30',
-    'Male', 'B+', '', '', 'Dr. Chen',
-    'Medicare', 'MC456789123', ARRAY[]::VARCHAR[]
+    'male', 'B+', '', '', 'Dr. Chen',
+    'Medicare', 'MC456789123', 'HOME',
+    '(415) 555-0125', 'michael.williams@email.com', ARRAY['Hypertension', 'Arthritis']::varchar[], ARRAY[]::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4713'),
-    'HOME',
-    '789 Market Street, Apt 4B, San Francisco, CA 94103, USA'
+    'HOME', '789 Market Street, Apt 4B, San Francisco, CA 94103, USA', '789 Market Street, Apt 4B', 'San Francisco', 'CA', '94103', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4714', 'Sarah', 'Brown', '1995-04-18',
-    'Female', 'AB+', '', '', 'Dr. Thompson',
-    'United Healthcare', 'UH789123456', ARRAY['Dust Mites']::VARCHAR[]
+    'female', 'AB+', '', '', 'Dr. Thompson',
+    'United Healthcare', 'UH789123456', 'HOME',
+    '(415) 555-0126', 'sarah.brown@email.com', ARRAY['Asthma']::varchar[], ARRAY['Dust Mites']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4714'),
-    'HOME',
-    '321 Hayes Street, San Francisco, CA 94102, USA'
+    'HOME', '321 Hayes Street, San Francisco, CA 94102, USA', '321 Hayes Street', 'San Francisco', 'CA', '94102', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4715', 'David', 'Miller', '1980-09-05',
-    'Male', 'O+', '', '', 'Dr. Patel',
-    'Kaiser', 'KP159753468', ARRAY[]::VARCHAR[]
+    'male', 'O+', '', '', 'Dr. Patel',
+    'Kaiser', 'KP159753468', 'HOME',
+    '(415) 555-0127', 'david.miller@email.com', ARRAY['Type 2 Diabetes']::varchar[], ARRAY[]::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4715'),
-    'HOME',
-    '901 Valencia Street, San Francisco, CA 94110, USA'
+    'HOME', '901 Valencia Street, San Francisco, CA 94110, USA', '901 Valencia Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4716', 'Lisa', 'Garcia', '1992-12-10',
-    'Female', 'A-', '', '', 'Dr. Wilson',
-    'Cigna', 'CG852963741', ARRAY['Shellfish']::VARCHAR[]
+    'female', 'A-', '', '', 'Dr. Wilson',
+    'Cigna', 'CG852963741', 'HOME',
+    '(415) 555-0128', 'lisa.garcia@email.com', ARRAY['Migraine', 'Anxiety']::varchar[], ARRAY['Shellfish']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4716'),
-    'HOME',
-    '2345 Mission Street, San Francisco, CA 94110, USA'
+    'HOME', '2345 Mission Street, San Francisco, CA 94110, USA', '2345 Mission Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4717', 'James', 'Taylor', '1958-06-25',
-    'Male', 'B-', '', '', 'Dr. Lee',
-    'Humana', 'HU963852741', ARRAY[]::VARCHAR[]
+    'male', 'B-', '', '', 'Dr. Lee',
+    'Humana', 'HU963852741', 'HOME',
+    '(415) 555-0129', 'james.taylor@email.com', ARRAY['Coronary Artery Disease', 'Type 2 Diabetes']::varchar[], ARRAY[]::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4717'),
-    'HOME',
-    '3456 Folsom Street, San Francisco, CA 94110, USA'
+    'HOME', '3456 Folsom Street, San Francisco, CA 94110, USA', '3456 Folsom Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4718', 'Maria', 'Rodriguez', '1990-02-14',
-    'Female', 'O+', '', '', 'Dr. Nguyen',
-    'Blue Shield', 'BS741852963', ARRAY['Sulfa Drugs']::VARCHAR[]
+    'female', 'O+', '', '', 'Dr. Nguyen',
+    'Blue Shield', 'BS741852963', 'HOME',
+    '(415) 555-0130', 'maria.rodriguez@email.com', ARRAY['Hypothyroidism']::varchar[], ARRAY['Sulfa Drugs']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4718'),
-    'HOME',
-    '4567 24th Street, San Francisco, CA 94110, USA'
+    'HOME', '4567 24th Street, San Francisco, CA 94110, USA', '4567 24th Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4719', 'Robert', 'Anderson', '1971-08-30',
-    'Male', 'A+', '', '', 'Dr. White',
-    'Anthem', 'AN159753468', ARRAY[]::VARCHAR[]
+    'male', 'A+', '', '', 'Dr. White',
+    'Anthem', 'AN159753468', 'HOME',
+    '(415) 555-0131', 'robert.anderson@email.com', ARRAY['GERD', 'Sleep Apnea']::varchar[], ARRAY[]::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4719'),
-    'HOME',
-    '5678 Guerrero Street, San Francisco, CA 94110, USA'
+    'HOME', '5678 Guerrero Street, San Francisco, CA 94110, USA', '5678 Guerrero Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4720', 'Jennifer', 'Martin', '1983-11-12',
-    'Female', 'AB-', '', '', 'Dr. Brown',
-    'United Healthcare', 'UH951753684', ARRAY['Peanuts']::VARCHAR[]
+    'female', 'AB-', '', '', 'Dr. Brown',
+    'United Healthcare', 'UH951753684', 'HOME',
+    '(415) 555-0132', 'jennifer.martin@email.com', ARRAY['Depression', 'Fibromyalgia']::varchar[], ARRAY['Peanuts']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4720'),
-    'HOME',
-    '6789 Dolores Street, San Francisco, CA 94110, USA'
+    'HOME', '6789 Dolores Street, San Francisco, CA 94110, USA', '6789 Dolores Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4721', 'William', 'Thompson', '1967-04-03',
-    'Male', 'O-', '', '', 'Dr. Garcia',
-    'Medicare', 'MC357159852', ARRAY[]::VARCHAR[]
+    'male', 'O-', '', '', 'Dr. Garcia',
+    'Medicare', 'MC357159852', 'HOME',
+    '(415) 555-0133', 'william.thompson@email.com', ARRAY['Osteoporosis']::varchar[], ARRAY[]::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4721'),
-    'HOME',
-    '7890 19th Street, San Francisco, CA 94110, USA'
+    'HOME', '7890 19th Street, San Francisco, CA 94110, USA', '7890 19th Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4722', 'Patricia', 'Moore', '1987-09-28',
-    'Female', 'B+', '', '', 'Dr. Taylor',
-    'Aetna', 'AE753951852', ARRAY['Ibuprofen']::VARCHAR[]
+    'other', 'B+', '', '', 'Dr. Taylor',
+    'Aetna', 'AE753951852', 'HOME',
+    '(415) 555-0134', 'patricia.moore@email.com', ARRAY['Rheumatoid Arthritis']::varchar[], ARRAY['Ibuprofen']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4722'),
-    'HOME',
-    '8901 20th Street, San Francisco, CA 94110, USA'
+    'HOME', '8901 20th Street, San Francisco, CA 94110, USA', '8901 20th Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4723', 'Richard', 'Jackson', '1959-01-20',
-    'Male', 'A+', '', '', 'Dr. Martinez',
-    'Humana', 'HU456123789', ARRAY[]::VARCHAR[]
+    'male', 'A+', '', '', 'Dr. Martinez',
+    'Humana', 'HU456123789', 'HOME',
+    '(415) 555-0135', 'richard.jackson@email.com', ARRAY['Chronic Kidney Disease', 'Hypertension']::varchar[], ARRAY[]::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4723'),
-    'HOME',
-    '9012 21st Street, San Francisco, CA 94110, USA'
+    'HOME', '9012 21st Street, San Francisco, CA 94110, USA', '9012 21st Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4724', 'Elizabeth', 'White', '1993-06-15',
-    'Female', 'O+', '', '', 'Dr. Anderson',
-    'Kaiser', 'KP789456123', ARRAY['Dairy']::VARCHAR[]
+    'female', 'O+', '', '', 'Dr. Anderson',
+    'Kaiser', 'KP789456123', 'HOME',
+    '(415) 555-0136', 'elizabeth.white@email.com', ARRAY['Celiac Disease']::varchar[], ARRAY['Dairy']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4724'),
-    'HOME',
-    '2345 22nd Street, San Francisco, CA 94110, USA'
+    'HOME', '2345 22nd Street, San Francisco, CA 94110, USA', '2345 22nd Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4725', 'Thomas', 'Harris', '1976-12-08',
-    'Male', 'AB+', '', '', 'Dr. Thompson',
-    'Blue Cross', 'BC951357846', ARRAY[]::VARCHAR[]
+    'male', 'AB+', '', '', 'Dr. Thompson',
+    'Blue Cross', 'BC951357846', 'HOME',
+    '(415) 555-0137', 'thomas.harris@email.com', ARRAY['Psoriasis', 'Anxiety']::varchar[], ARRAY[]::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4725'),
-    'HOME',
-    '3456 23rd Street, San Francisco, CA 94110, USA'
+    'HOME', '3456 23rd Street, San Francisco, CA 94110, USA', '3456 23rd Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4726', 'Susan', 'Clark', '1982-03-25',
-    'Female', 'B-', '', '', 'Dr. Wilson',
-    'Cigna', 'CG357951846', ARRAY['Aspirin']::VARCHAR[]
+    'female', 'B-', '', '', 'Dr. Wilson',
+    'Cigna', 'CG357951846', 'HOME',
+    '(415) 555-0138', 'susan.clark@email.com', ARRAY['Endometriosis']::varchar[], ARRAY['Aspirin']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4726'),
-    'HOME',
-    '4567 24th Street, San Francisco, CA 94110, USA'
+    'HOME', '4567 24th Street, San Francisco, CA 94110, USA', '4567 24th Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4727', 'Daniel', 'Lewis', '1964-07-19',
-    'Male', 'O-', '', '', 'Dr. Moore',
-    'Medicare', 'MC159357846', ARRAY[]::VARCHAR[]
+    'male', 'O-', '', '', 'Dr. Moore',
+    'Medicare', 'MC159357846', 'HOME',
+    '(415) 555-0139', 'daniel.lewis@email.com', ARRAY['COPD', 'Emphysema']::varchar[], ARRAY[]::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4727'),
-    'HOME',
-    '5678 25th Street, San Francisco, CA 94110, USA'
+    'HOME', '5678 25th Street, San Francisco, CA 94110, USA', '5678 25th Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4728', 'Margaret', 'Lee', '1991-10-05',
-    'Female', 'A+', '', '', 'Dr. Jackson',
-    'Anthem', 'AN753159846', ARRAY['Penicillin', 'Sulfa Drugs']::VARCHAR[]
+    'female', 'A+', '', '', 'Dr. Jackson',
+    'Anthem', 'AN753159846', 'HOME',
+    '(415) 555-0140', 'margaret.lee@email.com', ARRAY['Multiple Sclerosis']::varchar[], ARRAY['Penicillin', 'Sulfa Drugs']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4728'),
-    'HOME',
-    '6789 26th Street, San Francisco, CA 94110, USA'
+    'HOME', '6789 26th Street, San Francisco, CA 94110, USA', '6789 26th Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4729', 'Joseph', 'Walker', '1969-05-12',
-    'Male', 'B+', '', '', 'Dr. Harris',
-    'United Healthcare', 'UH357951846', ARRAY[]::VARCHAR[]
+    'male', 'B+', '', '', 'Dr. Harris',
+    'United Healthcare', 'UH357951846', 'HOME',
+    '(415) 555-0141', 'joseph.walker@email.com', ARRAY['Parkinson''s Disease']::varchar[], ARRAY[]::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4729'),
-    'HOME',
-    '7890 27th Street, San Francisco, CA 94110, USA'
+    'HOME', '7890 27th Street, San Francisco, CA 94110, USA', '7890 27th Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
-    sex, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, allergies
+    gender, blood_type, height, weight, primary_physician,
+    insurance_provider, insurance_number, primary_address_type,
+    phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), '4730', 'Barbara', 'Young', '1986-08-17',
-    'Female', 'O+', '', '', 'Dr. Clark',
-    'Blue Shield', 'BS951357846', ARRAY['Latex']::VARCHAR[]
+    'female', 'O+', '', '', 'Dr. Clark',
+    'Blue Shield', 'BS951357846', 'HOME',
+    '(415) 555-0142', 'barbara.young@email.com', ARRAY['Lupus']::varchar[], ARRAY['Latex']::varchar[]
 );
 
 INSERT INTO addresses (
-    patient_id, address_type, address_line
+    id, patient_id, address_type, address_line, street, city, state, zip_code, country
 ) VALUES (
+    uuid_generate_v4(), 
     (SELECT id FROM patients WHERE patient_id = '4730'),
-    'HOME',
-    '8901 28th Street, San Francisco, CA 94110, USA'
+    'HOME', '8901 28th Street, San Francisco, CA 94110, USA', '8901 28th Street', 'San Francisco', 'CA', '94110', 'USA'
 );
 
 -- Medical records

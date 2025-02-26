@@ -2,7 +2,8 @@ import React from 'react';
 import { Patient } from '../../types/patient';
 import { 
   Heart,
-  AlertCircle
+  AlertCircle,
+  Activity
 } from 'lucide-react';
 import { Card } from '../ui/Card';
 
@@ -62,8 +63,27 @@ export const MedicalProfile: React.FC<MedicalProfileProps> = ({
         </Card>
       </div>
 
-      {/* Right Column: Reserved for future medical information */}
-      <div></div>
+      {/* Right Column: Conditions */}
+      <div className="space-y-3">
+        <Card title="Conditions" icon={<Activity size={16} />} variant="blue">
+          <div className="space-y-2 text-sm">
+            {patient.conditions && patient.conditions.length > 0 ? (
+              <div className="flex flex-wrap gap-1">
+                {patient.conditions.map((condition, index) => (
+                  <span 
+                    key={index} 
+                    className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200"
+                  >
+                    {condition}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <div className="text-gray-500">No known conditions</div>
+            )}
+          </div>
+        </Card>
+      </div>
     </div>
   );
 };

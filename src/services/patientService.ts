@@ -1,64 +1,51 @@
 import { Patient } from '../types/types';
-import { mockDataService } from './mockData';
+import { getClient } from '../lib/supabase';
+import { PatientTable } from '../models/databaseModel';
+import { mapDatabaseToPatient } from './mappers/patientMapper';
 
 class PatientService {
-  private patients: Patient[] = [];
-  private initialized = false;
+  async getPatient(id: string): Promise<Patient | null> {
+    const { data, error } = await getClient()
+      .from('patients')
+      .select()
+      .eq('id', id)
+      .limit(1) as { data: PatientTable[] | null, error: Error | null };
 
-  private async initialize() {
-    if (this.initialized) return;
-    this.patients = await mockDataService.getPatients();
-    this.initialized = true;
-  }
-
-  async getPatient(id: string): Promise<Patient | undefined> {
-    await this.initialize();
-    return this.patients.find(p => p.id === id);
-  }
-
-  async getAllPatients(): Promise<Patient[]> {
-    await this.initialize();
-    return this.patients;
-  }
-
-  async searchPatients(query: string): Promise<Patient[]> {
-    await this.initialize();
-    
-    if (!query || query.trim() === '') {
-      return [];
+    if (error) {
+      throw new Error(`Failed to fetch patient: ${error.message}`);
     }
 
-    // Special case for "*" to return all patients
-    if (query.trim() === '*') {
-      return this.patients;
+    if (!data?.length) {
+      return null;
     }
 
-    const searchTerms = query.toLowerCase().trim().split(' ').filter(term => term.length > 0);
-    
-    return this.patients.filter(patient => {
-      const searchableText = [
-        patient.id,
-        patient.patientId,
-        patient.firstName,
-        patient.lastName,
-        patient.dateOfBirth.toLocaleDateString(),
-        patient.insuranceProvider,
-        patient.primaryPhysician,
-        patient.bloodType,
-        ...(patient.allergies || [])
-      ].filter(Boolean).join(' ').toLowerCase();
-
-      return searchTerms.every(term => searchableText.includes(term));
-    });
+    return mapDatabaseToPatient(data[0]);
   }
 
   async updatePatient(updatedPatient: Patient): Promise<void> {
-    await this.initialize();
-    const index = this.patients.findIndex(p => p.id === updatedPatient.id);
-    if (index !== -1) {
-      this.patients[index] = updatedPatient;
-      // In a real app, we would make an API call here
-      await mockDataService.updatePatient(updatedPatient);
+    const { error } = await getClient()
+      .from('patients')
+      .update({
+        first_name: updatedPatient.firstName,
+        last_name: updatedPatient.lastName,
+        date_of_birth: updatedPatient.dateOfBirth.toISOString().split('T')[0],
+        gender: updatedPatient.gender,
+        blood_type: updatedPatient.bloodType,
+        height: updatedPatient.height,
+        weight: updatedPatient.weight,
+        primary_physician: updatedPatient.primaryPhysician,
+        insurance_provider: updatedPatient.insuranceProvider,
+        insurance_number: updatedPatient.insuranceNumber,
+        primary_address_type: updatedPatient.primaryAddressType,
+        phone: updatedPatient.phone,
+        email: updatedPatient.email,
+        allergies: updatedPatient.allergies,
+        updated_at: new Date().toISOString()
+      })
+      .eq('patient_id', updatedPatient.patientId);
+
+    if (error) {
+      throw new Error(`Failed to update patient: ${error.message}`);
     }
   }
 }

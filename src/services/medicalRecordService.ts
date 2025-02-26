@@ -1,6 +1,7 @@
 import { MedicalRecord, MedicalRecordType } from '../types/types';
-import { mockDataService } from './mockData';
 import { generateShortId } from '../lib/utils';
+import { getClient } from '../lib/supabase';
+import { MedicalRecordTable } from '../models/databaseModel';
 
 interface CreateMedicalRecordParams {
   patientId: string;
@@ -11,58 +12,65 @@ interface CreateMedicalRecordParams {
 }
 
 class MedicalRecordService {
-  private records: MedicalRecord[] = [];
-  private initialized = false;
 
-  async initialize() {
-    if (!this.initialized) {
-      this.records = await mockDataService.getMedicalRecords();
-      this.initialized = true;
+  async getPatientRecords(patientId: string): Promise<MedicalRecord[]> {    
+    const { data, error } = await getClient()
+      .from('medical_records')
+      .select()
+      .eq('patient_id', patientId) as { data: MedicalRecordTable[] | null, error: Error | null };
+
+    if (error) {
+      throw new Error(`Failed to fetch medical records: ${error.message}`);
     }
-  }
 
-  async getPatientRecords(patientId: string): Promise<MedicalRecord[]> {
-    await this.initialize();
-    return this.records
-      .filter(record => record.patientId === patientId)
-      .map(record => ({
-        ...record,
-        date: new Date(record.recordedAt)
-      }));
-  }
+    // QQQ
+    console.debug(data)
 
-  async searchRecords(query: string): Promise<MedicalRecord[]> {
-    await this.initialize();
-    const searchTerm = query.toLowerCase();
-    return this.records
-      .filter(record => 
-        record.title.toLowerCase().includes(searchTerm) ||
-        record.description.toLowerCase().includes(searchTerm) ||
-        record.recordType.toLowerCase().includes(searchTerm)
-      )
-      .map(record => ({
-        ...record,
-        date: new Date(record.recordedAt)
-      }));
+    return (data || []).map(record => ({
+      id: record.record_id,
+      recordId: record.record_id,
+      patientId: record.patient_id,
+      recordType: record.record_type as MedicalRecordType,
+      recordedAt: new Date(record.recorded_at),
+      title: record.title,
+      description: record.description,
+      details: record.details
+    }));
   }
 
   async updateRecord(updatedRecord: MedicalRecord): Promise<void> {
-    await this.initialize();
-    const index = this.records.findIndex(r => r.id === updatedRecord.id);
-    if (index !== -1) {
-      this.records[index] = updatedRecord;
-    } else {
-      throw new Error('Record not found');
+    const { error } = await getClient()
+      .from('medical_records')
+      .update({
+        record_type: updatedRecord.recordType,
+        title: updatedRecord.title,
+        description: updatedRecord.description,
+        details: updatedRecord.details,
+        updated_at: new Date().toISOString()
+      })
+      .eq('record_id', updatedRecord.recordId);
+
+    if (error) {
+      throw new Error(`Failed to update medical record: ${error.message}`);
     }
   }
 
   async addRecord(newRecord: MedicalRecord): Promise<void> {
-    await this.initialize();
-    // Remove the ID check since we're using generateShortId which guarantees uniqueness
-    this.records.push({
-      ...newRecord,
-      recordedAt: new Date() // Ensure recordedAt is always set to current time
-    });
+    const { error } = await getClient()
+      .from('medical_records')
+      .insert({
+        record_id: newRecord.recordId,
+        patient_id: newRecord.patientId,
+        record_type: newRecord.recordType,
+        recorded_at: newRecord.recordedAt.toISOString(),
+        title: newRecord.title,
+        description: newRecord.description,
+        details: newRecord.details
+      });
+
+    if (error) {
+      throw new Error(`Failed to add medical record: ${error.message}`);
+    }
   }
 
   createRecord(params: CreateMedicalRecordParams): MedicalRecord {

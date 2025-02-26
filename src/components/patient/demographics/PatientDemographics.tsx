@@ -51,15 +51,15 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
             firstName={patient.firstName}
             lastName={patient.lastName}
             dateOfBirth={patient.dateOfBirth}
-            sex={patient.sex}
+            gender={patient.gender}
           />
           <ContactCard
-            phone={patient.phone || ''}
-            email={patient.email || ''}
+            phone={patient.phone ?? ''}
+            email={patient.email ?? ''}
             onUpdateContact={onUpdatePatient ? handleUpdateContact : undefined}
           />
           <AddressCard 
-            addresses={patient.addresses || []}
+            addresses={patient.addresses ?? []}
             primaryAddressType={patient.primaryAddressType}
             onUpdateAddresses={onUpdatePatient ? handleUpdateAddresses : undefined}
             onUpdatePrimaryAddress={onUpdatePatient ? handleUpdatePrimaryAddress : undefined}

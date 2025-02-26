@@ -1,3 +1,8 @@
+-- Drop existing tables (in correct order to handle foreign key constraints)
+DROP TABLE IF EXISTS medical_records;
+DROP TABLE IF EXISTS addresses;
+DROP TABLE IF EXISTS patients;
+
 -- Enable UUID generation
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -8,7 +13,7 @@ CREATE TABLE patients (
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     date_of_birth DATE NOT NULL,
-    sex VARCHAR(10) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
     blood_type VARCHAR(10),
     height VARCHAR(20),
     weight VARCHAR(20),
@@ -18,6 +23,7 @@ CREATE TABLE patients (
     primary_address_type VARCHAR(20),
     phone VARCHAR(20),
     email VARCHAR(255),
+    conditions VARCHAR[] DEFAULT ARRAY[]::VARCHAR[],
     allergies VARCHAR[] DEFAULT ARRAY[]::VARCHAR[],
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -94,3 +100,37 @@ CREATE TABLE versions (
 
 -- Insert initial version
 INSERT INTO versions (version) VALUES ('0.1');
+
+-- Drop the function if it exists
+DROP FUNCTION IF EXISTS search_patients(text[]);
+
+-- Create a function to search patients with full text search
+CREATE FUNCTION search_patients(search_terms text[])
+RETURNS TABLE (
+  id uuid,
+  patient_id varchar(50),
+  first_name varchar(100),
+  last_name varchar(100),
+  date_of_birth date  -- Changed to DATE to match the schema
+) AS $$
+BEGIN
+  -- Convert search terms array to tsquery string with & between terms
+  -- Each term is processed to handle partial matches
+  RETURN QUERY
+  WITH processed_terms AS (
+    SELECT string_agg(quote_literal(term) || ':*', ' & ') as search_query
+    FROM unnest(search_terms) as term
+  )
+  SELECT DISTINCT p.id, p.patient_id, p.first_name, p.last_name, p.date_of_birth
+  FROM patients p, processed_terms pt
+  WHERE 
+    -- Search in first_name
+    to_tsvector('english', coalesce(p.first_name, '')) @@ to_tsquery('english', pt.search_query)
+    -- Search in last_name
+    OR to_tsvector('english', coalesce(p.last_name, '')) @@ to_tsquery('english', pt.search_query)
+    -- Search in patient_id (exact matches for ID)
+    OR p.patient_id ILIKE ANY (SELECT '%' || term || '%' FROM unnest(search_terms) as term)
+  ORDER BY p.last_name, p.first_name
+  LIMIT 100;
+END;
+$$ LANGUAGE plpgsql;

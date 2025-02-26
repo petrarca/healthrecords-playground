@@ -10,14 +10,6 @@ export const useMedicalRecords = (patientId: string) => {
   });
 };
 
-export const useSearchMedicalRecords = (query: string) => {
-  return useQuery<MedicalRecord[]>({
-    queryKey: ['medicalRecords', 'search', query],
-    queryFn: () => medicalRecordService.searchRecords(query),
-    enabled: !!query,
-  });
-};
-
 export const useUpdateMedicalRecord = () => {
   const queryClient = useQueryClient();
 

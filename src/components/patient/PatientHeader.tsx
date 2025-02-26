@@ -1,5 +1,5 @@
 import React from 'react';
-import { Patient } from '../../types/types';
+import { Patient, Gender } from '../../types/types';
 import { calculateAge } from '../../lib/utils';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,14 +7,18 @@ interface PatientHeaderProps {
   patient: Patient;
 }
 
-const getGenderTextColor = (sex: 'M' | 'F' | 'Other') => {
-  switch (sex) {
-    case 'M':
-      return 'text-blue-700';
-    case 'F':
-      return 'text-pink-700';
+function getGenderTextColor(gender: Gender): string {
+  switch (gender) {
+    case 'male':
+      return 'text-blue-600';
+    case 'female':
+      return 'text-pink-600';
+    case 'other':
+      return 'text-purple-600';
+    case 'unknown':
+      return 'text-gray-600';
     default:
-      return 'text-purple-700';
+      return 'text-gray-600';
   }
 };
 
@@ -52,8 +56,8 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
                 <div className="mt-1 flex items-center gap-2 text-sm text-gray-600">
                   <span className="font-medium">{age} years</span>
                   <span>•</span>
-                  <span className={`font-medium ${getGenderTextColor(patient.sex)}`}>
-                    {patient.sex}
+                  <span className={`font-medium ${getGenderTextColor(patient.gender)}`}>
+                    {patient.gender}
                   </span>
                   <span>•</span>
                   <span className="font-medium text-red-700">{patient.bloodType}</span>
