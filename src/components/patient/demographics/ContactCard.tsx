@@ -1,6 +1,6 @@
 import React from 'react';
 import { Phone, Check, X, Pencil } from 'lucide-react';
-import { Card } from '../../ui/Card';
+import { Card } from '../../ui/card';
 import { CardDropdown } from '../../ui/cardDropdown';
 
 interface ContactCardProps {

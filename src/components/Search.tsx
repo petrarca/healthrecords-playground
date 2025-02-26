@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { SearchResult, SearchResultType } from "../types/search";
 import { searchService } from "../services/search/searchService";
 import { SearchType } from "./ui/searchType";
+import { SEARCH_CONSTANTS } from "../constants/search";
 
 const searchTypeOptions = [
   { 
@@ -45,7 +46,7 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
   const performSearch = useCallback((value: string) => {
     const trimmedValue = value.trim();
     // Allow * to bypass the minimum length check
-    if (trimmedValue === '*' || trimmedValue.length >= MIN_SEARCH_LENGTH) {
+    if (trimmedValue === SEARCH_CONSTANTS.SHOW_ALL_RESULTS || trimmedValue.length >= MIN_SEARCH_LENGTH) {
       setIsSearching(true);
       searchService.search(value, { type: searchType })
         .then(searchResults => {

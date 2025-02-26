@@ -1,6 +1,6 @@
 import React from 'react';
 import { User2 } from 'lucide-react';
-import { Card } from '../../ui/Card';
+import { Card } from '../../ui/card';
 
 interface PersonalInfoCardProps {
   firstName: string;

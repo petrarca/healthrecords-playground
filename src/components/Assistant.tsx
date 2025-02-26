@@ -5,7 +5,7 @@ interface ChatProps {
   onClose: () => void;
 }
 
-export const Chat: React.FC<ChatProps> = ({ isOpen, onClose }) => {
+export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {

@@ -1,22 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search } from './Search';
 import { UserMenu } from './UserMenu';
 import { SearchResult, SearchResultType } from '../types/search';
 import { navigationService } from '../services/navigationService';
+import { ConnectionStatus } from './ConnectionStatus';
 
 interface ShellHeaderProps {
   onSearchResult: (result: SearchResult) => void;
   onMobileMenuClick: () => void;
-  onChatClick: () => void;
-  isChatOpen: boolean;
+  onAssistantClick: () => void;
+  isAssistantOpen: boolean;
 }
 
 export const ShellHeader: React.FC<ShellHeaderProps> = ({ 
   onSearchResult, 
   onMobileMenuClick,
-  onChatClick,
-  isChatOpen
+  onAssistantClick,
+  isAssistantOpen
 }) => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatDateTime = (date: Date) => {
+    return date.toLocaleString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  };
+
   return (
     <header className="sticky top-0 z-10 bg-blue-50 border-b border-gray-200 shadow-sm">
       <div className="max-w-[1600px] mx-auto">
@@ -47,27 +69,37 @@ export const ShellHeader: React.FC<ShellHeaderProps> = ({
           </div>
 
           {/* Center - Search */}
-          <div className="flex-1 max-w-2xl mx-2 sm:mx-4">
+          <div className="flex-1 max-w-3xl px-4">
             <Search onResultSelect={onSearchResult} />
           </div>
 
-          {/* Right side */}
-          <div className="flex items-center gap-2">
+          {/* Right side - Actions */}
+          <div className="flex items-center space-x-4">
+            {/* DateTime Display */}
+            <div className="hidden md:block text-sm text-gray-600">
+              {formatDateTime(currentTime)}
+            </div>
+
+            {/* Connection Status */}
+            <div className="hidden md:block">
+              <ConnectionStatus />
+            </div>
+
             {/* Chat Toggle Button */}
             <button
-              onClick={onChatClick}
-              className={`hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-150 ${
-                isChatOpen 
-                  ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              onClick={onAssistantClick}
+              className={`flex items-center justify-center h-10 w-10 rounded-lg transition-colors ${
+                isAssistantOpen 
+                  ? 'bg-blue-100 text-blue-700' 
+                  : 'hover:bg-gray-100 text-gray-600'
               }`}
+              aria-label="Toggle Assistant"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                   d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" 
                 />
               </svg>
-              <span className="font-medium">Chat</span>
             </button>
 
             {/* User Menu */}

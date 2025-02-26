@@ -2,6 +2,7 @@ import { Patient } from '../../types/types';
 import { getClient } from '../../lib/supabase';
 import { PatientTable } from '../../models/databaseModel';
 import { mapDatabaseToPatient } from '../mappers/patientMapper';
+import { SEARCH_CONSTANTS } from '../../constants/search';
 
 type ParsedSearchQuery = {
   type: 'all' | 'text';
@@ -15,7 +16,7 @@ function parseSearchQuery(query: string): ParsedSearchQuery {
     return { type: 'text', value: '' };
   }
 
-  if (trimmedQuery === '*') {
+  if (trimmedQuery === SEARCH_CONSTANTS.SHOW_ALL_RESULTS) {
     return { type: 'all', value: '' };
   }
 

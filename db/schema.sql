@@ -115,44 +115,62 @@ INSERT INTO versions (version) VALUES ('0.1');
 *   - Consider adding GIN indexes on to_tsvector('simple', first_name) and last_name
 *   - Results are limited to 100 records
 */
-DROP FUNCTION IF EXISTS search_patients(text[]);
 
 CREATE OR REPLACE FUNCTION search_patients(search_terms text[])
 RETURNS TABLE (
-  id uuid,
-  patient_id varchar(50),
-  first_name varchar(100),
-  last_name varchar(100),
-  date_of_birth date
+    id uuid,
+    patient_id varchar(50),
+    first_name varchar(100),
+    last_name varchar(100),
+    date_of_birth date
 ) AS $$
 BEGIN
-  RETURN QUERY
-  WITH term_patterns AS (
-    SELECT term, 
-           term || ':*' AS prefix_term,
-           '%' || term || '%' AS like_pattern
-    FROM unnest(search_terms) AS term
-    WHERE trim(term) != ''
-  )
-  SELECT DISTINCT p.id, p.patient_id, p.first_name, p.last_name, p.date_of_birth
-  FROM patients p
-  WHERE (
-    SELECT COUNT(*)
-    FROM term_patterns t
-  ) = (
-    -- This subquery counts how many of the search terms match for each patient
-    SELECT COUNT(*)
-    FROM term_patterns t
-    WHERE 
-      -- Full text search on names
-      to_tsvector('simple', coalesce(p.first_name, '')) @@ to_tsquery('simple', t.prefix_term)
-      OR to_tsvector('simple', coalesce(p.last_name, '')) @@ to_tsquery('simple', t.prefix_term)
-      -- ILIKE search for partial matches on all fields
-      OR p.first_name ILIKE t.like_pattern
-      OR p.last_name ILIKE t.like_pattern
-      OR p.patient_id ILIKE t.like_pattern
-  )
-  ORDER BY p.last_name, p.first_name
-  LIMIT 100;
+    RETURN QUERY
+    WITH term_patterns AS (
+        SELECT 
+            term,
+            term || ':*' AS prefix_term,
+            '%' || term || '%' AS like_pattern
+        FROM 
+            unnest(search_terms) AS term
+        WHERE 
+            trim(term) != ''
+    )
+    SELECT DISTINCT p.id, p.patient_id, p.first_name, p.last_name, p.date_of_birth
+    FROM patients p
+    WHERE (
+        SELECT COUNT(*)
+        FROM term_patterns t
+    ) = (
+        -- This subquery counts how many of the search terms match for each patient
+        SELECT COUNT(*)
+        FROM term_patterns t
+        WHERE
+            -- Full text search on names
+            to_tsvector('simple', coalesce(p.first_name, '')) @@ to_tsquery('simple', t.prefix_term)
+            OR to_tsvector('simple', coalesce(p.last_name, '')) @@ to_tsquery('simple', t.prefix_term)
+            -- ILIKE search for partial matches on all fields
+            OR p.first_name ILIKE t.like_pattern
+            OR p.last_name ILIKE t.like_pattern
+            OR p.patient_id ILIKE t.like_pattern
+            -- Date of birth searches
+            OR to_char(p.date_of_birth, 'YYYY') = t.term
+            OR to_char(p.date_of_birth, 'YYYY-MM') = t.term
+            OR to_char(p.date_of_birth, 'YYYY-MM-DD') = t.term
+            OR to_char(p.date_of_birth, 'MM/DD/YYYY') = t.term
+            OR to_char(p.date_of_birth, 'YYYY') LIKE t.like_pattern
+    )
+    ORDER BY p.last_name, p.first_name
+    LIMIT 100;
 END;
-$$ LANGUAGE plpgsql; 
+$$ LANGUAGE plpgsql;
+
+-- Health check function
+CREATE OR REPLACE FUNCTION health_check()
+RETURNS boolean AS $$
+BEGIN
+  -- Simple health check that verifies database connection
+  -- and basic functionality
+  RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql;

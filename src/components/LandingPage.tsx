@@ -73,6 +73,13 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Disclaimer */}
+      <div className="mt-12 text-center px-4 py-3 bg-blue-50 rounded-lg max-w-2xl mx-auto">
+        <p className="text-sm text-blue-800">
+          ⚠️ This is a demonstration application containing test data only. Not for clinical use.
+        </p>
+      </div>
     </div>
   );
 };

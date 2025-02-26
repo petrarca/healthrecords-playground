@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SearchResult } from '../types/search';
 import { navigationService } from '../services/navigationService';
 import { ShellHeader } from './ShellHeader';
-import { Chat } from './Chat';
+import { Assistant } from './Assistant';
 
 interface ShellProps {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ interface ShellProps {
 
 export const Shell: React.FC<ShellProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
 
   const handleSearchResult = (result: SearchResult) => {
     navigationService.navigateTo(result.type, result.id);
@@ -21,19 +21,19 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
       <ShellHeader 
         onSearchResult={handleSearchResult}
         onMobileMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        onChatClick={() => setIsChatOpen(!isChatOpen)}
-        isChatOpen={isChatOpen}
+        onAssistantClick={() => setIsAssistantOpen(!isAssistantOpen)}
+        isAssistantOpen={isAssistantOpen}
       />
       
       {/* Main Content */}
       <main className={`flex-1 overflow-hidden max-w-[1600px] mx-auto w-full px-1 sm:px-2 py-6 transition-all duration-300 ${
-        isChatOpen ? 'mr-96' : ''
+        isAssistantOpen ? 'mr-96' : ''
       }`}>
         {children}
       </main>
 
       {/* Chat Component */}
-      <Chat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+      <Assistant isOpen={isAssistantOpen} onClose={() => setIsAssistantOpen(false)} />
 
       {/* Mobile Sidebar */}
       {isSidebarOpen && (
