@@ -1,6 +1,6 @@
 import React from 'react';
 import { Phone } from 'lucide-react';
-import { Card } from '../../ui/card';
+import { Card } from '../../ui/Card';
 
 interface InsuranceCardProps {
   provider?: string;
