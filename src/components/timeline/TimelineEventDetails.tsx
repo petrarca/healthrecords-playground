@@ -326,6 +326,7 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
       updateRecord(recordToSave);
       setRecordState(RecordState.VIEWING);
       setEditedRecord(recordToSave);
+      onUpdateRecord?.(recordToSave);
     }
   };
 
