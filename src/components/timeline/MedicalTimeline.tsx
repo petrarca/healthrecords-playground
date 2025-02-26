@@ -396,15 +396,17 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
         <div className="flex-[1.5] min-w-[350px] ml-4">
           <TimelineEventDetails 
             record={selectedRecord || undefined}
+            patientId={patientId || ''}
             onUpdateRecord={async (updatedRecord) => {
               try {
-                const result = await updateRecord.mutateAsync(updatedRecord);
-                setSelectedRecord(result);
+                await updateRecord.mutateAsync(updatedRecord);
+                setSelectedRecord(updatedRecord);
+                onRecordSelect?.(updatedRecord.id);
               } catch (error) {
                 console.error('Failed to update record:', error);
               }
             }}
-            onRecordAdded={(newRecord) => handleRecordSelect(newRecord)}
+            onRecordAdded={handleRecordSelect}
           />
         </div>
       </div>

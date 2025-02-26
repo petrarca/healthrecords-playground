@@ -6,7 +6,7 @@ export const useMedicalRecords = (patientId: string) => {
   return useQuery<MedicalRecord[]>({
     queryKey: ['medicalRecords', patientId],
     queryFn: () => medicalRecordService.getPatientRecords(patientId),
-    gcTime: 0,
+    //gcTime: 0,
   });
 };
 
@@ -27,20 +27,13 @@ export const useUpdateMedicalRecord = () => {
       return updatedRecord;
     },
     onSuccess: (updatedRecord) => {
-      // Update the cache directly instead of invalidating
-      queryClient.setQueryData(['medicalRecords', updatedRecord.patientId], (oldData: MedicalRecord[] | undefined) => {
-        if (!oldData) return [updatedRecord];
-        return oldData.map(record => record.id === updatedRecord.id ? updatedRecord : record);
+      // Update the specific record in the cache
+      queryClient.setQueryData<MedicalRecord[]>(['medicalRecords', updatedRecord.patientId], (oldRecords) => {
+        if (!oldRecords) return oldRecords;
+        return oldRecords.map(record => 
+          record.id === updatedRecord.id ? updatedRecord : record
+        );
       });
-      
-      // Update any search queries that might contain this record
-      queryClient.setQueriesData(
-        { queryKey: ['medicalRecords', 'search'] },
-        (oldData: MedicalRecord[] | undefined) => {
-          if (!oldData) return oldData;
-          return oldData.map(record => record.id === updatedRecord.id ? updatedRecord : record);
-        }
-      );
     },
   });
 };
@@ -51,15 +44,12 @@ export const useAddMedicalRecord = () => {
   return useMutation({
     mutationFn: async (newRecord: MedicalRecord) => {
       await medicalRecordService.addRecord(newRecord);
+      return newRecord;
     },
-    onSuccess: (_, newRecord) => {
-      // Invalidate the patient's records query
-      queryClient.invalidateQueries({
-        queryKey: ['medicalRecords', newRecord.patientId],
-      });
-      // Invalidate any search queries
-      queryClient.invalidateQueries({
-        queryKey: ['medicalRecords', 'search'],
+    onSuccess: (newRecord) => {
+      // Update the cache by appending the new record to existing data
+      queryClient.setQueryData<MedicalRecord[]>(['medicalRecords', newRecord.patientId], (oldData) => {
+        return oldData ? [...oldData, newRecord] : [newRecord];
       });
     },
   });

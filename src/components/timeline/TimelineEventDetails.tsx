@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MedicalRecord, MedicalRecordType } from '../../types/medicalRecord';
 import { metadataService } from '../../services/metadataService';
 import { medicalRecordService } from '../../services/medicalRecordService';
@@ -16,6 +16,7 @@ enum RecordState {
 
 interface TimelineEventDetailsProps {
   record?: MedicalRecord;
+  patientId: string;
   onUpdateRecord?: (record: MedicalRecord) => void;
   onRecordAdded?: (record: MedicalRecord) => void;
 }
@@ -40,6 +41,13 @@ interface HeaderProps {
 }
 
 const RecordForm: React.FC<RecordFormProps> = ({ record, onUpdateField }) => {
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Focus the title input when the form mounts
+    titleInputRef.current?.focus();
+  }, []);
+
   const renderMetadataFields = () => {
     if (!record.recordType) return null;
 
@@ -84,6 +92,7 @@ const RecordForm: React.FC<RecordFormProps> = ({ record, onUpdateField }) => {
           Title <span className="text-red-500">*</span>
         </label>
         <input
+          ref={titleInputRef}
           id="record-title"
           type="text"
           className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${
@@ -263,6 +272,7 @@ const Header: React.FC<HeaderProps> = ({
 
 export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
   record,
+  patientId,
   onUpdateRecord,
   onRecordAdded,
 }) => {
@@ -293,7 +303,7 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
   };
 
   const handleNewRecord = (type: MedicalRecordType) => {
-    const newRecord = medicalRecordService.createRecord({ patientId: record?.patientId ?? '', type });
+    const newRecord = medicalRecordService.createRecord({ patientId, type });
     setEditedRecord(newRecord);
     setRecordState(RecordState.CREATING);
   };
@@ -304,24 +314,18 @@ export const TimelineEventDetails: React.FC<TimelineEventDetailsProps> = ({
     const recordToSave = recordState === RecordState.EDITING ? 
       { ...editedRecord, id: record!.id } : editedRecord;
 
-    const onSuccess = () => {
-      if (recordState === RecordState.CREATING) {
-        onRecordAdded?.(recordToSave);
-      } else {
-        onUpdateRecord?.(recordToSave);
-      }
+    if (recordState === RecordState.CREATING) {
+      addRecord(recordToSave, {
+        onSuccess: () => {
+          onRecordAdded?.(recordToSave);
+          setRecordState(RecordState.VIEWING);
+          setEditedRecord(recordToSave);
+        }
+      });
+    } else {
+      updateRecord(recordToSave);
       setRecordState(RecordState.VIEWING);
       setEditedRecord(recordToSave);
-    };
-
-    const onError = (error: Error) => {
-      console.error('Failed to save record:', error);
-    };
-
-    if (recordState === RecordState.CREATING) {
-      addRecord(recordToSave, { onSuccess, onError });
-    } else {
-      updateRecord(recordToSave, { onSuccess, onError });
     }
   };
 

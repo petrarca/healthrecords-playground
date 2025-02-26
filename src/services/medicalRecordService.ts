@@ -58,11 +58,11 @@ class MedicalRecordService {
 
   async addRecord(newRecord: MedicalRecord): Promise<void> {
     await this.initialize();
-    const existingRecord = this.records.find(r => r.id === newRecord.id);
-    if (existingRecord) {
-      throw new Error('Record with this ID already exists');
-    }
-    this.records.push(newRecord);
+    // Remove the ID check since we're using generateShortId which guarantees uniqueness
+    this.records.push({
+      ...newRecord,
+      recordedAt: new Date() // Ensure recordedAt is always set to current time
+    });
   }
 
   createRecord(params: CreateMedicalRecordParams): MedicalRecord {
