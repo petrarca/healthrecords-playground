@@ -42,6 +42,19 @@ export const ContextDisplay: React.FC = () => {
     }
   }, [isDragging, dragOffset]);
 
+  // React component event handler
+  const handleTouchMoveComponent = useCallback((e: React.TouchEvent<HTMLButtonElement>) => {
+    if (isDragging && e.touches.length === 1) {
+      const touch = e.touches[0];
+      setPosition({
+        x: touch.clientX - dragOffset.x,
+        y: touch.clientY - dragOffset.y
+      });
+      e.preventDefault(); // Prevent scrolling during drag
+    }
+  }, [isDragging, dragOffset]);
+
+  // DOM event handler
   const handleTouchMove = useCallback((e: TouchEvent) => {
     if (isDragging && e.touches.length === 1) {
       const touch = e.touches[0];
@@ -57,6 +70,12 @@ export const ContextDisplay: React.FC = () => {
     setIsDragging(false);
   }, []);
 
+  // React component event handler
+  const handleTouchEndComponent = useCallback((_e: React.TouchEvent<HTMLButtonElement>) => {
+    setIsDragging(false);
+  }, []);
+
+  // DOM event handler
   const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
   }, []);
@@ -122,8 +141,8 @@ export const ContextDisplay: React.FC = () => {
         className="handle w-full cursor-move bg-blue-200 rounded-t-sm px-2 py-1 mb-1 text-left" 
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        onTouchMove={handleTouchMoveComponent}
+        onTouchEnd={handleTouchEndComponent}
         onKeyDown={handleKeyDown}
         aria-label="Drag context panel, use arrow keys to move"
       >
