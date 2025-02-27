@@ -16,6 +16,6 @@ export class GreetingIntentHandler implements IntentHandler {
    * Handles the greeting
    */
   async handle(_content: string): Promise<string> {
-    return 'Hello! How can I help you with your medical inquiries today?';
+    return 'Hello! How can I assist you today?';
   }
 }

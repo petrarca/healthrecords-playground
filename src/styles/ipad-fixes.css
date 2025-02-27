@@ -24,6 +24,19 @@
     z-index: 10;
   }
   
+  /* Ensure environment variables popup is visible */
+  .ipad-footer-fix .absolute.right-0.bottom-full {
+    bottom: calc(100% + 1px) !important;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 30 !important;
+  }
+  
+  /* Make sure dialog can be positioned absolutely */
+  dialog {
+    position: absolute !important;
+  }
+  
   /* Global fixes */
   html, body, #root {
     overflow: hidden !important;

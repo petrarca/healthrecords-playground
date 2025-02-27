@@ -10,6 +10,67 @@ interface ChatProps {
   onClose: () => void;
 }
 
+// Create a separate component for message content
+const MessageContent: React.FC<{ content: string }> = ({ content }) => {
+  const navigate = useNavigate();
+  const contentRef = useRef<HTMLElement>(null);
+  
+  // Sanitize the HTML to prevent XSS attacks
+  const sanitizedHtml = DOMPurify.sanitize(content);
+  
+  useEffect(() => {
+    if (contentRef.current) {
+      const links = contentRef.current.querySelectorAll('a');
+      
+      const handleLinkClick = (e: Event) => {
+        e.preventDefault();
+        const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+        if (href) {
+          navigate(href);
+        }
+      };
+      
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+          if (href) {
+            navigate(href);
+          }
+        }
+      };
+      
+      links.forEach(link => {
+        // Add click listener
+        link.addEventListener('click', handleLinkClick);
+        
+        // Ensure links are keyboard accessible
+        link.setAttribute('tabindex', '0');
+        
+        // Add keyboard listener
+        link.addEventListener('keydown', handleKeyDown);
+      });
+      
+      // Cleanup function to remove event listeners
+      return () => {
+        links.forEach(link => {
+          link.removeEventListener('click', handleLinkClick);
+          link.removeEventListener('keydown', handleKeyDown);
+        });
+      };
+    }
+  }, [content, navigate]);
+  
+  return (
+    <section 
+      ref={contentRef}
+      className="text-sm leading-relaxed"
+      aria-label="Assistant message content"
+      dangerouslySetInnerHTML={{ __html: sanitizedHtml.replace(/\n/g, '<br>') }}
+    />
+  );
+};
+
 export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
   const [message, setMessage] = useState('');
   const { messages, isProcessing, sendMessage } = useAssistant();
@@ -49,29 +110,6 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
 
   const formatTime = (date: Date) => {
     return format(date, 'HH:mm');
-  };
-
-  // Function to render message content with HTML
-  const renderMessageContent = (content: string) => {
-    // Sanitize the HTML to prevent XSS attacks
-    const sanitizedHtml = DOMPurify.sanitize(content);
-    
-    return (
-      <div 
-        className="text-sm leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: sanitizedHtml.replace(/\n/g, '<br>') }}
-        onClick={(e) => {
-          // Handle clicks on links
-          if (e.target instanceof HTMLAnchorElement) {
-            e.preventDefault();
-            const href = e.target.getAttribute('href');
-            if (href) {
-              navigate(href);
-            }
-          }
-        }}
-      />
-    );
   };
 
   return (
@@ -137,7 +175,7 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
                     ? 'bg-blue-50 text-gray-800 max-w-[90%]' 
                     : 'bg-purple-100 text-gray-800 w-full'
                   } rounded-2xl px-4 py-2`}>
-                  {renderMessageContent(msg.content)}
+                  <MessageContent content={msg.content} />
                 </div>
                 <span className={`text-xs text-gray-500 ${msg.sender === 'user' ? 'mr-2' : 'ml-2'}`}>
                   {formatTime(msg.timestamp)}

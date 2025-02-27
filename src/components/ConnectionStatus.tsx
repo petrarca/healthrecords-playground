@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getClient } from '../lib/supabase';
 
 export const ConnectionStatus: React.FC = () => {
   const [isOnline, setIsOnline] = useState(false);
   const [showEnvVars, setShowEnvVars] = useState(false);
   const [loading, setLoading] = useState(true);
+  const popupRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const checkConnection = async () => {
     try {
@@ -22,6 +24,26 @@ export const ConnectionStatus: React.FC = () => {
     const interval = setInterval(checkConnection, 30000); // Check every 30 seconds
     return () => clearInterval(interval);
   }, []);
+
+  // Handle click outside to close popup
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        showEnvVars && 
+        popupRef.current && 
+        !popupRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setShowEnvVars(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showEnvVars]);
 
   const envVars = {
     'VITE_SUPABASE_URL': import.meta.env.VITE_SUPABASE_URL || 'Not set',
@@ -42,6 +64,7 @@ export const ConnectionStatus: React.FC = () => {
   return (
     <div className="relative">
       <button
+        ref={buttonRef}
         onClick={() => setShowEnvVars(!showEnvVars)}
         className="flex items-center space-x-2 px-2 py-1 rounded hover:bg-gray-100"
         aria-label="Connection Status"
@@ -51,7 +74,10 @@ export const ConnectionStatus: React.FC = () => {
       </button>
 
       {showEnvVars && (
-        <div className="absolute right-0 mt-2 w-[32rem] bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+        <div 
+          ref={popupRef}
+          className="absolute right-0 bottom-full mb-2 w-[32rem] bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+        >
           <div className="p-4">
             <h3 className="text-sm font-medium text-gray-900 mb-3">Environment Variables</h3>
             <div className="space-y-2">
