@@ -43,12 +43,14 @@ export class SearchIntentHandler implements IntentHandler {
           // Navigate to the object 
           navigationService.navigateTo(result.type, result.id);
 // TODO: Resolve URL          return `Found: <a href="/patients/${result.id}/timeline" class="text-blue-600 font-semibold hover:underline">${result.title}</a>${result.subtitle ? ` (${result.subtitle})` : ''}. Navigating to patient record...`;
-          return `Found: ${result.title}${result.subtitle ? ` (${result.subtitle})` : ''}.`;
+          const subtitle = result.subtitle ? ` (${result.subtitle})` : '';
+          return `Found: ${result.title}${subtitle}.`;
         } else {
           // If multiple items are found, show list
           const result = searchResults.map(result => {
   // TODO: Resolve URL            return `- <a href="/patients/${result.id}/timeline" class="text-blue-600 font-semibold hover:underline">${result.title}</a> ${result.subtitle ? `(${result.subtitle})` : ''}`;
-            return `- ${result.title} ${result.subtitle ? `(${result.subtitle})` : ''}`;
+            const subtitle = result.subtitle ? `(${result.subtitle})` : '';
+            return `- ${result.title} ${subtitle}`;
           }).join('\n');
           
           return `I found multiple matches for "${searchQuery}":\n${result}`;

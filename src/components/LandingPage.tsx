@@ -87,6 +87,17 @@ export const LandingPage: React.FC = () => {
           ⚠️ This is a demonstration application containing test data only. Not for clinical use.
         </p>
       </div>
+
+      {/* Assistant Shortcut Info */}
+      <div className="mt-4 text-center">
+        <p className="text-sm text-gray-600 flex items-center justify-center">
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Press <kbd className="mx-1 px-2 py-1 text-xs font-semibold bg-gray-100 border border-gray-300 rounded">Shift</kbd> + <kbd className="mx-1 px-2 py-1 text-xs font-semibold bg-gray-100 border border-gray-300 rounded">Space</kbd> to open the Assistant
+        </p>
+      </div>
     </div>
   );
 };

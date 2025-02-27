@@ -36,14 +36,16 @@ export class PatientRecordIntentHandler implements IntentHandler {
           
           // Navigate to the patient's timeline
           navigationService.navigateToPatientTimeline(result.id);
-          return `Found patient: <a href="/patients/${result.id}/timeline" class="text-blue-600 font-semibold hover:underline">${result.title}</a>${result.subtitle ? ` (${result.subtitle})` : ''}. Navigating to patient record...`;
+          const subtitle = result.subtitle ? ` (${result.subtitle})` : '';
+          return 'Found patient: <a href="/patients/' + result.id + '/timeline" class="text-blue-600 font-semibold hover:underline">' + result.title + '</a>' + subtitle + '. Navigating to patient record...';
         } else {
           // If multiple patients found, show list
           const patientList = searchResults.map(result => {
-            return `- <a href="/patients/${result.id}/timeline" class="text-blue-600 font-semibold hover:underline">${result.title}</a> ${result.subtitle ? `(${result.subtitle})` : ''}`;
+            const subtitle = result.subtitle ? `(${result.subtitle})` : '';
+            return '- <a href="/patients/' + result.id + '/timeline" class="text-blue-600 font-semibold hover:underline">' + result.title + '</a> ' + subtitle;
           }).join('\n');
           
-          return `I found multiple patients matching "${patientSearchQuery}":\n${patientList}`;
+          return 'I found multiple patients matching "' + patientSearchQuery + '":\n' + patientList;
         }
       } else {
         return "I couldn't find the patient name. Please use a format like 'record of John Smith' where 'John Smith' is the patient name.";

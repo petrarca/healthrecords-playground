@@ -3,7 +3,6 @@ import { Search } from './Search';
 import { UserMenu } from './UserMenu';
 import { SearchResult, SearchResultType } from '../types/search';
 import { navigationService } from '../services/navigationService';
-import { ConnectionStatus } from './ConnectionStatus';
 
 interface ShellHeaderProps {
   onSearchResult: (result: SearchResult) => void;
@@ -78,11 +77,6 @@ export const ShellHeader: React.FC<ShellHeaderProps> = ({
             {/* DateTime Display */}
             <div className="hidden md:block text-sm text-gray-600">
               {formatDateTime(currentTime)}
-            </div>
-
-            {/* Connection Status */}
-            <div className="hidden md:block">
-              <ConnectionStatus />
             </div>
 
             {/* Chat Toggle Button */}
