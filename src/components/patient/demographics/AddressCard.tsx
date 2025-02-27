@@ -2,6 +2,8 @@ import React from 'react';
 import { Home, Plus, Check, X, Pencil, Pin, PinOff } from 'lucide-react';
 import { Card } from '../../ui/Card';
 import { CardDropdown } from '../../ui/cardDropdown';
+import { Select } from '../../ui/select';
+import { Badge } from '../../ui/badge';
 import { Address, AddressType } from '../../../types/address';
 
 interface AddressCardProps {
@@ -151,50 +153,62 @@ export const AddressCard: React.FC<AddressCardProps> = ({
       <div className="grid gap-2 text-sm">
         {editedAddresses.map((address) => (
           <div key={address.id} className="border rounded-lg p-3 bg-white shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="flex-1">
+            <div className="flex items-start gap-3">
+              <div className="flex-1 max-w-lg">
                 {editingAddressId === address.id ? (
-                  <div className="grid grid-cols-2 gap-2">
-                    <label 
-                      htmlFor={`address-line-${address.id ?? ''}`}
-                      className="block text-gray-500 mb-1"
-                    >
-                      Address
-                    </label>
-                    <input
-                      id={`address-line-${address.id ?? ''}`}
-                      type="text"
-                      value={address.addressLine ?? ''}
-                      onChange={(e) => handleUpdateAddress(address, 'addressLine', e.target.value)}
-                      className="flex-1 px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
-                      placeholder="Enter address"
-                    />
-                    <label 
-                      htmlFor={`address-type-${address.id ?? ''}`}
-                      className="block text-gray-500 mb-1"
-                    >
-                      Address Type
-                    </label>
-                    <select
-                      id={`address-type-${address.id ?? ''}`}
-                      value={address.addressType}
-                      onChange={(e) => handleUpdateAddress(address, 'addressType', e.target.value as AddressType)}
-                      className="px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
-                    >
-                      <option value="HOME">Home</option>
-                      <option value="WORK">Work</option>
-                      <option value="OTHER">Other</option>
-                    </select>
+                  <div className="space-y-2">
+                    <div className="flex gap-4">
+                      <div className="flex-none">
+                        <Select
+                          id={`address-type-${address.id ?? ''}`}
+                          value={address.addressType}
+                          onChange={(value) => handleUpdateAddress(address, 'addressType', value as AddressType)}
+                          className="w-28"
+                          label="Type"
+                          size="sm"
+                          options={[
+                            { value: 'HOME', label: 'Home' },
+                            { value: 'WORK', label: 'Work' },
+                            { value: 'OTHER', label: 'Other' }
+                          ]}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label 
+                          htmlFor={`address-line-${address.id ?? ''}`}
+                          className="text-gray-500 text-sm"
+                        >
+                          Address
+                        </label>
+                        <input
+                          id={`address-line-${address.id ?? ''}`}
+                          type="text"
+                          value={address.addressLine ?? ''}
+                          onChange={(e) => handleUpdateAddress(address, 'addressLine', e.target.value)}
+                          className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
+                          placeholder="Enter address"
+                        />
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <div>
+                    <p className="text-gray-600 mb-1">{address.addressLine}</p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium">{address.addressType}</span>
+                        <Badge>
+                          {address.addressType === 'HOME' ? 'Home' :
+                           address.addressType === 'WORK' ? 'Work' :
+                           'Other'}
+                        </Badge>
                         {address.id === primaryAddress && (
-                          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200">
+                          <Badge
+                            background="bg-green-50"
+                            textColor="text-green-600"
+                            borderColor="border-green-200"
+                          >
                             Primary
-                          </span>
+                          </Badge>
                         )}
                       </div>
                       <CardDropdown
@@ -236,9 +250,9 @@ export const AddressCard: React.FC<AddressCardProps> = ({
                             onUpdatePrimaryAddress?.(null);
                           }
                         }}
+                        disabled={newAddress !== null || editingAddressId !== null}
                       />
                     </div>
-                    <p className="text-gray-600">{address.addressLine}</p>
                   </div>
                 )}
               </div>
@@ -250,32 +264,42 @@ export const AddressCard: React.FC<AddressCardProps> = ({
         ))}
         {newAddress && (
           <div key="new" className="border rounded-lg p-3 bg-white shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="flex-1">
-                <label 
-                  htmlFor="address-line-new"
-                  className="block text-gray-500 mb-1"
-                >
-                  Address
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    id="address-line-new"
-                    type="text"
-                    value={newAddress.addressLine ?? ''}
-                    onChange={(e) => handleUpdateAddress(newAddress, 'addressLine', e.target.value)}
-                    className="flex-1 px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
-                    placeholder="Enter address"
-                  />
-                  <select
-                    value={newAddress.addressType}
-                    onChange={(e) => handleUpdateAddress(newAddress, 'addressType', e.target.value as AddressType)}
-                    className="px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
-                  >
-                    <option value="HOME">Home</option>
-                    <option value="WORK">Work</option>
-                    <option value="OTHER">Other</option>
-                  </select>
+            <div className="flex items-start gap-3">
+              <div className="flex-1 max-w-lg">
+                <div className="space-y-2">
+                  <div className="flex gap-4">
+                    <div className="flex-none">
+                      <Select
+                        id="address-type-new"
+                        value={newAddress.addressType}
+                        onChange={(value) => handleUpdateAddress(newAddress, 'addressType', value as AddressType)}
+                        className="w-28"
+                        label="Type"
+                        size="sm"
+                        options={[
+                          { value: 'HOME', label: 'Home' },
+                          { value: 'WORK', label: 'Work' },
+                          { value: 'OTHER', label: 'Other' }
+                        ]}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label 
+                        htmlFor="address-line-new"
+                        className="text-gray-500 text-sm"
+                      >
+                        Address
+                      </label>
+                      <input
+                        id="address-line-new"
+                        type="text"
+                        value={newAddress.addressLine ?? ''}
+                        onChange={(e) => handleUpdateAddress(newAddress, 'addressLine', e.target.value)}
+                        className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
+                        placeholder="Enter address"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

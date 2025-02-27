@@ -86,29 +86,25 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
           aria-label="View patient profile and measurements"
         >
           <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Measurements</h3>
-          <div className="space-y-1">
-            {patient.height && (
+          <div>
+            {(patient.height || patient.weight) && (
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-gray-900">
                   {(() => {
                     const heightRegex = /(\d+)\[(\w+)\]/;
-                    const match = heightRegex.exec(patient.height);
-                    return match ? `${match[1]} ${match[2]}` : '';
-                  })()}
-                </span>
-                <span className="text-xs text-gray-500">height</span>
-              </div>
-            )}
-            {patient.weight && (
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-900">
-                  {(() => {
                     const weightRegex = /(\d+)\[(\w+)\]/;
-                    const match = weightRegex.exec(patient.weight);
-                    return match ? `${match[1]} ${match[2]}` : '';
+                    const heightMatch = patient.height ? heightRegex.exec(patient.height) : null;
+                    const weightMatch = patient.weight ? weightRegex.exec(patient.weight) : null;
+                    
+                    const heightStr = heightMatch ? `${heightMatch[1]} ${heightMatch[2]}` : '';
+                    const weightStr = weightMatch ? `${weightMatch[1]} ${weightMatch[2]}` : '';
+                    
+                    if (heightStr && weightStr) {
+                      return `${heightStr} • ${weightStr}`;
+                    }
+                    return heightStr || weightStr;
                   })()}
                 </span>
-                <span className="text-xs text-gray-500">weight</span>
               </div>
             )}
           </div>

@@ -15,20 +15,21 @@ interface CardDropdownProps {
   readonly onSelect: (value: string) => void;
   readonly className?: string;
   readonly icon?: React.ReactNode;
+  readonly disabled?: boolean;
 }
 
-export function CardDropdown({ options, onSelect, className = '', icon }: CardDropdownProps) {
+export function CardDropdown({ options, onSelect, className = '', icon, disabled = false }: CardDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
       <div className={`relative ${className}`}>
-        <Popover.Trigger asChild>
+        <Popover.Trigger asChild disabled={disabled}>
           <button
             type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            className="h-7 w-7 flex items-center justify-center rounded border border-gray-300 bg-white text-sm shadow-sm
-              hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-400"
+            onClick={() => !disabled && setIsOpen(!isOpen)}
+            className={`h-7 w-7 flex items-center justify-center rounded border border-gray-300 bg-white text-sm shadow-sm
+              hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-400 ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             title="More options"
           >
             {icon ?? <MoreVertical size={14} className="text-gray-500" />}

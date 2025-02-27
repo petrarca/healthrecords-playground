@@ -6,6 +6,7 @@ import {
   Activity
 } from 'lucide-react';
 import { Card } from '../ui/Card';
+import { Badge } from '../ui/badge';
 
 interface MedicalProfileProps {
   patient: Patient;
@@ -48,12 +49,14 @@ export const MedicalProfile: React.FC<MedicalProfileProps> = ({
             {patient.allergies && patient.allergies.length > 0 ? (
               <div className="flex flex-wrap gap-1">
                 {patient.allergies.map((allergy) => (
-                  <span 
-                    key={allergy} 
-                    className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700 border border-amber-200"
+                  <Badge 
+                    key={allergy}
+                    background="bg-amber-100"
+                    textColor="text-amber-700"
+                    borderColor="border-amber-200"
                   >
                     {allergy}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             ) : (
@@ -70,12 +73,14 @@ export const MedicalProfile: React.FC<MedicalProfileProps> = ({
             {patient.conditions && patient.conditions.length > 0 ? (
               <div className="flex flex-wrap gap-1">
                 {patient.conditions.map((condition) => (
-                  <span 
-                    key={condition} 
-                    className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200"
+                  <Badge 
+                    key={condition}
+                    background="bg-blue-100"
+                    textColor="text-blue-700"
+                    borderColor="border-blue-200"
                   >
                     {condition}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             ) : (
