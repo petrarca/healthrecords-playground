@@ -32,15 +32,12 @@ export function PatientSummary({ patient }: PatientSummaryProps) {
     { id: 'treatments', title: 'Treatments' }
   ];
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <div className="flex gap-6">
+    <div className="patient-summary h-full flex gap-6">
       {/* Quick Navigation */}
       <div className="w-48 flex-shrink-0">
         <div className="bg-white shadow rounded-lg p-4 sticky top-4">

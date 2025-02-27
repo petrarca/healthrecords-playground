@@ -51,7 +51,7 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
   }
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
+    <div className="patient-demographics h-full flex flex-col overflow-hidden">
       <div className="flex-1 overflow-y-auto">
         <div className="grid gap-3 md:grid-cols-2">
           {/* Left Column: Personal Info, Contact, Insurance */}

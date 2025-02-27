@@ -22,7 +22,7 @@ const initialState: ContextState = {
 
 class ContextService {
   // Use BehaviorSubject to allow components to subscribe to context changes
-  private contextState = new BehaviorSubject<ContextState>(initialState);
+  private readonly contextState = new BehaviorSubject<ContextState>(initialState);
   
   // Method to get the current state as a snapshot
   public getState(): ContextState {
@@ -75,7 +75,7 @@ class ContextService {
   // Method to navigate while updating context
   public navigateTo(view: ViewType, patientId?: string, recordId?: string) {
     const patient = this.getState().currentPatient;
-    const id = patientId || patient?.patientId;
+    const id = patientId ?? patient?.patientId;
     
     if (!id && view !== 'landing') {
       console.error('Cannot navigate: No patient ID available');

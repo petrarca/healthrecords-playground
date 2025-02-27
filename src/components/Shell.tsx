@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { SearchResult } from '../types/search';
 import { navigationService } from '../services/navigationService';
 import { ShellHeader } from './ShellHeader';
 import { Assistant } from './Assistant';
 import { ContextDisplay } from './ContextDisplay';
 import { ConnectionStatus } from './ConnectionStatus';
+import { ShellContext } from '../context/ShellContext';
+import '../styles/ipad-fixes.css';
 
 interface ShellProps {
   children: React.ReactNode;
@@ -19,13 +21,17 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
     navigationService.navigateTo(result.type, result.id);
   };
 
+  const toggleAssistant = () => {
+    setIsAssistantOpen(prevState => !prevState);
+  };
+
   // Add keyboard shortcut to toggle assistant
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Check for Shift+Space
       if (event.shiftKey && event.key === ' ') {
         event.preventDefault(); // Prevent any default behavior
-        setIsAssistantOpen(prevState => !prevState);
+        toggleAssistant();
       }
       
       // Toggle context display with cmd+shift+c
@@ -35,33 +41,40 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
       }
     };
 
-    // Add event listener
     window.addEventListener('keydown', handleKeyDown);
-
-    // Clean up
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
+  // Memoize the context value to prevent unnecessary re-renders
+  const shellContextValue = useMemo(() => ({
+    onAssistantClick: toggleAssistant,
+    isAssistantOpen
+  }), [isAssistantOpen]);
+
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-gray-50">
+    <div className="flex flex-col h-screen bg-gray-50 overflow-hidden">
       <ShellHeader 
         onSearchResult={handleSearchResult}
         onMobileMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        onAssistantClick={() => setIsAssistantOpen(!isAssistantOpen)}
+        onAssistantClick={toggleAssistant}
         isAssistantOpen={isAssistantOpen}
       />
       
-      {/* Main Content */}
-      <main className={`flex-1 overflow-hidden max-w-[1600px] mx-auto w-full px-1 sm:px-2 py-6 transition-all duration-300 ${
-        isAssistantOpen ? 'mr-96' : ''
-      }`}>
-        {children}
-      </main>
+      <ShellContext.Provider value={shellContextValue}>
+        {/* Main Content - No scrolling at this level */}
+        <div className="flex-1 overflow-hidden">
+          <main className={`h-full max-w-[1600px] mx-auto w-full px-1 sm:px-2 py-6 transition-all duration-300 ${
+            isAssistantOpen ? 'mr-96' : ''
+          }`}>
+            {children}
+          </main>
+        </div>
+      </ShellContext.Provider>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-2 px-4">
+      {/* Footer - Fixed at bottom */}
+      <footer className="bg-white border-t border-gray-200 py-2 px-4 flex-shrink-0 w-full ipad-footer-fix">
         <div className="max-w-[1600px] mx-auto w-full flex justify-end items-center space-x-4">
           <ConnectionStatus />
           <a 

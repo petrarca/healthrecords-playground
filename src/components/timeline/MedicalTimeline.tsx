@@ -395,7 +395,7 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
   const updateRecord = useUpdateMedicalRecord();
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="medical-timeline h-full flex flex-col">
       <div className="mb-3">
         <TimelineFilters
           activeFilters={activeFilters}

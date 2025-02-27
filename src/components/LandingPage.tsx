@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { contextService } from '../services/contextService';
 
-export const LandingPage: React.FC = () => {
+interface LandingPageProps {
+  onAssistantClick?: () => void;
+}
+
+export const LandingPage: React.FC<LandingPageProps> = ({ onAssistantClick }) => {
   // Update context when landing page is loaded
   useEffect(() => {
     contextService.setCurrentPatient(null);
@@ -9,8 +13,8 @@ export const LandingPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] bg-gray-50">
-      <div className="text-center max-w-3xl px-4">
+    <div className="landing-page-container h-full flex flex-col items-center justify-center py-8 px-4 overflow-hidden">
+      <div className="text-center max-w-3xl">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
           Welcome to HealthRecords
         </h1>
@@ -60,7 +64,7 @@ export const LandingPage: React.FC = () => {
           <div className="flex items-center text-gray-500">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                d="M21 21l-6-6m2-5a7 7 0 01-14 0 7 7 0 0114 0z" />
             </svg>
             <span>Search by name, ID, or condition</span>
           </div>
@@ -81,13 +85,6 @@ export const LandingPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Disclaimer */}
-      <div className="mt-12 text-center px-4 py-3 bg-blue-50 rounded-lg max-w-2xl mx-auto">
-        <p className="text-sm text-blue-800">
-          ⚠️ This is a demonstration application containing test data only. Not for clinical use.
-        </p>
-      </div>
-
       {/* Assistant Shortcut Info */}
       <div className="mt-4 text-center">
         <p className="text-sm text-gray-600 flex items-center justify-center">
@@ -95,7 +92,31 @@ export const LandingPage: React.FC = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          Press <kbd className="mx-1 px-2 py-1 text-xs font-semibold bg-gray-100 border border-gray-300 rounded">Shift</kbd> + <kbd className="mx-1 px-2 py-1 text-xs font-semibold bg-gray-100 border border-gray-300 rounded">Space</kbd> to open the Assistant
+          Press <kbd className="mx-1 px-2 py-1 text-xs font-semibold bg-gray-100 border border-gray-300 rounded">Shift</kbd> + <kbd className="mx-1 px-2 py-1 text-xs font-semibold bg-gray-100 border border-gray-300 rounded">Space</kbd> to open the Assistant or click{' '}
+          <button
+            className="inline-flex items-center justify-center mx-1 p-0 border-0 bg-transparent cursor-pointer hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            onClick={onAssistantClick}
+            aria-label="Open Assistant"
+          >
+            <svg 
+              className="w-5 h-5" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" 
+              />
+            </svg>
+          </button>{' '}
+          in the header
+        </p>
+      </div>
+
+      {/* Disclaimer */}
+      <div className="mt-8 text-center px-4 py-3 bg-blue-50 rounded-lg max-w-2xl mx-auto">
+        <p className="text-sm text-blue-800">
+          ⚠️ This is a demonstration application containing test data only. Not for clinical use.
         </p>
       </div>
     </div>

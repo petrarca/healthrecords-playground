@@ -1,5 +1,6 @@
 import { HashRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Shell } from './components/Shell';
+import { ShellContext } from './context/ShellContext';
 import { LandingPage } from './components/LandingPage';
 import { Patient } from './components/patient/Patient';
 import { navigationService } from './services/navigationService';
@@ -38,7 +39,9 @@ function AppContent() {
   return (
     <Shell>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<ShellContext.Consumer>
+          {({ onAssistantClick }) => <LandingPage onAssistantClick={onAssistantClick} />}
+        </ShellContext.Consumer>} />
         <Route path="/patients/:id" element={<Patient />} />
         <Route path="/patients/:id/timeline" element={<Patient />} />
         <Route path="/patients/:id/timeline/:recordId" element={<Patient />} />

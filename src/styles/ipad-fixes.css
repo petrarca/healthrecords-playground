@@ -1,0 +1,53 @@
+/* iPad-specific fixes */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* Fix footer position */
+  .ipad-footer-fix {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+  }
+  
+  /* Global fixes */
+  html, body, #root {
+    overflow: hidden !important;
+    height: 100% !important;
+  }
+  
+  /* Ensure patient container has proper layout */
+  .patient-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden !important;
+  }
+  
+  /* No scrolling in the patient content container */
+  .patient-container > div:last-child {
+    overflow: hidden !important;
+  }
+  
+  /* Prevent landing page from scrolling */
+  .landing-page-container {
+    overflow: hidden !important;
+  }
+  
+  /* Enable scrolling in individual components that need it */
+  .medical-timeline, 
+  .patient-summary, 
+  .patient-demographics, 
+  .medical-profile {
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+    height: 100% !important;
+  }
+  
+  /* Ensure scrollable areas within components work properly */
+  .patient-summary #patient-summary-content,
+  .patient-demographics .flex-1,
+  .medical-timeline .flex-1 {
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}

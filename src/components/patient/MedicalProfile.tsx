@@ -16,7 +16,7 @@ export const MedicalProfile: React.FC<MedicalProfileProps> = ({
   patient
 }) => {
   return (
-    <div className="grid gap-3 md:grid-cols-2">
+    <div className="medical-profile grid gap-3 md:grid-cols-2 h-full overflow-auto">
       {/* Left Column: General Observations and Allergies */}
       <div className="space-y-3">
         <Card title="General Observations" icon={<Heart size={16} />} variant="purple">

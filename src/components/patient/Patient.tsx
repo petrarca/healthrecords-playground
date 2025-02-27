@@ -64,56 +64,59 @@ export function Patient() {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <PatientHeader patient={patient} />
-      
-      {/* Navigation Tabs */}
-      <div className="bg-white border-b border-gray-200">
-        <nav className="flex space-x-8 px-4" aria-label="Tabs">
-          <button
-            onClick={() => navigateToTab('summary')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'summary'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            Summary
-          </button>
-          <button
-            onClick={() => navigateToTab('timeline')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'timeline'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            Timeline
-          </button>
-          <button
-            onClick={() => navigateToTab('demographics')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'demographics'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            Demographics
-          </button>
-          <button
-            onClick={() => navigateToTab('profile')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'profile'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            Medical Profile
-          </button>
-        </nav>
+    <div className="patient-container flex flex-col h-full overflow-hidden">
+      {/* Fixed header section */}
+      <div className="flex-shrink-0">
+        <PatientHeader patient={patient} />
+        
+        {/* Navigation Tabs */}
+        <div className="bg-white border-b border-gray-200">
+          <nav className="flex space-x-8 px-4" aria-label="Tabs">
+            <button
+              onClick={() => navigateToTab('summary')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'summary'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Summary
+            </button>
+            <button
+              onClick={() => navigateToTab('timeline')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'timeline'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Timeline
+            </button>
+            <button
+              onClick={() => navigateToTab('demographics')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'demographics'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Demographics
+            </button>
+            <button
+              onClick={() => navigateToTab('profile')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'profile'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Medical Profile
+            </button>
+          </nav>
+        </div>
       </div>
 
-      {/* Tab Content */}
+      {/* Content area - no scrolling here as components handle their own scrolling */}
       <div className="flex-1 bg-gray-50 pt-4 overflow-hidden">
         {activeTab === 'summary' && <PatientSummary patient={patient} />}
         {activeTab === 'timeline' && <MedicalTimeline records={records || []} selectedRecordId={recordId} />}

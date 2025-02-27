@@ -11,4 +11,27 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    host: '0.0.0.0', // Listen on all addresses
+    port: 5173,
+    strictPort: true,
+    cors: true,
+    allowedHosts: [
+      'localhost',
+      '.local'  // This will match any subdomain ending with .local
+    ],
+    hmr: {
+      // Allow any host ending with .local to connect for HMR
+      host: 'localhost',
+      clientPort: 5173,
+      protocol: 'ws',
+    },
+    watch: {
+      usePolling: true,
+    },
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: 4173,
+  },
 })
