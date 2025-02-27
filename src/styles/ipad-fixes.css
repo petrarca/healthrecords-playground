@@ -24,20 +24,6 @@
     overflow: hidden !important;
   }
   
-  /* Fix main content inner area */
-  .ipad-main-content-fix > main {
-    overflow-y: auto !important;
-    padding-top: 0 !important;
-    height: 100% !important;
-  }
-  
-  /* Fix patient header positioning */
-  .patient-header {
-    margin-top: 0 !important;
-    position: relative;
-    z-index: 5;
-  }
-  
   /* Fix footer position */
   .ipad-footer-fix {
     position: fixed;
@@ -48,57 +34,35 @@
     height: 3rem;
   }
   
-  /* Ensure environment variables popup is visible */
-  .ipad-footer-fix .absolute.right-0.bottom-full {
-    bottom: calc(100% + 1px) !important;
-    max-height: 80vh;
-    overflow-y: auto;
-    z-index: 55 !important;
-  }
-  
-  /* Fix Assistant container on iPad */
+  /* Fix Assistant container */
   .assistant-container {
+    width: 24rem !important;
     position: fixed !important;
-    top: 4rem !important; /* Position below fixed header */
     right: 0 !important;
-    bottom: 3rem !important; /* Position above fixed footer */
-    width: 24rem !important; /* 384px (w-96) */
-    z-index: 45 !important; /* Below header/footer but above content */
-    overflow: hidden !important;
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-    background: white;
-    border-left: 1px solid #e5e7eb;
+    top: 4rem !important; /* Below header */
+    height: calc(100% - 7rem) !important; /* Full height minus header and footer */
+    background: white !important;
+    border-left: 1px solid #e5e7eb !important;
+    transform: translateX(100%) !important;
+    transition: transform 0.3s ease-in-out !important;
   }
   
-  /* Fix Assistant component on iPad */
+  .assistant-container.block {
+    transform: translateX(0) !important;
+  }
+  
+  /* Fix Assistant panel */
   .assistant-panel {
     height: 100% !important;
     width: 100% !important;
-    max-height: none !important;
-    z-index: 15;
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
     display: flex !important;
     flex-direction: column !important;
-  }
-  
-  /* Fix Assistant input area */
-  .assistant-panel form {
-    position: sticky !important;
-    bottom: 0 !important;
-    background-color: white !important;
-    z-index: 46 !important;
-    padding-bottom: 0.5rem !important;
-    border-top: 1px solid #e5e7eb !important;
+    overflow-y: auto !important;
   }
   
   /* Fix main content when assistant open */
   .assistant-open {
-    width: calc(100% - 24rem) !important; /* Full width minus assistant width */
-    margin-right: 0 !important;
+    margin-right: 24rem !important;
   }
 
   /* Ensure patient container has proper layout */
@@ -109,7 +73,7 @@
     overflow: hidden !important;
   }
   
-  /* Enable scrolling in individual components that need it */
+  /* Enable scrolling in individual components */
   .medical-timeline, 
   .patient-summary, 
   .patient-demographics, 
