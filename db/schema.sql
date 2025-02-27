@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS medical_records;
 DROP TABLE IF EXISTS addresses;
 DROP TABLE IF EXISTS patients;
+DROP TABLE IF EXISTS versions;
 
 -- Enable UUID generation
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -20,7 +21,6 @@ CREATE TABLE patients (
     primary_physician VARCHAR(100),
     insurance_provider VARCHAR(100),
     insurance_number VARCHAR(50),
-    primary_address_type VARCHAR(20),
     phone VARCHAR(20),
     email VARCHAR(255),
     conditions VARCHAR[] DEFAULT ARRAY[]::VARCHAR[],
@@ -43,6 +43,10 @@ CREATE TABLE addresses (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Now add the primary_address reference to patients
+ALTER TABLE patients 
+ADD COLUMN primary_address UUID REFERENCES addresses(id) ON DELETE SET NULL;
 
 -- Medical records table with JSONB details
 CREATE TABLE medical_records (

@@ -2,33 +2,32 @@ import React from 'react';
 import { Home, Plus, Check, X, Pencil, Pin, PinOff } from 'lucide-react';
 import { Card } from '../../ui/Card';
 import { CardDropdown } from '../../ui/cardDropdown';
-import { Address, AddressType } from '../../../types/patient';
+import { Address, AddressType } from '../../../types/address';
 
 interface AddressCardProps {
-  addresses: Address[];
-  primaryAddressType?: AddressType;
-  onUpdateAddresses?: (addresses: Address[]) => void;
-  onUpdatePrimaryAddress?: (type: AddressType | undefined) => void;
-}
-
-interface EditableAddress extends Address {
-  tempId: string;
+  readonly addresses: Address[];
+  readonly primaryAddress?: string;
+  readonly onCreateAddress: (address: Address) => Promise<void>;
+  readonly onUpdateAddress: (id: string, address: Address) => Promise<void>;
+  readonly onDeleteAddress: (id: string) => Promise<void>;
+  readonly onUpdatePrimaryAddress?: (addressId: string | null) => void;
 }
 
 export const AddressCard: React.FC<AddressCardProps> = ({
   addresses = [],
-  primaryAddressType,
-  onUpdateAddresses,
+  primaryAddress,
+  onCreateAddress,
+  onUpdateAddress,
+  onDeleteAddress,
   onUpdatePrimaryAddress
 }) => {
-  const [isEditMode, setIsEditMode] = React.useState(false);
-  const [editedAddresses, setEditedAddresses] = React.useState<EditableAddress[]>(
-    addresses.map(addr => ({ ...addr, tempId: crypto.randomUUID() }))
-  );
+  const [editingAddressId, setEditingAddressId] = React.useState<string | null>(null);
+  const [editedAddresses, setEditedAddresses] = React.useState<Address[]>(addresses);
+  const [newAddress, setNewAddress] = React.useState<Address | null>(null);
   const [addressError, setAddressError] = React.useState('');
 
   React.useEffect(() => {
-    setEditedAddresses(addresses.map(addr => ({ ...addr, tempId: crypto.randomUUID() })));
+    setEditedAddresses(addresses);
   }, [addresses]);
 
   const getNextAvailableAddressType = (): AddressType => {
@@ -40,8 +39,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
   };
 
   const handleAddAddress = () => {
-    const newAddress: EditableAddress = {
-      tempId: crypto.randomUUID(),
+    const address: Address = {
       addressType: getNextAvailableAddressType(),
       addressLine: '',
       street: '',
@@ -50,80 +48,78 @@ export const AddressCard: React.FC<AddressCardProps> = ({
       zipCode: '',
       country: ''
     };
-    setEditedAddresses([...editedAddresses, newAddress]);
+    setNewAddress(address);
+    setEditingAddressId('new');
   };
 
-  const handleUpdateAddress = (address: EditableAddress, field: keyof Address, value: string) => {
-    const updatedAddresses = [...editedAddresses];
-    const index = updatedAddresses.findIndex(addr => addr.tempId === address.tempId);
-    if (index !== -1) {
-      if (field === 'addressType') {
-        // Check if the address type already exists
-        const typeExists = updatedAddresses.some((addr, i) => i !== index && addr.addressType === value);
-        if (typeExists) {
-          setAddressError(`An address of type ${value} already exists`);
-          return;
+  const handleUpdateAddress = (address: Address, field: keyof Address, value: string) => {
+    if (editingAddressId === 'new' && newAddress) {
+      setNewAddress({ ...newAddress, [field]: value });
+    } else if (address.id) {
+      setEditedAddresses(prevAddresses => 
+        prevAddresses.map(addr => 
+          addr.id === address.id ? { ...addr, [field]: value } : addr
+        )
+      );
+    }
+  };
+
+  const handleDeleteAddress = async (address: Address) => {
+    if (!address.id) return;
+
+    try {
+      await onDeleteAddress(address.id);
+      setEditedAddresses(prevAddresses => prevAddresses.filter(addr => addr.id !== address.id));
+
+      // TODO : Check, not needed will be handled in the database
+      //if (address.id === primaryAddress) {
+      //  onUpdatePrimaryAddress?.(null);
+      //}
+    } catch (error) {
+      console.error('Failed to delete address:', error);
+      setAddressError('Failed to delete address. Please try again.');
+    }
+  };
+
+  const handleStartEdit = (address: Address) => {
+    setEditingAddressId(address.id ?? null);
+  };
+
+  const handleSave = async () => {
+    try {
+      if (editingAddressId === 'new' && newAddress) {
+        await onCreateAddress(newAddress);
+        setNewAddress(null);
+      } else if (editingAddressId) {
+        const editedAddress = editedAddresses.find(addr => addr.id === editingAddressId);
+        if (editedAddress && editedAddress.id) {
+          await onUpdateAddress(editedAddress.id, editedAddress);
         }
-        updatedAddresses[index] = { ...updatedAddresses[index], addressType: value as AddressType };
-      } else if (field === 'addressLine') {
-        updatedAddresses[index] = { 
-          ...updatedAddresses[index], 
-          addressLine: value,
-          // Clear other fields since we're using addressLine only
-          street: '',
-          city: '',
-          state: '',
-          zipCode: '',
-          country: ''
-        };
       }
-      setEditedAddresses(updatedAddresses);
+      setEditingAddressId(null);
       setAddressError('');
+    } catch (error) {
+      console.error('Failed to save address:', error);
+      setAddressError('Failed to save address. Please try again.');
     }
-  };
-
-  const handleDeleteAddress = (address: EditableAddress) => {
-    const updatedAddresses = editedAddresses.filter(addr => addr.tempId !== address.tempId);
-    setEditedAddresses(updatedAddresses);
-    // If the deleted address was primary, clear the primary address type
-    if (address.addressType === primaryAddressType) {
-      onUpdatePrimaryAddress?.(undefined);
-    }
-  };
-
-  const handleSave = () => {
-    onUpdateAddresses?.(editedAddresses.map(addr => ({ ...addr, tempId: undefined })));
-    setIsEditMode(false);
-    setAddressError('');
   };
 
   const handleCancel = () => {
-    setEditedAddresses(addresses.map(addr => ({ ...addr, tempId: crypto.randomUUID() })));
+    setEditingAddressId(null);
+    setNewAddress(null);
     setAddressError('');
-    setIsEditMode(false);
   };
 
-  const getAddressKey = (address: Address): string => {
-    const parts = [
-      address.addressType,
-      address.addressLine ?? '',
-      address.street ?? '',
-      address.city ?? '',
-      address.state ?? '',
-      address.zipCode ?? '',
-      address.country ?? ''
-    ];
-    return parts.join('-');
-  };
+  const isEditing = editingAddressId !== null;
 
   return (
-    <Card 
-      title="Addresses" 
-      icon={<Home size={16} />} 
+    <Card
+      title="Addresses"
+      icon={<Home size={16} />}
       variant="green"
       headerContent={
-        onUpdateAddresses && (
-          isEditMode ? (
+        onUpdatePrimaryAddress && (
+          isEditing ? (
             <div className="flex gap-2">
               <button
                 onClick={handleSave}
@@ -141,144 +137,155 @@ export const AddressCard: React.FC<AddressCardProps> = ({
               </button>
             </div>
           ) : (
-            <CardDropdown
-              options={[
-                { 
-                  value: 'edit', 
-                  label: 'Edit Addresses',
-                  icon: <Pencil size={14} className="text-gray-500" />
-                },
-                ...(addresses.length > 0 ? [
-                  ...addresses
-                    .filter(addr => addr.addressLine?.trim() && addr.addressType !== primaryAddressType)
-                    .map(addr => ({
-                      value: `setPrimary_${addr.addressType}`,
-                      label: `Set ${addr.addressType} as Primary`,
-                      icon: <Pin size={14} className="text-gray-500" />
-                    })),
-                  ...(primaryAddressType ? [
-                    { 
-                      value: 'clearPrimary', 
-                      label: 'Clear Primary Address',
-                      icon: <PinOff size={14} className="text-gray-500" />
-                    }
-                  ] : [])
-                ] : [])
-              ]}
-              onSelect={(action) => {
-                if (action === 'edit') {
-                  setIsEditMode(true);
-                } else if (action === 'clearPrimary') {
-                  onUpdatePrimaryAddress?.(undefined);
-                } else if (action.startsWith('setPrimary_')) {
-                  const addressType = action.split('_')[1] as AddressType;
-                  onUpdatePrimaryAddress?.(addressType);
-                }
-              }}
-              className="text-gray-500"
-            />
+            <button
+              onClick={handleAddAddress}
+              className="w-8 h-8 inline-flex items-center justify-center rounded border border-gray-200 hover:bg-gray-100 transition-colors"
+              title="Add Address"
+            >
+              <Plus size={16} className="text-gray-500" />
+            </button>
           )
         )
       }
     >
       <div className="grid gap-2 text-sm">
-        {isEditMode ? (
-          <div className="grid gap-4">
-            {editedAddresses.map((address) => (
-              <div key={address.tempId} className="border rounded-lg p-3 bg-white shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="flex-1">
+        {editedAddresses.map((address) => (
+          <div key={address.id} className="border rounded-lg p-3 bg-white shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                {editingAddressId === address.id ? (
+                  <div className="grid grid-cols-2 gap-2">
                     <label 
-                      htmlFor={`address-line-${address.tempId}`}
+                      htmlFor={`address-line-${address.id ?? ''}`}
                       className="block text-gray-500 mb-1"
                     >
                       Address
                     </label>
                     <input
-                      id={`address-line-${address.tempId}`}
+                      id={`address-line-${address.id ?? ''}`}
                       type="text"
                       value={address.addressLine ?? ''}
                       onChange={(e) => handleUpdateAddress(address, 'addressLine', e.target.value)}
-                      placeholder="Enter address..."
-                      className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-green-400 border-gray-300"
+                      className="flex-1 px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
+                      placeholder="Enter address"
                     />
-                  </div>
-                  <div>
                     <label 
-                      htmlFor={`address-type-${address.tempId}`}
+                      htmlFor={`address-type-${address.id ?? ''}`}
                       className="block text-gray-500 mb-1"
                     >
                       Address Type
                     </label>
-                    <div className="relative">
-                      <select
-                        id={`address-type-${address.tempId}`}
-                        value={address.addressType}
-                        onChange={(e) => handleUpdateAddress(address, 'addressType', e.target.value as AddressType)}
-                        className="w-full px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-green-400 border-gray-300"
-                      >
-                        <option value="HOME">🏠 Home</option>
-                        <option value="WORK">💼 Work</option>
-                        <option value="OTHER">📍 Other</option>
-                      </select>
-                    </div>
+                    <select
+                      id={`address-type-${address.id ?? ''}`}
+                      value={address.addressType}
+                      onChange={(e) => handleUpdateAddress(address, 'addressType', e.target.value as AddressType)}
+                      className="px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
+                    >
+                      <option value="HOME">Home</option>
+                      <option value="WORK">Work</option>
+                      <option value="OTHER">Other</option>
+                    </select>
                   </div>
+                ) : (
                   <div>
-                    <label 
-                      htmlFor={`delete-address-${address.tempId}`}
-                      className="block text-gray-500 mb-1"
-                    >
-                      Actions
-                    </label>
-                    <button
-                      id={`delete-address-${address.tempId}`}
-                      onClick={() => handleDeleteAddress(address)}
-                      className="h-8 w-8 flex items-center justify-center rounded-md border border-gray-200 bg-white text-sm hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500/20 transition-colors"
-                      title="Delete address"
-                      aria-label="Delete address"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{address.addressType}</span>
+                        {address.id === primaryAddress && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200">
+                            Primary
+                          </span>
+                        )}
+                      </div>
+                      <CardDropdown
+                        options={[
+                          {
+                            value: 'edit',
+                            label: 'Edit Address',
+                            icon: <Pencil size={14} className="text-gray-500" />
+                          },
+                          ...(onUpdatePrimaryAddress && address.id != primaryAddress ? [
+                            {
+                              value: 'setPrimary',
+                              label: 'Set as Primary',
+                              icon: <Pin size={14} className="text-gray-500" />
+                            }
+                          ] : []),
+                          ...(onUpdatePrimaryAddress && address.id == primaryAddress ? [
+                            {
+                              value: 'clearPrimary',
+                              label: 'Clear Primary',
+                              icon: <PinOff size={14} className="text-gray-500" />
+                            }
+                          ] : []),
+                          {
+                            value: 'delete',
+                            label: 'Delete Address',
+                            icon: <X size={14} className="text-gray-500" />,
+                            className: 'text-red-600 hover:bg-red-50'
+                          }
+                        ]}
+                        onSelect={async (action) => {
+                          if (action === 'edit') {
+                            handleStartEdit(address);
+                          } else if (action === 'delete') {
+                            await handleDeleteAddress(address);
+                          } else if (action === 'setPrimary') {
+                            onUpdatePrimaryAddress?.(address.id ?? null);
+                          } else if (action === 'clearPrimary') {
+                            onUpdatePrimaryAddress?.(null);
+                          }
+                        }}
+                      />
+                    </div>
+                    <p className="text-gray-600">{address.addressLine}</p>
                   </div>
+                )}
+              </div>
+            </div>
+            {addressError && editingAddressId === address.id && (
+              <p className="text-red-500 text-sm mt-1">{addressError}</p>
+            )}
+          </div>
+        ))}
+        {newAddress && (
+          <div key="new" className="border rounded-lg p-3 bg-white shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <label 
+                  htmlFor="address-line-new"
+                  className="block text-gray-500 mb-1"
+                >
+                  Address
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    id="address-line-new"
+                    type="text"
+                    value={newAddress.addressLine ?? ''}
+                    onChange={(e) => handleUpdateAddress(newAddress, 'addressLine', e.target.value)}
+                    className="flex-1 px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
+                    placeholder="Enter address"
+                  />
+                  <select
+                    value={newAddress.addressType}
+                    onChange={(e) => handleUpdateAddress(newAddress, 'addressType', e.target.value as AddressType)}
+                    className="px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
+                  >
+                    <option value="HOME">Home</option>
+                    <option value="WORK">Work</option>
+                    <option value="OTHER">Other</option>
+                  </select>
                 </div>
               </div>
-            ))}
-            {addressError && (
-              <p className="mt-1 text-xs text-red-500">{addressError}</p>
-            )}
-            <button
-              onClick={handleAddAddress}
-              className="flex items-center justify-center gap-1 px-3 py-1.5 border border-gray-300 rounded bg-white text-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-green-500"
-            >
-              <Plus size={14} className="text-gray-500" />
-              <span>Add Address</span>
-            </button>
-          </div>
-        ) : (
-          <div className="grid gap-2">
-            {(!addresses || addresses.length === 0) ? (
-              <div className="text-gray-500 italic">No addresses defined</div>
-            ) : (
-              addresses.map((address) => {
-                const isPrimary = address.addressType === primaryAddressType;
-                return (
-                  <div key={getAddressKey(address)} className="flex gap-4">
-                    <span className="text-gray-500 w-20">{address.addressType}:</span>
-                    <span className="flex-1 flex items-center gap-2">
-                      <span>{address.addressLine ?? ''}</span>
-                      {isPrimary && (
-                        <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded whitespace-nowrap">
-                          Primary Address
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                );
-              })
+            </div>
+            {addressError && editingAddressId === 'new' && (
+              <p className="text-red-500 text-sm mt-1">{addressError}</p>
             )}
           </div>
+        )}
+        {!isEditing && addresses.length === 0 && (
+          <p className="text-gray-500 italic">No addresses added yet.</p>
         )}
       </div>
     </Card>

@@ -1,7 +1,7 @@
 import { Patient } from '../types/types';
 import { getClient } from '../lib/supabase';
 import { PatientTable } from '../models/databaseModel';
-import { mapDatabaseToPatient } from './mappers/patientMapper';
+import { mapDatabaseToPatient, mapPatientToDatabase } from './mappers/patientMapper';
 
 class PatientService {
   async getPatient(id: string): Promise<Patient | null> {
@@ -25,27 +25,22 @@ class PatientService {
   async updatePatient(updatedPatient: Patient): Promise<void> {
     const { error } = await getClient()
       .from('patients')
-      .update({
-        first_name: updatedPatient.firstName,
-        last_name: updatedPatient.lastName,
-        date_of_birth: updatedPatient.dateOfBirth.toISOString().split('T')[0],
-        gender: updatedPatient.gender,
-        blood_type: updatedPatient.bloodType,
-        height: updatedPatient.height,
-        weight: updatedPatient.weight,
-        primary_physician: updatedPatient.primaryPhysician,
-        insurance_provider: updatedPatient.insuranceProvider,
-        insurance_number: updatedPatient.insuranceNumber,
-        primary_address_type: updatedPatient.primaryAddressType,
-        phone: updatedPatient.phone,
-        email: updatedPatient.email,
-        allergies: updatedPatient.allergies,
-        updated_at: new Date().toISOString()
-      })
-      .eq('patient_id', updatedPatient.patientId);
+      .update(mapPatientToDatabase(updatedPatient))
+      .eq('id', updatedPatient.patientId);
 
     if (error) {
       throw new Error(`Failed to update patient: ${error.message}`);
+    }
+  }
+
+  async updatePrimaryAddress(id: string, addressId: string | null): Promise<void> {
+    const { error } = await getClient()
+      .from('patients')
+      .update({ primary_address: addressId })
+      .eq('id', id);
+
+    if (error) {
+      throw new Error(`Failed to update patient's primary address: ${error.message}`);
     }
   }
 }

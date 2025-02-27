@@ -28,3 +28,14 @@ export const useUpdatePatient = () => {
     },
   });
 };
+
+export const useUpdatePrimaryAddress = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ patientId, addressId }: { patientId: string; addressId: string | null }) => 
+      patientService.updatePrimaryAddress(patientId, addressId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['patient'] });
+    },
+  });
+};

@@ -47,9 +47,9 @@ export const MedicalProfile: React.FC<MedicalProfileProps> = ({
           <div className="space-y-2 text-sm">
             {patient.allergies && patient.allergies.length > 0 ? (
               <div className="flex flex-wrap gap-1">
-                {patient.allergies.map((allergy, index) => (
+                {patient.allergies.map((allergy) => (
                   <span 
-                    key={index} 
+                    key={allergy} 
                     className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700 border border-amber-200"
                   >
                     {allergy}
@@ -69,9 +69,9 @@ export const MedicalProfile: React.FC<MedicalProfileProps> = ({
           <div className="space-y-2 text-sm">
             {patient.conditions && patient.conditions.length > 0 ? (
               <div className="flex flex-wrap gap-1">
-                {patient.conditions.map((condition, index) => (
+                {patient.conditions.map((condition) => (
                   <span 
-                    key={index} 
+                    key={condition} 
                     className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200"
                   >
                     {condition}

@@ -1,15 +1,3 @@
-export type AddressType = 'HOME' | 'WORK' | 'OTHER';
-
-export interface Address {
-  addressType: AddressType;
-  addressLine: string;
-  street?: string;
-  city?: string;
-  state?: string;
-  zipCode?: string;
-  country?: string;
-}
-
 export type Gender = 'male' | 'female' | 'other' | 'unknown';
 
 export interface Patient {
@@ -27,8 +15,7 @@ export interface Patient {
   primaryPhysician?: string;
   insuranceProvider?: string;
   insuranceNumber?: string;
-  addresses: Address[];
-  primaryAddressType?: AddressType;
+  primaryAddress?: string;
   phone?: string;
   email?: string;
 }
