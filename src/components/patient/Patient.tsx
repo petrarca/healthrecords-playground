@@ -7,6 +7,7 @@ import { PatientSummary } from './PatientSummary';
 import { MedicalProfile } from './MedicalProfile';
 import { usePatient, useUpdatePatient } from '../../hooks/usePatient';
 import { useMedicalRecords } from '../../hooks/useMedicalRecords';
+import { contextService } from '../../services/contextService';
 
 type TabType = 'timeline' | 'demographics' | 'summary' | 'profile';
 
@@ -37,7 +38,17 @@ export function Patient() {
     else if (path.includes('/demographics')) setActiveTab('demographics');
     else if (path.includes('/profile')) setActiveTab('profile');
     else setActiveTab('summary');
-  }, [id, location.pathname, navigate]);
+    
+    // Update context service with current URL information
+    contextService.updateFromUrl(path, id, recordId);
+  }, [id, location.pathname, navigate, recordId]);
+
+  // Update context service when patient data is loaded
+  useEffect(() => {
+    if (patient) {
+      contextService.setCurrentPatient(patient);
+    }
+  }, [patient]);
 
   if (loading) {
     return <div className="p-4">Loading...</div>;
@@ -47,6 +58,11 @@ export function Patient() {
     return <div className="p-4 text-red-600">Error: {error ?? 'Patient not found'}</div>;
   }
 
+  // Helper function to navigate using contextService
+  const navigateToTab = (tab: TabType) => {
+    contextService.navigateTo(tab, id, tab === 'timeline' ? recordId : undefined);
+  };
+
   return (
     <div className="flex flex-col h-full">
       <PatientHeader patient={patient} />
@@ -55,7 +71,7 @@ export function Patient() {
       <div className="bg-white border-b border-gray-200">
         <nav className="flex space-x-8 px-4" aria-label="Tabs">
           <button
-            onClick={() => navigate(`/patients/${id}/summary`)}
+            onClick={() => navigateToTab('summary')}
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'summary'
                 ? 'border-blue-500 text-blue-600'
@@ -65,7 +81,7 @@ export function Patient() {
             Summary
           </button>
           <button
-            onClick={() => navigate(`/patients/${id}/timeline`)}
+            onClick={() => navigateToTab('timeline')}
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'timeline'
                 ? 'border-blue-500 text-blue-600'
@@ -75,7 +91,7 @@ export function Patient() {
             Timeline
           </button>
           <button
-            onClick={() => navigate(`/patients/${id}/demographics`)}
+            onClick={() => navigateToTab('demographics')}
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'demographics'
                 ? 'border-blue-500 text-blue-600'
@@ -85,7 +101,7 @@ export function Patient() {
             Demographics
           </button>
           <button
-            onClick={() => navigate(`/patients/${id}/profile`)}
+            onClick={() => navigateToTab('profile')}
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'profile'
                 ? 'border-blue-500 text-blue-600'

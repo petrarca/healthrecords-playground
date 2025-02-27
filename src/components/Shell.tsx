@@ -3,6 +3,7 @@ import { SearchResult } from '../types/search';
 import { navigationService } from '../services/navigationService';
 import { ShellHeader } from './ShellHeader';
 import { Assistant } from './Assistant';
+import { ContextDisplay } from './ContextDisplay';
 
 interface ShellProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ interface ShellProps {
 export const Shell: React.FC<ShellProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
+  const [showContextDisplay, setShowContextDisplay] = useState(true);
 
   const handleSearchResult = (result: SearchResult) => {
     navigationService.navigateTo(result.type, result.id);
@@ -23,6 +25,12 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
       if ((event.metaKey || event.ctrlKey) && event.key === 'a') {
         event.preventDefault(); // Prevent the default "select all" behavior
         setIsAssistantOpen(prevState => !prevState);
+      }
+      
+      // Toggle context display with cmd+shift+c
+      if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.key === 'c') {
+        event.preventDefault();
+        setShowContextDisplay(prevState => !prevState);
       }
     };
 
@@ -53,6 +61,9 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
 
       {/* Chat Component */}
       <Assistant isOpen={isAssistantOpen} onClose={() => setIsAssistantOpen(false)} />
+      
+      {/* Context Display */}
+      {showContextDisplay && <ContextDisplay />}
 
       {/* Mobile Sidebar */}
       {isSidebarOpen && (

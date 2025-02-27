@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { contextService } from '../services/contextService';
 
 export const LandingPage: React.FC = () => {
+  // Update context when landing page is loaded
+  useEffect(() => {
+    contextService.setCurrentPatient(null);
+    contextService.setCurrentView('landing');
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] bg-gray-50">
       <div className="text-center max-w-3xl px-4">

@@ -1,4 +1,4 @@
-import { patientService } from '../patientService';
+import { intentHandlers } from './intents';
 
 export interface Message {
   id: string;
@@ -24,7 +24,7 @@ class AssistantService {
     // Initialize with a welcome message
     this.addMessage({
       id: this.generateId(),
-      content: "Hello! I'm your medical assistant. I can help you find information about patients, medical records, or answer general healthcare questions. Try asking: \"Show me recent patients\" or \"What medical records are available?\"",
+      content: "Hello! I'm your medical assistant. I can help you find information about patients, medical records, or answer general healthcare questions. Try asking: \"Show me recent patients\", \"Medical record of John Miller\", or \"What medical records are available?\"",
       sender: 'assistant',
       timestamp: new Date()
     });
@@ -33,6 +33,8 @@ class AssistantService {
   // Subscribe to state changes
   subscribe(listener: (state: AssistantState) => void): () => void {
     this.listeners.push(listener);
+    // Call the listener immediately with the current state
+    listener({ ...this.state });
     // Return unsubscribe function
     return () => {
       this.listeners = this.listeners.filter(l => l !== listener);
@@ -110,37 +112,18 @@ class AssistantService {
 
   // Process the user message and generate a response
   private async processMessage(content: string): Promise<string> {
-    // Simple keyword-based response system
-    // In a real implementation, this would connect to an AI service or backend
-    const lowerContent = content.toLowerCase();
-    
     // Wait to simulate processing time
     await new Promise(resolve => setTimeout(resolve, 300));
 
-    if (lowerContent.includes('patient') && (lowerContent.includes('list') || lowerContent.includes('recent'))) {
-      try {
-        const patients = await patientService.getMostRecentChangedPatients();
-        
-        // Create patient list with HTML links
-        const patientList = patients.map(p => {
-          const dob = p.dateOfBirth.toLocaleDateString();
-          return `- <a href="/patients/${p.id}" class="text-blue-600 hover:underline">${p.firstName} ${p.lastName}</a> (${dob})`;
-        }).join('\n');
-        
-        return `Here are the 10 most recent patients:\n${patientList}`;
-      } catch (error) {
-        console.error('Error retrieving patient list:', error);
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        return `I had trouble retrieving the patient list. Error: ${errorMessage}. Please try again later.`;
+    // Find the first handler that can handle this message
+    for (const handler of intentHandlers) {
+      if (handler.canHandle(content)) {
+        return await handler.handle(content);
       }
     }
-      
-    if (lowerContent.includes('hello') || lowerContent.includes('hi')) {
-      return 'Hello! How can I help you with your medical inquiries today?';
-    }  
-      
-    // Default response
-    return "I'm not sure I understand your question. Could you provide more details or rephrase your query?";
+    
+    // This should never happen as we have a fallback handler
+    return "I'm sorry, I couldn't process your request.";
   }
 
   // Clear all messages
@@ -153,7 +136,7 @@ class AssistantService {
     // Add welcome message back
     this.addMessage({
       id: this.generateId(),
-      content: "Hello! I'm your medical assistant. I can help you find information about patients, medical records, or answer general healthcare questions. Try asking: \"Show me recent patients\" or \"What medical records are available?\"",
+      content: "Hello! I'm your medical assistant. I can help you find information about patients, medical records, or answer general healthcare questions. Try asking: \"Show me recent patients\", \"Medical record of John Miller\", or \"What medical records are available?\"",
       sender: 'assistant',
       timestamp: new Date()
     });

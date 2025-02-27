@@ -2,14 +2,14 @@ import { NavigateFunction } from 'react-router-dom';
 import { SearchResultType } from '../types/search';
 
 class NavigationService {
-  private navigate: NavigateFunction | null = null;
+  private navigateFunc: NavigateFunction | null = null;
 
   setNavigate(navigate: NavigateFunction) {
-    this.navigate = navigate;
+    this.navigateFunc = navigate;
   }
 
   navigateTo(type: SearchResultType, id: string) {
-    if (!this.navigate) {
+    if (!this.navigateFunc) {
       console.error('Navigation not initialized');
       return;
     }
@@ -19,7 +19,7 @@ class NavigationService {
         this.navigateToPatientTimeline(id);
         break;
       case SearchResultType.LANDING:
-        this.navigate('/');
+        this.navigateFunc('/');
         break;
       default:
         console.error('Unknown result type:', type);
@@ -27,13 +27,45 @@ class NavigationService {
   }
 
   public navigateToPatientTimeline(id: string, recordId?: string) {
-    if (!this.navigate) {
+    if (!this.navigateFunc) {
       console.error('Navigation not initialized');
       return;
     }
     const path = recordId ? `/patients/${id}/timeline/${recordId}` : `/patients/${id}/timeline`;
 
-    this.navigate(path, { replace: true });
+    this.navigateFunc(path, { replace: true });
+  }
+  
+  public navigateToPatientSummary(id: string) {
+    if (!this.navigateFunc) {
+      console.error('Navigation not initialized');
+      return;
+    }
+    this.navigateFunc(`/patients/${id}/summary`, { replace: true });
+  }
+  
+  public navigateToPatientDemographics(id: string) {
+    if (!this.navigateFunc) {
+      console.error('Navigation not initialized');
+      return;
+    }
+    this.navigateFunc(`/patients/${id}/demographics`, { replace: true });
+  }
+  
+  public navigateToPatientMedicalProfile(id: string) {
+    if (!this.navigateFunc) {
+      console.error('Navigation not initialized');
+      return;
+    }
+    this.navigateFunc(`/patients/${id}/medical-profile`, { replace: true });
+  }
+
+  public navigate(path: string, options?: { replace?: boolean; state?: object }) {
+    if (!this.navigateFunc) {
+      console.error('Navigation not initialized');
+      return;
+    }
+    this.navigateFunc(path, options);
   }
 }
 

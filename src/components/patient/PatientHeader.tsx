@@ -2,6 +2,7 @@ import React from 'react';
 import { Patient, Gender } from '../../types/types';
 import { calculateAge } from '../../lib/utils';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../hooks/useAppContext';
 
 interface PatientHeaderProps {
   patient: Patient;
@@ -33,6 +34,7 @@ const getAllergiesText = (allergies: string[] | undefined) => {
 export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
   const age = calculateAge(new Date(patient.dateOfBirth));
   const navigate = useNavigate();
+  const { state: { currentView } } = useAppContext();
   
   return (
     <div className="bg-blue-50 shadow-sm border border-blue-200">
@@ -51,6 +53,9 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
                   {patient.lastName}, {patient.firstName}
                   <span className="px-2 py-0.5 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100">
                     #{patient.patientId}
+                  </span>
+                  <span className="text-sm font-normal bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                    Current View: {currentView}
                   </span>
                 </h1>
                 <div className="mt-1 flex items-center gap-2 text-sm text-gray-600">
