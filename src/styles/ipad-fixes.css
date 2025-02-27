@@ -1,7 +1,9 @@
 /* iPad-specific fixes */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
   /* Global fixes */
-  html, body, #root {
+  html,
+  body,
+  #root {
     overflow: hidden !important;
     height: 100% !important;
   }
@@ -15,7 +17,7 @@
     z-index: 50;
     height: 4rem;
   }
-  
+
   /* Adjust main content to account for fixed header */
   .ipad-main-content-fix {
     padding-top: 4rem !important;
@@ -23,7 +25,7 @@
     position: relative;
     overflow: hidden !important;
   }
-  
+
   /* Fix footer position */
   .ipad-footer-fix {
     position: fixed;
@@ -33,24 +35,46 @@
     z-index: 50;
     height: 3rem;
   }
-  
+
+  /* Ensure patient container has proper layout */
+  .patient-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 5rem) !important; /* was 0 */
+    width: calc(100% - 1rem) !important;
+    overflow: hidden !important;
+    margin: 0.5rem !important;
+  }
+
+  /* Enable scrolling in individual components */
+  /*    .medical-timeline, 
+      .patient-summary, 
+      .patient-demographics, 
+      .medical-profile {
+        overflow: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        height: 100% !important;
+      } */
+
   /* Fix Assistant container */
   .assistant-container {
     width: 24rem !important;
     position: fixed !important;
     right: 0 !important;
     top: 4rem !important; /* Below header */
-    height: calc(100% - 7rem) !important; /* Full height minus header and footer */
+    height: calc(
+      100% - 7rem
+    ) !important; /* Full height minus header and footer */
     background: white !important;
     border-left: 1px solid #e5e7eb !important;
     transform: translateX(100%) !important;
     transition: transform 0.3s ease-in-out !important;
   }
-  
+
   .assistant-container.block {
     transform: translateX(0) !important;
   }
-  
+
   /* Fix Assistant panel */
   .assistant-panel {
     height: 100% !important;
@@ -59,27 +83,14 @@
     flex-direction: column !important;
     overflow-y: auto !important;
   }
-  
+
   /* Fix main content when assistant open */
   .assistant-open {
     margin-right: 24rem !important;
   }
+}
 
-  /* Ensure patient container has proper layout */
-  .patient-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow: hidden !important;
-  }
-  
-  /* Enable scrolling in individual components */
-  .medical-timeline, 
-  .patient-summary, 
-  .patient-demographics, 
-  .medical-profile {
-    overflow: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    height: 100% !important;
-  }
+/* Control content padding */
+.patient-view > .flex-1 {
+  padding: 1rem !important;
 }
