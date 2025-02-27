@@ -22,7 +22,7 @@ The application also adheres to accessibility standards through proper implement
 - **Build Tool**: Vite
 - **Package Manager**: pnpm
 - **Testing**: React Testing Library (for component tests)
-- **Data Fetching**: TanStack Query (React Query)
+- **Data Fetching**: TanStack Query (formerly known as React Query)
 
 ## Architecture
 
@@ -34,6 +34,27 @@ The application follows a modular architecture with clear separation of concerns
 2. **Navigation Service**: Handles routing with context awareness
 3. **Assistant Service**: Provides a natural language interface for interacting with the application
 4. **Search Service**: Enables powerful patient and record search capabilities
+
+### Architectural Principles
+
+The application implements a clean separation between UI components and business logic:
+
+- **UI Components**: Pure presentation layer focused on rendering and user interactions
+  - Components receive data via props and emit events for user actions
+  - Stateless where possible, with local state only for UI concerns
+  - No direct data fetching or business logic within components
+
+- **Services Layer**: Encapsulates all business logic and data operations
+  - Services are singleton classes that manage specific domains of functionality
+  - Handle data fetching, transformation, and state management
+  - Provide reactive streams of data that components can subscribe to
+  - Abstract away implementation details from the UI layer
+
+This separation ensures:
+- Better testability of both UI and business logic in isolation
+- Easier maintenance as changes to business logic don't require UI changes
+- Improved reusability of both components and services
+- Clear responsibilities and dependencies between application layers
 
 ### Key Directories
 
