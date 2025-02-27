@@ -21,6 +21,7 @@
   /* Fix main content inner area */
   .ipad-main-content-fix > main {
     overflow-y: auto !important;
+    padding-top: 0 !important;
   }
   
   /* Fix patient component positioning */
@@ -33,6 +34,12 @@
     margin-top: 0 !important;
     position: relative;
     z-index: 5;
+  }
+  
+  /* Add specific class for patient view */
+  .ipad-main-content-fix .patient-view {
+    padding-top: 4rem !important;
+    margin-top: 0 !important;
   }
   
   /* Fix footer position */

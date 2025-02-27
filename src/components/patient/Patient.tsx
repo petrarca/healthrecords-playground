@@ -64,7 +64,7 @@ export function Patient() {
   };
 
   return (
-    <div className="patient-container flex flex-col h-full overflow-hidden w-full">
+    <div className="patient-container patient-view flex flex-col h-full overflow-hidden w-full">
       {/* Fixed header section */}
       <div className="flex-shrink-0">
         <PatientHeader patient={patient} />
