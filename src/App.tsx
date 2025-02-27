@@ -28,7 +28,11 @@ function AppContent() {
 
   // Initialize context service with current URL
   useEffect(() => {
-    contextService.updateFromUrl(location.pathname);
+    // Only update context for non-patient routes
+    // Patient routes will be handled by the Patient component
+    if (!location.pathname.includes('/patients/')) {
+      contextService.updateFromUrl(location.pathname);
+    }
   }, [location.pathname]);
 
   return (

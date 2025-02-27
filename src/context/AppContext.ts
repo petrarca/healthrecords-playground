@@ -7,12 +7,15 @@ export const AppContext = createContext<{
   setCurrentPatient: typeof contextService.setCurrentPatient;
   setCurrentView: typeof contextService.setCurrentView;
   navigateTo: typeof contextService.navigateTo;
+  toggleDebugMode: typeof contextService.toggleDebugMode;
 }>({
   state: {
     currentPatient: null,
     currentView: 'landing',
+    debugMode: false,
   },
   setCurrentPatient: () => {},
   setCurrentView: () => {},
   navigateTo: () => {},
+  toggleDebugMode: () => {},
 });

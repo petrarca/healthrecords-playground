@@ -24,7 +24,7 @@ class AssistantService {
     // Initialize with a welcome message
     this.addMessage({
       id: this.generateId(),
-      content: "Hello! I'm your medical assistant. I can help you find information about patients, medical records, or answer general healthcare questions. Try asking: \"Show me recent patients\", \"Medical record of John Miller\", or \"What medical records are available?\"",
+      content: this.getWelcomeMessage(),
       sender: 'assistant',
       timestamp: new Date()
     });
@@ -136,10 +136,15 @@ class AssistantService {
     // Add welcome message back
     this.addMessage({
       id: this.generateId(),
-      content: "Hello! I'm your medical assistant. I can help you find information about patients, medical records, or answer general healthcare questions. Try asking: \"Show me recent patients\", \"Medical record of John Miller\", or \"What medical records are available?\"",
+      content: this.getWelcomeMessage(),
       sender: 'assistant',
       timestamp: new Date()
     });
+  }
+
+  // Get the welcome message
+  private getWelcomeMessage(): string {
+    return "👋 Welcome to HealthRecords Assistant! Type \"help\" to see examples of what I can do.";
   }
 
   // Get current state

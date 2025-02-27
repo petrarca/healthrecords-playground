@@ -93,7 +93,7 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
           <div>
             <h2 className="font-semibold text-gray-900">Medical Assistant</h2>
             <div className="flex items-center">
-              <span className="text-xs text-gray-500">Press ⌘+A to toggle</span>
+              <span className="text-xs text-gray-500">Press Shift+Space to toggle</span>
             </div>
           </div>
         </div>

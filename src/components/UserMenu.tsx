@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useAppContext } from '../hooks/useAppContext';
 
 interface UserMenuProps {
   userName?: string;
@@ -7,6 +8,7 @@ interface UserMenuProps {
 export const UserMenu: React.FC<UserMenuProps> = ({ userName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { state, toggleDebugMode } = useAppContext();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -45,6 +47,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ userName }) => {
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+          {/* User-specific content */}
           {userName ? (
             <>
               <div className="px-4 py-2 border-b border-gray-200">
@@ -57,9 +60,6 @@ export const UserMenu: React.FC<UserMenuProps> = ({ userName }) => {
                 </button>
                 <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                   Preferences
-                </button>
-                <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Help & Support
                 </button>
               </div>
               <div className="border-t border-gray-200 py-1">
@@ -76,13 +76,18 @@ export const UserMenu: React.FC<UserMenuProps> = ({ userName }) => {
               <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                 Create Account
               </button>
-              <div className="border-t border-gray-200 mt-1 pt-1">
-                <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Help & Support
-                </button>
-              </div>
             </div>
           )}
+          
+          {/* Common menu items */}
+          <div className={`${userName ? '' : 'border-t border-gray-200'} py-1`}>
+            <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              Help & Support
+            </button>
+            <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={toggleDebugMode}>
+              Debug Mode: {state.debugMode ? 'On' : 'Off'}
+            </button>
+          </div>
         </div>
       )}
     </div>

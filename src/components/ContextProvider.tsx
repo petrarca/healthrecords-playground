@@ -8,7 +8,9 @@ export const ContextProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   useEffect(() => {
     // Subscribe to context changes
-    const subscription = contextService.subscribe(setState);
+    const subscription = contextService.subscribe((newState) => {
+      setState(newState);
+    });
     
     // Cleanup subscription on unmount
     return () => subscription.unsubscribe();
@@ -19,6 +21,7 @@ export const ContextProvider: React.FC<{ children: ReactNode }> = ({ children })
     setCurrentPatient: contextService.setCurrentPatient.bind(contextService),
     setCurrentView: contextService.setCurrentView.bind(contextService),
     navigateTo: contextService.navigateTo.bind(contextService),
+    toggleDebugMode: contextService.toggleDebugMode.bind(contextService),
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

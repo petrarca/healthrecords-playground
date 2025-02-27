@@ -21,9 +21,9 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
   // Add keyboard shortcut to toggle assistant
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Check for cmd+a (metaKey is cmd on Mac)
-      if ((event.metaKey || event.ctrlKey) && event.key === 'a') {
-        event.preventDefault(); // Prevent the default "select all" behavior
+      // Check for Shift+Space
+      if (event.shiftKey && event.key === ' ') {
+        event.preventDefault(); // Prevent any default behavior
         setIsAssistantOpen(prevState => !prevState);
       }
       

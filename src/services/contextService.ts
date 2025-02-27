@@ -10,12 +10,14 @@ export interface ContextState {
   currentPatient: Patient | null;
   currentView: ViewType;
   currentRecordId?: string;
+  debugMode: boolean;
 }
 
 // Initial state
 const initialState: ContextState = {
   currentPatient: null,
   currentView: 'landing',
+  debugMode: false,
 };
 
 class ContextService {
@@ -100,6 +102,15 @@ class ContextService {
     
     // Update the context state
     this.setCurrentView(view, recordId);
+  }
+  
+  // Method to toggle debug mode
+  public toggleDebugMode() {
+    const currentState = this.getState();
+    this.contextState.next({
+      ...currentState,
+      debugMode: !currentState.debugMode,
+    });
   }
 }
 

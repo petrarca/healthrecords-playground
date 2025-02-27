@@ -6,6 +6,7 @@ import { TimelineList } from './TimelineList';
 import { TimelineEventDetails } from './TimelineEventDetails';
 import { useUpdateMedicalRecord } from '../../hooks/useMedicalRecords';
 import { useParams, useNavigate } from 'react-router-dom';
+import { contextService } from '../../services/contextService'; // Import the context service
 
 interface MedicalTimelineProps {
   records: MedicalRecord[];
@@ -267,14 +268,33 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
+      
+      // First update the context directly
+      contextService.setCurrentView('timeline', firstRecord.recordId);
+      
+      // Then update the URL
+      navigate(`/patients/${patientId}/timeline/${firstRecord.recordId}`, { replace: true });
+      
+      // Call the onRecordSelect callback if provided
+      if (onRecordSelect) {
+        onRecordSelect(firstRecord.recordId);
+      }
     }
   };
 
   const handleRecordSelect = (record: MedicalRecord) => {
     setSelectedRecord(record);
-    // Update URL when record is selected
+    
+    // First update the context directly
+    contextService.setCurrentView('timeline', record.recordId);
+    
+    // Then update the URL
     navigate(`/patients/${patientId}/timeline/${record.recordId}`, { replace: true });
-    onRecordSelect?.(record.recordId);
+    
+    // Call the onRecordSelect callback if provided
+    if (onRecordSelect) {
+      onRecordSelect(record.recordId);
+    }
   };
 
   const selectRecord = useCallback((record: MedicalRecord) => {
@@ -282,7 +302,18 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
     const date = record.recordedAt.toISOString().split('T')[0];
     setSelectedDate(date);
     scrollRecordIntoView(record.recordId);
-  }, []);
+    
+    // First update the context directly
+    contextService.setCurrentView('timeline', record.recordId);
+    
+    // Then update the URL
+    navigate(`/patients/${patientId}/timeline/${record.recordId}`, { replace: true });
+    
+    // Call the onRecordSelect callback if provided
+    if (onRecordSelect) {
+      onRecordSelect(record.recordId);
+    }
+  }, [navigate, patientId, onRecordSelect]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -354,7 +385,10 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
         const recordedAt = record.recordedAt.toISOString().split('T')[0];
         setSelectedDate(recordedAt);
         setSelectedYear(new Date(recordedAt).getFullYear());
-      }
+        
+        // Update context with the selected record ID
+        contextService.setCurrentView('timeline', record.recordId);
+      } 
     }
   }, [selectedRecordId, records]);
 

@@ -19,12 +19,12 @@ export class CurrentPatientIntentHandler implements IntentHandler {
     
     // Check for queries about the current patient
     return (
+      lowerContent.includes('show me') ||
       lowerContent.includes('patient') ||
       lowerContent.includes('demographics') ||
       lowerContent.includes('timeline') ||
       lowerContent.includes('summary') ||
-      lowerContent.includes('medical profile') ||
-      lowerContent.includes('show me') ||
+      lowerContent.includes('profile') ||
       lowerContent.includes('navigate to')
     );
   }
@@ -43,26 +43,22 @@ export class CurrentPatientIntentHandler implements IntentHandler {
     const lowerContent = content.toLowerCase();
     
     // Handle navigation requests
-    if (lowerContent.includes('demographics') || 
-        (lowerContent.includes('show me') && lowerContent.includes('demographics'))) {
+    if (lowerContent.includes('demographics')) {
       contextService.navigateTo('demographics', patient.id);
       return `Navigating to demographics for ${patient.firstName} ${patient.lastName}.`;
     }
     
-    if (lowerContent.includes('timeline') || 
-        (lowerContent.includes('show me') && lowerContent.includes('timeline'))) {
+    if (lowerContent.includes('timeline')) {
       contextService.navigateTo('timeline', patient.id);
       return `Navigating to timeline for ${patient.firstName} ${patient.lastName}.`;
     }
     
-    if (lowerContent.includes('summary') || 
-        (lowerContent.includes('show me') && lowerContent.includes('summary'))) {
+    if (lowerContent.includes('summary')) {
       contextService.navigateTo('summary', patient.id);
       return `Navigating to summary for ${patient.firstName} ${patient.lastName}.`;
     }
     
-    if (lowerContent.includes('medical profile') || lowerContent.includes('profile') || 
-        (lowerContent.includes('show me') && (lowerContent.includes('medical profile') || lowerContent.includes('profile')))) {
+    if (lowerContent.includes('profile')) {
       contextService.navigateTo('profile', patient.id);
       return `Navigating to medical profile for ${patient.firstName} ${patient.lastName}.`;
     }
@@ -74,6 +70,6 @@ What would you like to know about this patient? You can ask to see their:
 - Demographics
 - Timeline
 - Summary
-- Medical Profile`;
+- Profile`;
   }
 }
