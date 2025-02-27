@@ -53,8 +53,8 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
   return (
     <div className="h-full flex flex-col overflow-hidden">
       <div className="flex-1 overflow-y-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* Left Column: Personal Info, Contact, Addresses */}
+        <div className="grid gap-3 md:grid-cols-2">
+          {/* Left Column: Personal Info, Contact, Insurance */}
           <div className="space-y-3">
             <PersonalInfoCard
               firstName={patient.firstName}
@@ -67,6 +67,13 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
               email={patient.email ?? ''}
               onUpdateContact={onUpdatePatient ? handleUpdateContact : undefined}
             />
+            <InsuranceCard
+              provider={patient.insuranceProvider}
+              number={patient.insuranceNumber}
+            />
+          </div>
+          {/* Right Column: Addresses */}
+          <div className="space-y-3">
             <AddressCard 
               addresses={addresses}
               primaryAddress={patient.primaryAddress}
@@ -86,13 +93,6 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
                 }
               }}
               onUpdatePrimaryAddress={handleUpdatePrimaryAddress}
-            />
-          </div>
-          {/* Right Column: Insurance */}
-          <div>
-            <InsuranceCard
-              provider={patient.insuranceProvider}
-              number={patient.insuranceNumber}
             />
           </div>
         </div>
