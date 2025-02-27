@@ -117,7 +117,7 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
       className={`assistant-panel h-full bg-white border-l border-gray-200 shadow-lg flex flex-col ${
         isOpen ? 'block' : 'hidden'
       }`}
-      style={{ width: '400px' }}
+      style={{ width: '100%' }}
     >
       {/* Chat Header */}
       <div className="border-b border-gray-200 flex items-center justify-between px-6 py-3 bg-gradient-to-r from-blue-50 to-blue-100">

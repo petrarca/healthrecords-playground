@@ -117,7 +117,7 @@ export function Patient() {
       </div>
 
       {/* Content area - no scrolling here as components handle their own scrolling */}
-      <div className="flex-1 bg-gray-50 pt-2 overflow-hidden">
+      <div className="flex-1 bg-gray-50 overflow-hidden ipad-main-content-fix">
         {activeTab === 'summary' && <PatientSummary patient={patient} />}
         {activeTab === 'timeline' && <MedicalTimeline records={records || []} selectedRecordId={recordId} />}
         {activeTab === 'demographics' && <PatientDemographics patient={patient} onUpdatePatient={updatePatient} />}

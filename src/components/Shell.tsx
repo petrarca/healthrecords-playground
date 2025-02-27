@@ -54,7 +54,7 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
   }), [isAssistantOpen]);
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 overflow-hidden">
+    <div className="flex flex-col h-screen bg-gray-50 overflow-hidden" data-assistant={isAssistantOpen ? 'open' : 'closed'}>
       {/* Header */}
       <header className="shell-header bg-white border-b border-gray-200 shadow-sm">
         <ShellHeader 
@@ -69,13 +69,13 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
         {/* Main Content with Assistant - Use flex to properly handle layout */}
         <div className="flex-1 overflow-hidden flex ipad-main-content-fix">
           <main className={`flex-1 h-full px-1 sm:px-2 py-3 transition-all duration-300 overflow-hidden ${
-            !isAssistantOpen ? 'max-w-[1600px] mx-auto' : ''
+            !isAssistantOpen ? 'max-w-[1600px] mx-auto' : 'assistant-open'
           }`}>
             {children}
           </main>
           
           {/* Assistant - Positioned within the flex layout */}
-          <div className={`assistant-container w-96 flex-shrink-0 transition-all duration-300 pt-3 ${isAssistantOpen ? 'block' : 'hidden'}`}>
+          <div className={`assistant-container w-96 flex-shrink-0 transition-all duration-300 ${isAssistantOpen ? 'block' : 'hidden'}`}>
             <Assistant isOpen={isAssistantOpen} onClose={() => setIsAssistantOpen(false)} />
           </div>
         </div>
