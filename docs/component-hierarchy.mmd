@@ -1,0 +1,33 @@
+graph TD
+    A[App] --> B[Shell]
+    B --> C[ShellHeader]
+    B --> D[Main Content Container<br/>.ipad-main-content-fix]
+    B --> E[Assistant<br/>.assistant-panel]
+    B --> F[ContextDisplay<br/>.context-display]
+    
+    C --> G[UserMenu]
+    C --> H[ConnectionStatus]
+    
+    D --> I[Patient Views]
+    I --> J[PatientSummary<br/>.patient-summary]
+    I --> K[Timeline<br/>.timeline-container]
+    I --> L[Demographics]
+    I --> M[Profile]
+    
+    D --> N[LandingPage<br/>.landing-page]
+    
+    subgraph "Common UI Components"
+        O[Card<br/>.card]
+        P[Button<br/>.btn]
+        Q[Input<br/>.input]
+        R[Select<br/>.select]
+    end
+
+%% Styling
+classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
+classDef container fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
+classDef component fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
+
+class A,B,D container;
+class C,E,F,G,H,I,J,K,L,M,N component;
+class O,P,Q,R default;
