@@ -22,6 +22,24 @@ class PatientService {
     return mapDatabaseToPatient(data[0]);
   }
 
+  async getMostRecentChangedPatients(): Promise<Patient[]> {
+    const { data, error } = await getClient()
+      .from('patients')
+      .select()
+      .order('updated_at', { ascending: false })
+      .limit(10) as { data: PatientTable[] | null, error: Error | null };
+
+    if (error) {
+      throw new Error(`Failed to fetch patients: ${error.message}`);
+    }
+
+    if (!data?.length) {
+      return [];
+    }
+
+    return data.map(patient => mapDatabaseToPatient(patient));
+  }
+
   async updatePatient(updatedPatient: Patient): Promise<void> {
     const { error } = await getClient()
       .from('patients')

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SearchResult } from '../types/search';
 import { navigationService } from '../services/navigationService';
 import { ShellHeader } from './ShellHeader';
@@ -15,6 +15,25 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
   const handleSearchResult = (result: SearchResult) => {
     navigationService.navigateTo(result.type, result.id);
   };
+
+  // Add keyboard shortcut to toggle assistant
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check for cmd+a (metaKey is cmd on Mac)
+      if ((event.metaKey || event.ctrlKey) && event.key === 'a') {
+        event.preventDefault(); // Prevent the default "select all" behavior
+        setIsAssistantOpen(prevState => !prevState);
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clean up
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-gray-50">

@@ -94,6 +94,7 @@ export const ShellHeader: React.FC<ShellHeaderProps> = ({
                   : 'hover:bg-gray-100 text-gray-600'
               }`}
               aria-label="Toggle Assistant"
+              title="Toggle Assistant (⌘+A)"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
