@@ -75,7 +75,7 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
           </main>
           
           {/* Assistant - Positioned within the flex layout */}
-          <div className={`w-96 flex-shrink-0 transition-all duration-300 pt-3 ${isAssistantOpen ? 'block' : 'hidden'}`}>
+          <div className={`assistant-container w-96 flex-shrink-0 transition-all duration-300 pt-3 ${isAssistantOpen ? 'block' : 'hidden'}`}>
             <Assistant isOpen={isAssistantOpen} onClose={() => setIsAssistantOpen(false)} />
           </div>
         </div>

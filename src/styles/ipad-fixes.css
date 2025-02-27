@@ -7,12 +7,32 @@
     left: 0;
     right: 0;
     z-index: 20;
+    height: 4rem;
   }
   
   /* Adjust main content to account for fixed header */
   .ipad-main-content-fix {
-    margin-top: 4rem !important; /* Height of the header */
-    height: calc(100% - 4rem - 3rem) !important; /* Subtract header and footer height */
+    padding-top: 4rem !important; /* Add padding equal to header height */
+    height: calc(100% - 3rem) !important; /* Subtract footer height */
+    position: relative;
+    overflow-y: auto !important;
+  }
+  
+  /* Fix main content inner area */
+  .ipad-main-content-fix > main {
+    overflow-y: auto !important;
+  }
+  
+  /* Fix patient component positioning */
+  .ipad-main-content-fix > div {
+    padding-top: 0 !important;
+  }
+  
+  /* Fix patient header positioning */
+  .patient-header {
+    margin-top: 0 !important;
+    position: relative;
+    z-index: 5;
   }
   
   /* Fix footer position */
@@ -35,6 +55,30 @@
   /* Make sure dialog can be positioned absolutely */
   dialog {
     position: absolute !important;
+  }
+  
+  /* Fix Assistant container on iPad */
+  .assistant-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+  
+  /* Fix Assistant component on iPad */
+  .assistant-panel {
+    height: calc(100% - 3rem) !important; /* Subtract footer height */
+    max-height: calc(100vh - 4rem - 3rem) !important; /* Subtract header and footer height */
+    z-index: 15;
+    margin-top: 0 !important;
+    padding-top: 4rem !important; /* Add padding to push below header */
+    overflow-y: auto !important;
+  }
+  
+  /* Fix Assistant input area */
+  .assistant-panel form {
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    z-index: 16;
   }
   
   /* Global fixes */

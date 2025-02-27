@@ -35,7 +35,7 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
   const navigate = useNavigate();
   
   return (
-    <div className="bg-blue-50 shadow-sm border border-blue-200">
+    <div className="patient-header bg-blue-50 shadow-sm border border-blue-200">
       {/* Primary Info Bar */}
       <div className="border-b border-gray-200">
         <div className="px-4 py-2">
