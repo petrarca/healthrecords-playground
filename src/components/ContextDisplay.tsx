@@ -19,6 +19,19 @@ export const ContextDisplay: React.FC = () => {
       e.preventDefault(); // Prevent text selection during drag
     }
   };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLButtonElement>) => {
+    if (displayRef.current && e.touches.length === 1) {
+      const touch = e.touches[0];
+      const rect = displayRef.current.getBoundingClientRect();
+      setDragOffset({
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      });
+      setIsDragging(true);
+      e.preventDefault(); // Prevent scrolling during drag
+    }
+  };
   
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (isDragging) {
@@ -28,8 +41,23 @@ export const ContextDisplay: React.FC = () => {
       });
     }
   }, [isDragging, dragOffset]);
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    if (isDragging && e.touches.length === 1) {
+      const touch = e.touches[0];
+      setPosition({
+        x: touch.clientX - dragOffset.x,
+        y: touch.clientY - dragOffset.y
+      });
+      e.preventDefault(); // Prevent scrolling during drag
+    }
+  }, [isDragging, dragOffset]);
   
   const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
   }, []);
   
@@ -37,16 +65,25 @@ export const ContextDisplay: React.FC = () => {
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+      document.addEventListener('touchcancel', handleTouchEnd);
     } else {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('touchcancel', handleTouchEnd);
     }
     
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('touchcancel', handleTouchEnd);
     };
-  }, [isDragging, dragOffset, handleMouseMove, handleMouseUp]);
+  }, [isDragging, dragOffset, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
   
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'Escape') {
@@ -84,6 +121,9 @@ export const ContextDisplay: React.FC = () => {
       <button 
         className="handle w-full cursor-move bg-blue-200 rounded-t-sm px-2 py-1 mb-1 text-left" 
         onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onKeyDown={handleKeyDown}
         aria-label="Drag context panel, use arrow keys to move"
       >
