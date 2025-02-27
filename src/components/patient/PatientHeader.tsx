@@ -38,7 +38,7 @@ export const PatientHeader: React.FC<PatientHeaderProps> = ({ patient }) => {
     <div className="bg-blue-50 shadow-sm border border-blue-200">
       {/* Primary Info Bar */}
       <div className="border-b border-gray-200">
-        <div className="px-4 py-3">
+        <div className="px-4 py-2">
           <div className="flex items-center justify-between">
             {/* Patient Basic Info */}
             <button 

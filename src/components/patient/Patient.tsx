@@ -64,7 +64,7 @@ export function Patient() {
   };
 
   return (
-    <div className="patient-container flex flex-col h-full overflow-hidden">
+    <div className="patient-container flex flex-col h-full overflow-hidden w-full">
       {/* Fixed header section */}
       <div className="flex-shrink-0">
         <PatientHeader patient={patient} />
@@ -74,7 +74,7 @@ export function Patient() {
           <nav className="flex space-x-8 px-4" aria-label="Tabs">
             <button
               onClick={() => navigateToTab('summary')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'summary'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -84,7 +84,7 @@ export function Patient() {
             </button>
             <button
               onClick={() => navigateToTab('timeline')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'timeline'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -94,7 +94,7 @@ export function Patient() {
             </button>
             <button
               onClick={() => navigateToTab('demographics')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'demographics'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -104,7 +104,7 @@ export function Patient() {
             </button>
             <button
               onClick={() => navigateToTab('profile')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'profile'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -117,7 +117,7 @@ export function Patient() {
       </div>
 
       {/* Content area - no scrolling here as components handle their own scrolling */}
-      <div className="flex-1 bg-gray-50 pt-4 overflow-hidden">
+      <div className="flex-1 bg-gray-50 pt-2 overflow-hidden">
         {activeTab === 'summary' && <PatientSummary patient={patient} />}
         {activeTab === 'timeline' && <MedicalTimeline records={records || []} selectedRecordId={recordId} />}
         {activeTab === 'demographics' && <PatientDemographics patient={patient} onUpdatePatient={updatePatient} />}

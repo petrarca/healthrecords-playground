@@ -55,21 +55,29 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 overflow-hidden">
-      <ShellHeader 
-        onSearchResult={handleSearchResult}
-        onMobileMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        onAssistantClick={toggleAssistant}
-        isAssistantOpen={isAssistantOpen}
-      />
+      {/* Header */}
+      <header className="shell-header bg-white border-b border-gray-200 shadow-sm">
+        <ShellHeader 
+          onSearchResult={handleSearchResult}
+          onMobileMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          onAssistantClick={toggleAssistant}
+          isAssistantOpen={isAssistantOpen}
+        />
+      </header>
       
       <ShellContext.Provider value={shellContextValue}>
-        {/* Main Content - No scrolling at this level */}
-        <div className="flex-1 overflow-hidden">
-          <main className={`h-full max-w-[1600px] mx-auto w-full px-1 sm:px-2 py-6 transition-all duration-300 ${
-            isAssistantOpen ? 'mr-96' : ''
+        {/* Main Content with Assistant - Use flex to properly handle layout */}
+        <div className="flex-1 overflow-hidden flex ipad-main-content-fix">
+          <main className={`flex-1 h-full px-1 sm:px-2 py-3 transition-all duration-300 overflow-hidden ${
+            !isAssistantOpen ? 'max-w-[1600px] mx-auto' : ''
           }`}>
             {children}
           </main>
+          
+          {/* Assistant - Positioned within the flex layout */}
+          <div className={`w-96 flex-shrink-0 transition-all duration-300 pt-3 ${isAssistantOpen ? 'block' : 'hidden'}`}>
+            <Assistant isOpen={isAssistantOpen} onClose={() => setIsAssistantOpen(false)} />
+          </div>
         </div>
       </ShellContext.Provider>
 
@@ -102,9 +110,6 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
         </div>
       </footer>
 
-      {/* Chat Component */}
-      <Assistant isOpen={isAssistantOpen} onClose={() => setIsAssistantOpen(false)} />
-      
       {/* Context Display */}
       {showContextDisplay && <ContextDisplay />}
 

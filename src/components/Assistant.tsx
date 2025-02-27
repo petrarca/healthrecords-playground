@@ -76,12 +76,12 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
 
   return (
     <div 
-      className={`fixed right-0 top-16 bottom-0 w-96 bg-white border-l border-gray-200 shadow-lg transform transition-transform duration-300 ease-in-out ${
-        isOpen ? 'translate-x-0' : 'translate-x-full'
+      className={`h-full bg-white border-l border-gray-200 shadow-lg flex flex-col ${
+        isOpen ? 'block' : 'hidden'
       }`}
     >
       {/* Chat Header */}
-      <div className="h-16 border-b border-gray-200 flex items-center justify-between px-6 bg-gradient-to-r from-blue-50 to-blue-100">
+      <div className="border-b border-gray-200 flex items-center justify-between px-6 py-3 bg-gradient-to-r from-blue-50 to-blue-100">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,7 +109,7 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
       </div>
 
       {/* Chat Messages */}
-      <div className="h-[calc(100%-8rem)] overflow-y-auto p-6 bg-gradient-to-b from-gray-50 to-white">
+      <div className="flex-1 overflow-y-auto p-6 bg-gradient-to-b from-gray-50 to-white">
         <div className="flex flex-col gap-6">
           {messages.map((msg) => (
             <div key={msg.id} className={`flex items-start gap-3 ${msg.sender === 'user' ? 'flex-row-reverse' : ''}`}>
@@ -169,7 +169,7 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
       </div>
 
       {/* Chat Input */}
-      <div className="h-16 border-t border-gray-200 p-3 bg-white">
+      <div className="border-t border-gray-200 p-3 bg-white">
         <form className="flex gap-2 h-full" onSubmit={handleSubmit}>
           <div className="relative flex-1">
             <input

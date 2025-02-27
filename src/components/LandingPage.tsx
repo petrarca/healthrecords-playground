@@ -13,7 +13,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onAssistantClick }) =>
   }, []);
 
   return (
-    <div className="landing-page-container h-full flex flex-col items-center justify-center py-8 px-4 overflow-hidden">
+    <div className="landing-page-container h-full flex flex-col items-center justify-center py-8 px-4 overflow-hidden w-full">
       <div className="text-center max-w-3xl">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
           Welcome to HealthRecords

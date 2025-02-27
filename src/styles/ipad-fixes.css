@@ -1,5 +1,20 @@
 /* iPad-specific fixes */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* Fix header position */
+  .shell-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+  }
+  
+  /* Adjust main content to account for fixed header */
+  .ipad-main-content-fix {
+    margin-top: 4rem !important; /* Height of the header */
+    height: calc(100% - 4rem - 3rem) !important; /* Subtract header and footer height */
+  }
+  
   /* Fix footer position */
   .ipad-footer-fix {
     position: fixed;
@@ -21,6 +36,7 @@
     flex-direction: column;
     height: 100%;
     overflow: hidden !important;
+    width: 100% !important;
   }
   
   /* No scrolling in the patient content container */
