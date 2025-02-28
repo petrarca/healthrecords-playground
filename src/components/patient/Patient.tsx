@@ -5,11 +5,12 @@ import { PatientHeader } from './PatientHeader';
 import { PatientDemographics } from './demographics/PatientDemographics';
 import { PatientSummary } from './PatientSummary';
 import { MedicalProfile } from './MedicalProfile';
+import { Vitals } from './Vitals';
 import { usePatient, useUpdatePatient } from '../../hooks/usePatient';
 import { useMedicalRecords } from '../../hooks/useMedicalRecords';
 import { contextService } from '../../services/contextService';
 
-type TabType = 'timeline' | 'demographics' | 'summary' | 'profile';
+type TabType = 'timeline' | 'demographics' | 'summary' | 'profile' | 'vitals';
 
 export function Patient() {
   const { id, recordId } = useParams<{ id: string; recordId?: string }>();
@@ -37,6 +38,7 @@ export function Patient() {
     }
     else if (path.includes('/demographics')) setActiveTab('demographics');
     else if (path.includes('/profile')) setActiveTab('profile');
+    else if (path.includes('/vitals')) setActiveTab('vitals');
     else setActiveTab('summary');
     
     // Update context service with current URL information
@@ -103,6 +105,16 @@ export function Patient() {
               Demographics
             </button>
             <button
+              onClick={() => navigateToTab('vitals')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'vitals'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Vitals
+            </button>
+            <button
               onClick={() => navigateToTab('profile')}
               className={`py-2 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'profile'
@@ -121,6 +133,7 @@ export function Patient() {
         {activeTab === 'summary' && <PatientSummary patient={patient} />}
         {activeTab === 'timeline' && <MedicalTimeline records={records || []} selectedRecordId={recordId} />}
         {activeTab === 'demographics' && <PatientDemographics patient={patient} onUpdatePatient={updatePatient} />}
+        {activeTab === 'vitals' && <Vitals patient={patient} />}
         {activeTab === 'profile' && <MedicalProfile patient={patient} />}
       </div>
     </div>

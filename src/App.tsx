@@ -48,6 +48,7 @@ function AppContent() {
         <Route path="/patients/:id/demographics" element={<Patient />} />
         <Route path="/patients/:id/summary" element={<Patient />} />
         <Route path="/patients/:id/profile" element={<Patient />} />
+        <Route path="/patients/:id/vitals" element={<Patient />} />
       </Routes>
     </Shell>
   );

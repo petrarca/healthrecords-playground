@@ -3,7 +3,7 @@ import { Patient } from '../types/patient';
 import { navigationService } from './navigationService';
 
 // Define the view types available in the application
-export type ViewType = 'summary' | 'timeline' | 'demographics' | 'profile' | 'landing';
+export type ViewType = 'summary' | 'timeline' | 'demographics' | 'profile' | 'landing' | 'vitals';
 
 // Define the context state interface
 export interface ContextState {
@@ -61,15 +61,12 @@ class ContextService {
       if (pathname.includes('/timeline')) view = 'timeline';
       else if (pathname.includes('/demographics')) view = 'demographics';
       else if (pathname.includes('/profile')) view = 'profile';
+      else if (pathname.includes('/vitals')) view = 'vitals';
       else view = 'summary';
     }
     
-    const currentState = this.getState();
-    this.contextState.next({
-      ...currentState,
-      currentView: view,
-      currentRecordId: recordId,
-    });
+    // Update the context state
+    this.setCurrentView(view, recordId);
   }
   
   // Method to navigate while updating context
@@ -82,6 +79,10 @@ class ContextService {
       return;
     }
     
+    // First update the context state
+    this.setCurrentView(view, recordId);
+    
+    // Then navigate
     switch (view) {
       case 'landing':
         navigationService.navigate('/');
@@ -98,10 +99,10 @@ class ContextService {
       case 'profile':
         if (id) navigationService.navigate(`/patients/${id}/profile`, { replace: true });
         break;
+      case 'vitals':
+        if (id) navigationService.navigate(`/patients/${id}/vitals`, { replace: true });
+        break;
     }
-    
-    // Update the context state
-    this.setCurrentView(view, recordId);
   }
   
   // Method to toggle debug mode
