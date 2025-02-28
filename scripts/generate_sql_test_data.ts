@@ -163,10 +163,10 @@ function generateMedicalRecordSql(record: MedicalRecord): string {
 async function generateTestData() {
     // Read input files
     const patientsData = JSON.parse(fs.readFileSync(
-        path.join(fileURLToPath(import.meta.url), '../../public/data/patients.json'), 'utf8'
+        path.join(fileURLToPath(import.meta.url), '../../fixtures/patients.json'), 'utf8'
     )) as PatientsData;
     const medicalRecordsData = JSON.parse(fs.readFileSync(
-        path.join(fileURLToPath(import.meta.url), '../../public/data/medical_records.json'), 'utf8'
+        path.join(fileURLToPath(import.meta.url), '../../fixtures/medical_records.json'), 'utf8'
     )) as MedicalRecordsData;
 
     // Generate SQL statements

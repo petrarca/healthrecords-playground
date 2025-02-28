@@ -25,3 +25,6 @@ tsconfig.app.tsbuildinfo
 *.njsproj
 *.sln
 *.sw?
+
+# Can be re-created by fixtures
+db/test_data.sql

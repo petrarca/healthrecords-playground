@@ -1243,8 +1243,8 @@ async function generateMedicalRecords() {
   try {
     // Define file paths
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const patientsFilePath = path.join(__dirname, '../public/data/patients.json');
-    const medicalRecordsFilePath = path.join(__dirname, '../public/data/medical_records.json');
+    const patientsFilePath = path.join(__dirname, '../fixtures/patients.json');
+    const medicalRecordsFilePath = path.join(__dirname, '../fixtures/medical_records.json');
     
     // Read patients data
     const patientsData = JSON.parse(fs.readFileSync(patientsFilePath, 'utf8')) as { patients: Patient[] };
