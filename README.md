@@ -111,9 +111,6 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 # Install dependencies
 pnpm install
 
-# Generate test data (optional)
-pnpm generate-test-data
-
 # Start development server
 pnpm dev
 ```
