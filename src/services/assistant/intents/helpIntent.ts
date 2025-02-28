@@ -46,10 +46,11 @@ export class HelpIntentHandler implements IntentHandler {
 • "record of Jane Doe"
 
 <strong>When Viewing a Patient:</strong>
+• "show vitals"
 • "show demographics"
 • "show timeline"
 • "show summary"
 • "show profile"
-or say simply demographics, timeline and so on.`;
+or say simply vitals, timeline and so on.`;
   }
 }

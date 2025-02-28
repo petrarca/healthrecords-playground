@@ -22,6 +22,7 @@ export class CurrentPatientIntentHandler implements IntentHandler {
       lowerContent.includes('show me') ||
       lowerContent.includes('patient') ||
       lowerContent.includes('demographics') ||
+      lowerContent.includes('vitals') ||
       lowerContent.includes('timeline') ||
       lowerContent.includes('summary') ||
       lowerContent.includes('profile') ||
@@ -62,7 +63,12 @@ export class CurrentPatientIntentHandler implements IntentHandler {
       contextService.navigateTo('profile', patient.id);
       return `Navigating to medical profile for ${patient.firstName} ${patient.lastName}.`;
     }
-    
+
+    if (lowerContent.includes('vitals')) {
+      contextService.navigateTo('vitals', patient.id);
+      return `Navigating to vitals for ${patient.firstName} ${patient.lastName}.`;
+    }
+
     // Default response with patient info
     return `You're currently viewing ${patient.firstName} ${patient.lastName}'s ${context.currentView} information. 
     
