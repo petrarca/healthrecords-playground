@@ -11,6 +11,25 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    chunkSizeWarningLimit: 600, // Increase warning limit to 600kb
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-components': [
+            'lucide-react',
+            '@radix-ui/react-popover',
+          ],
+          'data-libs': [
+            '@tanstack/react-query',
+            'recharts',
+            'rxjs',
+          ],
+        },
+      },
+    },
+  },
   server: {
     host: '0.0.0.0', // Listen on all addresses
     port: 5173,
