@@ -85,7 +85,6 @@ export const PatientDemographics: React.FC<PatientDemographicsProps> = ({
               }}
               onDeleteAddress={async (id: string) => {
                 try {
-                  console.log('Deleting address with ID:', id);
                   await deleteAddress(id);
                 } catch (error) {
                   console.error('Error deleting address:', error);

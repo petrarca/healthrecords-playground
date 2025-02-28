@@ -16,7 +16,8 @@ export const FilterButton: React.FC<FilterButtonProps> = ({ type, active, onClic
     [MedicalRecordType.LAB_RESULT]: "bg-blue-50 text-blue-700",
     [MedicalRecordType.COMPLAINT]: "bg-yellow-50 text-yellow-700",
     [MedicalRecordType.VITAL_SIGNS]: "bg-green-50 text-green-700",
-    [MedicalRecordType.MEDICATION]: "bg-purple-50 text-purple-700"
+    [MedicalRecordType.MEDICATION]: "bg-purple-50 text-purple-700",
+    [MedicalRecordType.PROCEDURE]: "bg-indigo-50 text-indigo-700"
   };
   const inactiveClasses = "bg-gray-50 text-gray-500 hover:bg-gray-100";
 

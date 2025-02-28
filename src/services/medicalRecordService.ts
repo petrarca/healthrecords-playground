@@ -23,9 +23,6 @@ class MedicalRecordService {
       throw new Error(`Failed to fetch medical records: ${error.message}`);
     }
 
-    // QQQ
-    console.debug(data)
-
     return (data || []).map(record => ({
       id: record.record_id,
       recordId: record.record_id,

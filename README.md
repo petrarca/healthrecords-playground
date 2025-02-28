@@ -72,6 +72,30 @@ This separation ensures:
 - **Context-Aware Navigation**: The application maintains awareness of the current patient and view
 - **Responsive Design**: Works across desktop and mobile devices
 
+### Advanced Architecture Features
+
+#### Flexible Metadata System
+
+The application implements a sophisticated metadata system for medical records:
+
+- **Field Metadata**: Each field in a medical record has associated metadata that describes its type, validation rules, and rendering preferences
+- **Type-Safe Definitions**: TypeScript interfaces ensure consistency and type safety across the application
+- **Quantity Value Handling**: Special handling for medical measurements with units (e.g., blood pressure, temperature)
+- **Validation Rules**: Built-in validation based on field metadata
+
+#### Plugin-Based Field Rendering
+
+A modular system for rendering different types of medical data:
+
+- **Renderer Registry**: Dynamically register and use custom field renderers
+- **Metadata-Driven**: Field metadata specifies which renderer to use for each field
+- **Built-in Renderers**: Includes specialized renderers for common medical data types:
+  - **Lab Components Renderer**: Displays laboratory results in a tabular format
+  - **JSON Renderer**: Interactive, collapsible view for complex JSON data
+- **Extensibility**: Easily add new renderers without modifying existing code
+
+Visit the demo routes (`#/demo/json-renderer` and `#/demo/field-renderers`) to see these systems in action.
+
 ## Development Setup
 
 ### Prerequisites

@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "clean": "rm -rf node_modules dist .turbo .next .cache .vite coverage build",
     "prepare": "husky install",
-    "generate-test-data": "tsx scripts/generate_test_data.ts"
+    "generate-medical-events": "tsx scripts/generate_medical_event.ts",
+    "generate-sql-test-data": "tsx scripts/generate_sql_test_data.ts"
   },
   "dependencies": {
     "@radix-ui/react-popover": "^1.1.6",

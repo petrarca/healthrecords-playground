@@ -22,7 +22,8 @@ export const TimelineFilters: React.FC<TimelineFiltersProps> = ({
     MedicalRecordType.LAB_RESULT,
     MedicalRecordType.COMPLAINT,
     MedicalRecordType.VITAL_SIGNS,
-    MedicalRecordType.MEDICATION
+    MedicalRecordType.MEDICATION,
+    MedicalRecordType.PROCEDURE
   ] as const;
 
   return (

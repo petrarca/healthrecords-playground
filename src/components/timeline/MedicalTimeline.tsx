@@ -182,7 +182,8 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
       MedicalRecordType.LAB_RESULT,
       MedicalRecordType.COMPLAINT,
       MedicalRecordType.VITAL_SIGNS,
-      MedicalRecordType.MEDICATION
+      MedicalRecordType.MEDICATION,
+      MedicalRecordType.PROCEDURE
     ])
   );
     
@@ -210,7 +211,8 @@ export const MedicalTimeline: React.FC<MedicalTimelineProps> = ({ records, selec
       MedicalRecordType.LAB_RESULT,
       MedicalRecordType.COMPLAINT,
       MedicalRecordType.VITAL_SIGNS,
-      MedicalRecordType.MEDICATION
+      MedicalRecordType.MEDICATION,
+      MedicalRecordType.PROCEDURE
     ] as const,
     []
   );

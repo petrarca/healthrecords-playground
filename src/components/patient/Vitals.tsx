@@ -447,7 +447,6 @@ export function Vitals({ patient }: VitalsProps) {
   useEffect(() => {
     if (patient) {
       const dummyData = generateDummyVitalData(patient.id);
-      console.log('Generated dummy data:', dummyData);
       setVitalRecords(dummyData);
     }
   }, [patient]);
@@ -455,7 +454,6 @@ export function Vitals({ patient }: VitalsProps) {
   // Create a simple array of heart rate data points
   const heartRateData = vitalRecords
     .filter(record => {
-      console.log('Checking record for heart_rate:', record.details);
       return record.details?.heart_rate !== undefined;
     })
     .map(record => ({
@@ -466,8 +464,6 @@ export function Vitals({ patient }: VitalsProps) {
     }))
     .sort((a, b) => a.date.getTime() - b.date.getTime());
 
-  console.log('Heart rate data:', heartRateData);
-  
   // Transform the data for the blood pressure chart
   const bloodPressureChartData = vitalRecords
     .filter(record => record.details?.blood_pressure)
@@ -501,8 +497,6 @@ export function Vitals({ patient }: VitalsProps) {
       date: format(record.recordedAt, 'MMM dd'),
       respiratoryRate: record.details?.respiratory_rate as number
     }));
-
-  console.log('Respiratory rate data:', respiratoryRateChartData);
 
   if (!patient) return null;
 

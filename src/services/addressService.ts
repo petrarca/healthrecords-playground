@@ -61,7 +61,6 @@ class AddressService {
   }
 
   async deleteAddress(id: string, patientId: string): Promise<void> {
-    console.log('AddressService.deleteAddress:', { id, patientId });
     const { error } = await getClient()
       .from('addresses')
       .delete()

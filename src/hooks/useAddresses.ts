@@ -65,7 +65,6 @@ export function useAddresses(patientId: string | undefined) {
     }
 
     try {
-      console.log('Deleting address:', { id, patientId });
       await addressService.deleteAddress(id, patientId);
       setAddresses(prev => prev.filter(addr => addr.id !== id));
       setError(null);

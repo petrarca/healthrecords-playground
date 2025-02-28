@@ -14,7 +14,7 @@ interface Patient {
     primaryPhysician: string;
     insuranceProvider: string;
     insuranceNumber: string;
-    primaryAddressType: string;
+    primaryAddress: string | null;
     phone: string;
     email: string;
     conditions: string[];
@@ -58,12 +58,12 @@ TRUNCATE TABLE patients CASCADE;`,
 INSERT INTO patients (
     id, patient_id, first_name, last_name, date_of_birth, 
     gender, blood_type, height, weight, primary_physician,
-    insurance_provider, insurance_number, primary_address_type,
+    insurance_provider, insurance_number, primary_address,
     phone, email, conditions, allergies
 ) VALUES (
     uuid_generate_v4(), :patientId, :firstName, :lastName, :dateOfBirth,
     :gender, :bloodType, :height, :weight, :primaryPhysician,
-    :insuranceProvider, :insuranceNumber, :primaryAddressType,
+    :insuranceProvider, :insuranceNumber, :primaryAddress,
     :phone, :email, :conditions, :allergies
 );`,
     
@@ -102,7 +102,8 @@ function formatArrayValues(arr: string[]): string {
     if (arr.length === 0) {
         return "ARRAY[]::varchar[]";
     }
-    return `ARRAY[${arr.map(v => `${escapeSqlString(v)}`).join(', ')}]::varchar[]`;
+    const escapedValues = arr.map(v => escapeSqlString(v)).join(', ');
+    return "ARRAY[" + escapedValues + "]::varchar[]";
 }
 
 // Process patient data
@@ -119,7 +120,7 @@ function generatePatientSql(patient: Patient): string {
         .replace(':primaryPhysician', escapeSqlString(patient.primaryPhysician))
         .replace(':insuranceProvider', escapeSqlString(patient.insuranceProvider))
         .replace(':insuranceNumber', escapeSqlString(patient.insuranceNumber))
-        .replace(':primaryAddressType', escapeSqlString(patient.primaryAddressType))
+        .replace(':primaryAddress', 'NULL')
         .replace(':phone', escapeSqlString(patient.phone))
         .replace(':email', escapeSqlString(patient.email))
         .replace(':conditions', formatArrayValues(patient.conditions))
@@ -173,29 +174,36 @@ async function generateTestData() {
         '-- Generated test data SQL',
         '-- Generated at: ' + new Date().toISOString(),
         '',
-        '-- Begin transaction',
-        'BEGIN;',
-        '',
         '-- Cleanup existing data',
         templates.cleanup,
-        '',
-        '-- Patient data'
+        ''
     ];
 
-    // Process patients
+    // Process patients one by one with their related medical records
     patientsData.patients.forEach((patient) => {
+        // Start transaction for this patient
+        sqlStatements.push(`-- Patient ${patient.patientId} (${patient.firstName} ${patient.lastName})`);
+        sqlStatements.push('BEGIN;');
+        
+        // Add patient data
         sqlStatements.push(generatePatientSql(patient));
+        
+        // Add related medical records for this patient
+        const patientRecords = medicalRecordsData.records.filter(
+            record => record.patientId === patient.patientId
+        );
+        
+        if (patientRecords.length > 0) {
+            sqlStatements.push('', `-- Medical records for patient ${patient.patientId}`);
+            patientRecords.forEach(record => {
+                sqlStatements.push(generateMedicalRecordSql(record));
+            });
+        }
+        
+        // Commit transaction for this patient
+        sqlStatements.push('COMMIT;');
+        sqlStatements.push(''); // Empty line for better readability
     });
-
-    sqlStatements.push('', '-- Medical records');
-
-    // Process medical records
-    medicalRecordsData.records.forEach((record) => {
-        sqlStatements.push(generateMedicalRecordSql(record));
-    });
-
-    // Add transaction commit
-    sqlStatements.push('', 'COMMIT;');
 
     // Write to output file
     const outputPath = path.join(fileURLToPath(import.meta.url), '../../db/test_data.sql');

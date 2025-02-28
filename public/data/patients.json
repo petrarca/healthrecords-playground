@@ -30,9 +30,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0127",
-      "email": "john.anderson@email.com"
+      "email": "john.anderson@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4712",
@@ -63,9 +63,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0131",
-      "email": "robert.anderson@email.com"
+      "email": "robert.anderson@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4713",
@@ -97,9 +97,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0135",
-      "email": "michael.bennett@email.com"
+      "email": "michael.bennett@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4714",
@@ -131,9 +131,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0126",
-      "email": "sarah.brown@email.com"
+      "email": "sarah.brown@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4715",
@@ -165,9 +165,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0138",
-      "email": "susan.clark@email.com"
+      "email": "susan.clark@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4716",
@@ -199,9 +199,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0136",
-      "email": "lisa.coleman@email.com"
+      "email": "lisa.coleman@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4717",
@@ -233,9 +233,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0131",
-      "email": "william.cooper@email.com"
+      "email": "william.cooper@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4718",
@@ -267,9 +267,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0130",
-      "email": "lisa.foster@email.com"
+      "email": "lisa.foster@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4719",
@@ -302,9 +302,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0128",
-      "email": "lisa.garcia@email.com"
+      "email": "lisa.garcia@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4720",
@@ -335,9 +335,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0137",
-      "email": "thomas.harris@email.com"
+      "email": "thomas.harris@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4721",
@@ -369,9 +369,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0134",
-      "email": "emma.hayes@email.com"
+      "email": "emma.hayes@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4722",
@@ -402,9 +402,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0135",
-      "email": "richard.jackson@email.com"
+      "email": "richard.jackson@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4723",
@@ -437,9 +437,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0124",
-      "email": "emma.johnson@email.com"
+      "email": "emma.johnson@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4724",
@@ -472,9 +472,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0140",
-      "email": "margaret.lee@email.com"
+      "email": "margaret.lee@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4725",
@@ -505,9 +505,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0139",
-      "email": "daniel.lewis@email.com"
+      "email": "daniel.lewis@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4726",
@@ -540,9 +540,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0132",
-      "email": "jennifer.martin@email.com"
+      "email": "jennifer.martin@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4727",
@@ -572,9 +572,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0127",
-      "email": "david.miller@email.com"
+      "email": "david.miller@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4728",
@@ -604,9 +604,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0133",
-      "email": "john.mitchell@email.com"
+      "email": "john.mitchell@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4729",
@@ -638,9 +638,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0134",
-      "email": "patricia.moore@email.com"
+      "email": "patricia.moore@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4730",
@@ -672,9 +672,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0132",
-      "email": "susan.morgan@email.com"
+      "email": "susan.morgan@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4731",
@@ -706,9 +706,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0128",
-      "email": "emma.parker@email.com"
+      "email": "emma.parker@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4732",
@@ -738,9 +738,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0129",
-      "email": "michael.roberts@email.com"
+      "email": "michael.roberts@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4733",
@@ -772,9 +772,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0130",
-      "email": "maria.rodriguez@email.com"
+      "email": "maria.rodriguez@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4734",
@@ -816,9 +816,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0123",
-      "email": "john.smith@email.com"
+      "email": "john.smith@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4735",
@@ -849,9 +849,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0129",
-      "email": "james.taylor@email.com"
+      "email": "james.taylor@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4736",
@@ -881,9 +881,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0133",
-      "email": "william.thompson@email.com"
+      "email": "william.thompson@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4737",
@@ -913,9 +913,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0141",
-      "email": "joseph.walker@email.com"
+      "email": "joseph.walker@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4738",
@@ -947,9 +947,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0136",
-      "email": "elizabeth.white@email.com"
+      "email": "elizabeth.white@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4739",
@@ -980,9 +980,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0125",
-      "email": "michael.williams@email.com"
+      "email": "michael.williams@email.com",
+      "primaryAddress": null
     },
     {
       "id": "4740",
@@ -1014,9 +1014,9 @@
           "country": "USA"
         }
       ],
-      "primaryAddressType": "HOME",
       "phone": "(415) 555-0142",
-      "email": "barbara.young@email.com"
+      "email": "barbara.young@email.com",
+      "primaryAddress": null
     }
   ]
 }

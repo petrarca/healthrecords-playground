@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MedicalRecord, MedicalRecordType } from '../../types/medicalRecord';
+import { MedicalRecord, MedicalRecordType, QuantityValue, FieldMetaData } from '../../types/medicalRecord';
 import { metadataService } from '../../services/metadataService';
 import { medicalRecordService } from '../../services/medicalRecordService';
 import { TimelineIcon } from './TimelineIcon';
 import { CardDropdown } from '../ui/cardDropdown';
 import { Plus, Pencil, Check, X, Trash } from 'lucide-react';
 import { useUpdateMedicalRecord, useAddMedicalRecord } from '../../hooks/useMedicalRecords';
+import { QuantityInput } from '../ui/quantityInput';
+import { FieldRenderer } from '../ui/fieldRenderers';
 
 enum RecordState {
   VIEWING = 'viewing',
@@ -21,7 +23,7 @@ interface TimelineEventDetailsProps {
   onRecordAdded?: (record: MedicalRecord) => void;
 }
 
-type RecordFieldValue = string | number | boolean | Record<string, string | number>;
+type RecordFieldValue = string | number | boolean | Record<string, string | number | QuantityValue> | QuantityValue;
 
 interface RecordFormProps {
   record: MedicalRecord;
@@ -48,6 +50,67 @@ const RecordForm: React.FC<RecordFormProps> = ({ record, onUpdateField }) => {
     titleInputRef.current?.focus();
   }, []);
 
+  const renderField = (fieldName: string, fieldMeta: FieldMetaData) => {
+    if (fieldMeta.type === 'enum') {
+      return (
+        <select
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+          value={String(record.details?.[fieldName] ?? '')}
+          onChange={(e) => {
+            const newDetails = { ...record.details, [fieldName]: e.target.value };
+            onUpdateField('details', newDetails);
+          }}
+        >
+          <option value="">Select...</option>
+          {fieldMeta.enumValues?.map((value: string) => (
+            <option key={value} value={value}>{value}</option>
+          ))}
+        </select>
+      );
+    }
+    
+    if (fieldMeta.type === 'quantity') {
+      return (
+        <QuantityInput
+          fieldMetadata={fieldMeta}
+          value={record.details?.[fieldName] as QuantityValue}
+          onChange={(value) => {
+            const newDetails = { ...record.details, [fieldName]: value };
+            onUpdateField('details', newDetails);
+          }}
+          className="mt-1"
+        />
+      );
+    }
+    
+    if (fieldMeta.type === 'json') {
+      return (
+        <div className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 p-2 shadow-sm sm:text-sm font-mono overflow-auto max-h-96">
+          <FieldRenderer
+            data={record.details?.[fieldName]}
+            fieldName={fieldName}
+            fieldMeta={fieldMeta}
+          />
+          <p className="text-xs text-gray-500 mt-2 italic">JSON data is read-only</p>
+        </div>
+      );
+    }
+    
+    // Default case: text or number input
+    return (
+      <input
+        type={fieldMeta.type === 'number' ? 'number' : 'text'}
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        value={String(record.details?.[fieldName] ?? '')}
+        onChange={(e) => {
+          const value = fieldMeta.type === 'number' ? parseFloat(e.target.value) : e.target.value;
+          const newDetails = { ...record.details, [fieldName]: value };
+          onUpdateField('details', newDetails);
+        }}
+      />
+    );
+  };
+
   const renderMetadataFields = () => {
     if (!record.recordType) return null;
 
@@ -55,32 +118,7 @@ const RecordForm: React.FC<RecordFormProps> = ({ record, onUpdateField }) => {
     return Object.entries(metadata.fields).map(([fieldName, fieldMeta]) => (
       <div key={fieldName}>
         <label className="block text-sm font-medium text-gray-700">{fieldMeta.label}</label>
-        {fieldMeta.type === 'enum' ? (
-          <select
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-            value={record.details?.[fieldName] ?? ''}
-            onChange={(e) => {
-              const newDetails = { ...record.details, [fieldName]: e.target.value };
-              onUpdateField('details', newDetails);
-            }}
-          >
-            <option value="">Select...</option>
-            {fieldMeta.enumValues?.map(value => (
-              <option key={value} value={value}>{value}</option>
-            ))}
-          </select>
-        ) : (
-          <input
-            type={fieldMeta.type === 'number' ? 'number' : 'text'}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-            value={record.details?.[fieldName] ?? ''}
-            onChange={(e) => {
-              const value = fieldMeta.type === 'number' ? parseFloat(e.target.value) : e.target.value;
-              const newDetails = { ...record.details, [fieldName]: value };
-              onUpdateField('details', newDetails);
-            }}
-          />
-        )}
+        {renderField(fieldName, fieldMeta)}
       </div>
     ));
   };
@@ -125,26 +163,56 @@ const RecordForm: React.FC<RecordFormProps> = ({ record, onUpdateField }) => {
   );
 };
 
-const RecordView: React.FC<{ record: MedicalRecord }> = ({ record }) => (
-  <div>
-    <p className="text-sm text-gray-700 mb-4">{record.description}</p>
-    {record.details && Object.entries(record.details).length > 0 && (
-      <div className="border-t border-gray-200 pt-4">
-        <dl className="grid grid-cols-1 gap-y-3">
-          {Object.entries(record.details).map(([key, value]) => {
-            const fieldMeta = record.recordType && metadataService.getMetaDataForType(record.recordType).fields[key];
-            return (
-              <div key={key}>
-                <dt className="text-sm font-medium text-gray-500">{fieldMeta?.label || key}</dt>
-                <dd className="text-sm text-gray-900 mt-1">{value}</dd>
-              </div>
-            );
-          })}
-        </dl>
-      </div>
-    )}
-  </div>
-);
+const RecordView: React.FC<{ record: MedicalRecord }> = ({ record }) => {
+  const renderFieldValue = (key: string, value: string | number | QuantityValue) => {
+    const fieldMeta = record.recordType && metadataService.getMetaDataForType(record.recordType).fields[key];
+    
+    // Handle quantity values
+    if (fieldMeta?.type === 'quantity' && typeof value === 'object' && 'value' in value && 'unit' in value) {
+      return metadataService.formatQuantity(value.value, value.unit, fieldMeta);
+    }
+    
+    // Handle JSON values
+    if (fieldMeta?.type === 'json') {
+      return (
+        <div className="bg-gray-50 p-3 rounded overflow-auto max-h-96">
+          <FieldRenderer
+            data={value}
+            fieldName={key}
+            fieldMeta={fieldMeta}
+          />
+          <p className="text-xs text-gray-500 mt-2 italic">JSON data is read-only</p>
+        </div>
+      );
+    }
+    
+    // Default case: convert to string
+    return String(value);
+  };
+
+  return (
+    <div>
+      <p className="text-sm text-gray-700 mb-4">{record.description}</p>
+      {record.details && Object.entries(record.details).length > 0 && (
+        <div className="border-t border-gray-200 pt-4">
+          <dl className="grid grid-cols-1 gap-y-3">
+            {Object.entries(record.details).map(([key, value]) => {
+              const fieldMeta = record.recordType && metadataService.getMetaDataForType(record.recordType).fields[key];
+              return (
+                <div key={key}>
+                  <dt className="text-sm font-medium text-gray-500">{fieldMeta?.label || key}</dt>
+                  <dd className="text-sm text-gray-900 mt-1">
+                    {renderFieldValue(key, value)}
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Header: React.FC<HeaderProps> = ({
   recordState,

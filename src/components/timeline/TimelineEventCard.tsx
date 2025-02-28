@@ -1,5 +1,5 @@
 import React from 'react';
-import { MedicalRecord } from '../../types/types';
+import { MedicalRecord, QuantityValue } from '../../types/medicalRecord';
 import { TimelineIcon } from './TimelineIcon';
 
 interface TimelineEventCardProps {
@@ -7,6 +7,17 @@ interface TimelineEventCardProps {
   isSelected: boolean;
   onClick: () => void;
 }
+
+// Helper function to safely render a value that might be a complex type
+const renderValue = (value: string | number | QuantityValue): React.ReactNode => {
+  if (typeof value === 'string' || typeof value === 'number') {
+    return value;
+  }
+  if (value && typeof value === 'object' && 'value' in value) {
+    return `${value.value}${value.unit ? ' ' + value.unit : ''}`;
+  }
+  return String(value);
+};
 
 export const TimelineEventCard: React.FC<TimelineEventCardProps> = ({
   record,
@@ -48,7 +59,7 @@ export const TimelineEventCard: React.FC<TimelineEventCardProps> = ({
         </p>
         {record.details?.provider && (
           <p className="mt-1.5 text-xs text-gray-500">
-            Provider: {record.details.provider}
+            Provider: {renderValue(record.details.provider)}
           </p>
         )}
       </div>
