@@ -1,4 +1,5 @@
 // Export all services
-export * from './tensorflowService';
 export * from './contextService';
+export * from './tensorflowService';
 export * from './tensorflowDebugService';
+export * from './entityRecognitionService';

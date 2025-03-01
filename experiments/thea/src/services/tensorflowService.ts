@@ -2,7 +2,9 @@
 import * as tf from '@tensorflow/tfjs';
 import * as use from '@tensorflow-models/universal-sentence-encoder';
 import { intents } from '../utils/intentUtils';
+import { Entity } from '../types/intents';
 import { ContextState } from './contextService';
+import { extractEntities, loadEntityModel } from './entityRecognitionService';
 
 // Define types for our service
 interface LoadingStatus {
@@ -14,6 +16,7 @@ interface IntentRecognitionResult {
   text: string;
   intents: IntentMatch[];
   topIntent: IntentMatch | null;
+  entities: Entity[];
   context: ContextState;
 }
 
@@ -341,6 +344,9 @@ export async function loadModel(enableDebugging = false): Promise<boolean> {
       await prepareIntentEmbeddings();
       updateStatus("Intent embeddings prepared", 100);
       
+      // Also load entity recognition model
+      await loadEntityModel();
+      
       // Final update to model info after complete loading process
       saveModelInfo('load_complete');
       
@@ -536,11 +542,15 @@ export async function recognizeIntent(text: string, context: ContextState): Prom
     saveModelInfo('recognition_used');
   }
   
+  // Extract entities from the text
+  const entityResult = extractEntities(text, context);
+  
   // Return result
   lastIntentResult = {
     text,
     intents: topMatches,
     topIntent: topMatches.length > 0 ? topMatches[0] : null,
+    entities: entityResult.entities,
     context
   };
   

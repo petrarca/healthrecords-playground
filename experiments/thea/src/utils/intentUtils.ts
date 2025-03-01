@@ -1,31 +1,13 @@
 // Intent utilities for Thea
 import { ContextState } from '../services/contextService';
+import { Intent } from '../types/intents';
+import { intentExamples } from '../training';
 
-// Define intent interface
-export interface Intent {
-  name: string;
-  examples: string[];
-  contextRelevance?: {
-    views?: string[];
-    requiresPatient?: boolean;
-    requiresRecord?: boolean;
-  };
-}
-
-// Define intents with examples
+// Define intents with examples from training data
 export const intents: Intent[] = [
   {
     name: 'greeting',
-    examples: [
-      'Hello',
-      'Hi',
-      'Hey there',
-      'Good morning',
-      'Good afternoon',
-      'Good evening',
-      'How are you?',
-      'What\'s up?'
-    ],
+    examples: intentExamples.greeting,
     contextRelevance: {
       views: ['*'],
       requiresPatient: false,
@@ -34,16 +16,7 @@ export const intents: Intent[] = [
   },
   {
     name: 'help',
-    examples: [
-      'Help',
-      'I need help',
-      'What can you do?',
-      'What commands are available?',
-      'Show me what you can do',
-      'How do I use this?',
-      'Give me some examples',
-      'What are my options?'
-    ],
+    examples: intentExamples.help,
     contextRelevance: {
       views: ['*'],
       requiresPatient: false,
@@ -52,31 +25,14 @@ export const intents: Intent[] = [
   },
   {
     name: 'show_patient',
-    examples: [
-      'Show patient information',
-      'Display patient details',
-      'Show me the patient',
-      'Who is the patient?',
-      'Tell me about the patient',
-      'Patient info',
-      'Show patient {patientId}',
-      'Tell me about {patientName}'
-    ],
+    examples: intentExamples.show_patient,
     contextRelevance: {
       requiresPatient: true
     }
   },
   {
     name: 'show_records',
-    examples: [
-      'Show medical records',
-      'Display health records',
-      'Show me the records',
-      'List all records',
-      'What records are available?',
-      'Show records for patient {patientId}',
-      'Show {firstName}\'s records'
-    ],
+    examples: intentExamples.show_records,
     contextRelevance: {
       views: ['summary', 'timeline'],
       requiresPatient: true
@@ -84,15 +40,7 @@ export const intents: Intent[] = [
   },
   {
     name: 'show_medications',
-    examples: [
-      'Show medications',
-      'Display current medications',
-      'What medications is the patient on?',
-      'List all medications',
-      'Show me the medication list',
-      'What drugs is {firstName} taking?',
-      'Show {patientName}\'s medications'
-    ],
+    examples: intentExamples.show_medications,
     contextRelevance: {
       views: ['summary'],
       requiresPatient: true
@@ -100,15 +48,7 @@ export const intents: Intent[] = [
   },
   {
     name: 'show_allergies',
-    examples: [
-      'Show allergies',
-      'Display patient allergies',
-      'What allergies does the patient have?',
-      'List all allergies',
-      'Show me the allergy list',
-      'What is {firstName} allergic to?',
-      'Show {patientName}\'s allergies'
-    ],
+    examples: intentExamples.show_allergies,
     contextRelevance: {
       views: ['summary'],
       requiresPatient: true
@@ -116,15 +56,7 @@ export const intents: Intent[] = [
   },
   {
     name: 'show_vitals',
-    examples: [
-      'Show vital signs',
-      'Display vitals',
-      'What are the patient\'s vitals?',
-      'Show me the vital signs',
-      'Show blood pressure',
-      'What\'s the heart rate?',
-      'Show {patientName}\'s vitals'
-    ],
+    examples: intentExamples.show_vitals,
     contextRelevance: {
       views: ['summary', 'vitals'],
       requiresPatient: true
@@ -132,15 +64,7 @@ export const intents: Intent[] = [
   },
   {
     name: 'show_labs',
-    examples: [
-      'Show lab results',
-      'Display laboratory tests',
-      'What lab work has been done?',
-      'Show me the lab results',
-      'Show recent labs',
-      'What are {firstName}\'s lab values?',
-      'Show {patientName}\'s lab results'
-    ],
+    examples: intentExamples.show_labs,
     contextRelevance: {
       views: ['summary', 'timeline'],
       requiresPatient: true
@@ -148,15 +72,7 @@ export const intents: Intent[] = [
   },
   {
     name: 'navigate',
-    examples: [
-      'Go to summary',
-      'Navigate to timeline',
-      'Show demographics',
-      'Take me to profile',
-      'Switch to vitals view',
-      'Go back to landing page',
-      'Open the timeline'
-    ],
+    examples: intentExamples.navigate,
     contextRelevance: {
       views: ['*'],
       requiresPatient: false,
@@ -165,14 +81,7 @@ export const intents: Intent[] = [
   },
   {
     name: 'show_record_details',
-    examples: [
-      'Show record details',
-      'Display record information',
-      'Tell me more about this record',
-      'What\'s in this record?',
-      'Show details for record {recordId}',
-      'Open record {recordId}'
-    ],
+    examples: intentExamples.show_record_details,
     contextRelevance: {
       views: ['timeline'],
       requiresPatient: true,
@@ -181,14 +90,7 @@ export const intents: Intent[] = [
   },
   {
     name: 'thanks',
-    examples: [
-      'Thank you',
-      'Thanks',
-      'Thanks a lot',
-      'I appreciate it',
-      'That was helpful',
-      'Thanks for your help'
-    ],
+    examples: intentExamples.thanks,
     contextRelevance: {
       views: ['*'],
       requiresPatient: false,
@@ -197,31 +99,7 @@ export const intents: Intent[] = [
   },
   {
     name: 'goodbye',
-    examples: [
-      'Goodbye',
-      'Bye',
-      'See you later',
-      'I\'m done',
-      'That\'s all',
-      'Exit',
-      'Close'
-    ],
-    contextRelevance: {
-      views: ['*'],
-      requiresPatient: false,
-      requiresRecord: false
-    }
-  },
-  {
-    name: 'tensorflow_status',
-    examples: [
-      'Is TensorFlow loaded?',
-      'TensorFlow status',
-      'Model status',
-      'Is the model ready?',
-      'Check TensorFlow',
-      'Is AI ready?'
-    ],
+    examples: intentExamples.goodbye,
     contextRelevance: {
       views: ['*'],
       requiresPatient: false,
@@ -230,45 +108,24 @@ export const intents: Intent[] = [
   },
   {
     name: 'show_conditions',
-    examples: [
-      'Show conditions',
-      'Display diagnoses',
-      'What conditions does the patient have?',
-      'List all diagnoses',
-      'Show me the problem list',
-      'What is {firstName} diagnosed with?',
-      'Show {patientName}\'s conditions'
-    ],
+    examples: intentExamples.show_conditions,
     contextRelevance: {
       views: ['summary'],
       requiresPatient: true
     }
   },
   {
-    name: 'show_visits',
-    examples: [
-      'Show visits',
-      'Display encounters',
-      'What visits has the patient had?',
-      'List all appointments',
-      'Show me the visit history',
-      'When did {firstName} last see a doctor?',
-      'Show {patientName}\'s visits'
-    ],
+    name: 'tensorflow_status',
+    examples: intentExamples.tensorflow_status,
     contextRelevance: {
-      views: ['timeline'],
-      requiresPatient: true
+      views: ['*'],
+      requiresPatient: false,
+      requiresRecord: false
     }
   },
   {
     name: 'fallback',
-    examples: [
-      'I don\'t understand',
-      'What do you mean?',
-      'Can you clarify?',
-      'I\'m confused',
-      'That doesn\'t make sense'
-    ],
+    examples: intentExamples.fallback,
     contextRelevance: {
       views: ['*'],
       requiresPatient: false,
