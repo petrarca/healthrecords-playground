@@ -8,7 +8,13 @@ export const intentExamples: Record<string, string[]> = {
     'Good afternoon',
     'Good evening',
     'How are you?',
-    'What\'s up?'
+    'What\'s up?',
+    'Hi Thea',
+    'Hello assistant',
+    'Hey health assistant',
+    'Greetings',
+    'Hello there',
+    'Hi, I need some help with a patient'
   ],
   help: [
     'Help',
@@ -18,7 +24,15 @@ export const intentExamples: Record<string, string[]> = {
     'Show me what you can do',
     'How do I use this?',
     'Give me some examples',
-    'What are my options?'
+    'What are my options?',
+    'How can you assist me?',
+    'What functionality do you have?',
+    'Show me a list of commands',
+    'Help me understand how to use this assistant',
+    'What are your capabilities?',
+    'Can you show me how to navigate patient records?',
+    'I\'m new here, what can you help with?',
+    'What kinds of questions can I ask you?'
   ],
   show_patient: [
     'Show patient information',
@@ -31,7 +45,15 @@ export const intentExamples: Record<string, string[]> = {
     'Tell me about {patientName}',
     'Show patient John Doe',
     'Tell me about Mary Smith',
-    'Display information for patient James Wilson'
+    'Display information for patient James Wilson',
+    'Who is the current patient?',
+    'Give me a summary of this patient',
+    'Show me basic information about {patientName}',
+    'What do we know about this patient?',
+    'Pull up {patientName}\'s profile',
+    'Show me {patientName}\'s demographic information',
+    'Display the current patient\'s details',
+    'I need to see the patient\'s basic information'
   ],
   show_records: [
     'Show medical records',
@@ -44,7 +66,16 @@ export const intentExamples: Record<string, string[]> = {
     'Show John Doe\'s medical records',
     'Display recent health records for Mary Smith',
     'What records are available for James Wilson?',
-    'Show latest records for Sarah Johnson'
+    'Show latest records for Sarah Johnson',
+    'Pull up all records for this patient',
+    'What\'s in {patientName}\'s medical history?',
+    'Show me the patient\'s complete medical record',
+    'Display all healthcare encounters for {patientName}',
+    'I need to see all medical documentation for this patient',
+    'Show me the patient\'s visit history',
+    'What medical events are documented for {patientName}?',
+    'Give me a chronological list of patient records',
+    'Show me {patientName}\'s medical timeline'
   ],
   show_medications: [
     'Show medications',
@@ -57,7 +88,17 @@ export const intentExamples: Record<string, string[]> = {
     'What medications is John Doe taking?',
     'Show Mary Smith\'s current medications',
     'List all medications for James Wilson',
-    'Display recent medications for Sarah Johnson'
+    'Display recent medications for Sarah Johnson',
+    'What prescriptions does {patientName} have?',
+    'Show me all drugs prescribed to this patient',
+    'What\'s the current medication regimen?',
+    'List active prescriptions for {patientName}',
+    'Show medication history for this patient',
+    'What medications were recently prescribed?',
+    'Display the patient\'s prescription list',
+    'What medication changes were made at the last visit?',
+    'Show me medication dosages for {patientName}',
+    'List all medications with their frequencies and doses'
   ],
   show_allergies: [
     'Show allergies',
@@ -70,7 +111,16 @@ export const intentExamples: Record<string, string[]> = {
     'What allergies does John Doe have?',
     'Show Mary Smith\'s allergies',
     'List all allergies for James Wilson',
-    'Display Sarah Johnson\'s recent allergies'
+    'Display Sarah Johnson\'s recent allergies',
+    'What drug allergies does the patient have?',
+    'Show me all documented allergic reactions',
+    'Does {patientName} have any medication allergies?',
+    'List all substances the patient is allergic to',
+    'Show allergies and adverse reactions',
+    'What allergies should we be aware of?',
+    'Display the patient\'s allergy profile',
+    'Are there any severe allergies I should know about?',
+    'Show me the allergy severity ratings for this patient'
   ],
   show_vitals: [
     'Show vital signs',
@@ -84,7 +134,17 @@ export const intentExamples: Record<string, string[]> = {
     'What are Mary Smith\'s vitals?',
     'Show latest vitals for James Wilson',
     'What were Sarah Johnson\'s vitals yesterday?',
-    'Show blood pressure from last week'
+    'Show blood pressure from last week',
+    'What\'s the patient\'s current temperature?',
+    'Show me the latest oxygen saturation readings',
+    'Display vital trends over the past month',
+    'What was {patientName}\'s blood pressure at the last visit?',
+    'Show me all vital sign measurements from today',
+    'Display the patient\'s respiratory rate',
+    'What are the normal ranges for this patient\'s vitals?',
+    'Show me vital sign abnormalities',
+    'Compare current vitals to previous readings',
+    'What\'s the patient\'s BMI?'
   ],
   show_labs: [
     'Show lab results',
@@ -98,7 +158,18 @@ export const intentExamples: Record<string, string[]> = {
     'What are Mary Smith\'s recent lab values?',
     'Show lab results for James Wilson from yesterday',
     'Display Sarah Johnson\'s lab work from last week',
-    'Show latest lab results for David Miller'
+    'Show latest lab results for David Miller',
+    'What were the results of the recent blood tests?',
+    'Show me all abnormal lab values',
+    'Display the CBC results from the last visit',
+    'What are the patient\'s electrolyte levels?',
+    'Show me {patientName}\'s kidney function tests',
+    'Display liver enzyme results for this patient',
+    'What were the glucose readings over the past month?',
+    'Show me trending lab values over time',
+    'Are there any critical lab results?',
+    'Display all pending lab orders',
+    'What lab tests are scheduled for the patient?'
   ],
   navigate: [
     'Go to summary',
@@ -107,7 +178,19 @@ export const intentExamples: Record<string, string[]> = {
     'Take me to profile',
     'Switch to vitals view',
     'Go back to landing page',
-    'Open the timeline'
+    'Open the timeline',
+    'Change to the records view',
+    'Take me to the patient list',
+    'Navigate to the medications tab',
+    'Switch to lab results',
+    'Go to the allergies section',
+    'Show me the conditions page',
+    'Take me back to the dashboard',
+    'Open the patient search',
+    'Go to settings',
+    'Navigate to the home screen',
+    'Take me to the previous page',
+    'Show me the main menu'
   ],
   show_record_details: [
     'Show record details',
@@ -118,7 +201,17 @@ export const intentExamples: Record<string, string[]> = {
     'Open record {recordId}',
     'Show details for John Doe\'s latest record',
     'Display information for Mary Smith\'s record from yesterday',
-    'Tell me more about James Wilson\'s lab record from last week'
+    'Tell me more about James Wilson\'s lab record from last week',
+    'What does this specific record contain?',
+    'Show me the complete details of this entry',
+    'Open the full report for this record',
+    'Display all fields in this medical record',
+    'Who created this record?',
+    'When was this record last updated?',
+    'Show me the provider notes for this record',
+    'Display the diagnostic codes for this record',
+    'What procedures are documented in this record?',
+    'Show me the full clinical notes for this visit'
   ],
   thanks: [
     'Thank you',
@@ -126,7 +219,15 @@ export const intentExamples: Record<string, string[]> = {
     'Thanks a lot',
     'I appreciate it',
     'That was helpful',
-    'Thanks for your help'
+    'Thanks for your help',
+    'Thank you for the information',
+    'That\'s exactly what I needed, thanks',
+    'Thanks for finding that',
+    'I appreciate your assistance',
+    'That was just what I was looking for',
+    'Thank you for your quick response',
+    'Thanks, that\'s perfect',
+    'You\'ve been very helpful, thank you'
   ],
   goodbye: [
     'Goodbye',
@@ -134,7 +235,15 @@ export const intentExamples: Record<string, string[]> = {
     'See you later',
     'I\'m done',
     'That\'s all for now',
-    'Exit'
+    'Exit',
+    'End session',
+    'Logging off now',
+    'I\'m finished',
+    'That will be all',
+    'I\'m going to close this now',
+    'Thanks, I\'m done for today',
+    'Closing the assistant',
+    'Bye for now'
   ],
   show_conditions: [
     'Show conditions',
@@ -147,7 +256,17 @@ export const intentExamples: Record<string, string[]> = {
     'What conditions does John Doe have?',
     'Show Mary Smith\'s diagnoses',
     'List all conditions for James Wilson',
-    'Display Sarah Johnson\'s recent diagnoses'
+    'Display Sarah Johnson\'s recent diagnoses',
+    'What chronic conditions does the patient have?',
+    'Show me all active diagnoses',
+    'Display the patient\'s problem list',
+    'What are the primary diagnoses for this patient?',
+    'Show me {patientName}\'s medical conditions by date',
+    'List all resolved conditions',
+    'What comorbidities does this patient have?',
+    'Show me conditions that might affect treatment options',
+    'Display the patient\'s diagnostic history',
+    'What new conditions were diagnosed recently?'
   ],
   tensorflow_status: [
     'Is TensorFlow loaded?',
@@ -155,13 +274,31 @@ export const intentExamples: Record<string, string[]> = {
     'Model status',
     'Is the model ready?',
     'Check TensorFlow',
-    'Is AI ready?'
+    'Is AI ready?',
+    'Has the model finished loading?',
+    'What\'s the status of the NLP model?',
+    'Is the intent recognition system ready?',
+    'Check if the AI backend is operational',
+    'Is the machine learning model initialized?',
+    'What\'s the current state of the AI system?',
+    'Has TensorFlow.js initialized properly?',
+    'Is the entity recognition model ready?'
   ],
   fallback: [
     'I don\'t understand',
     'What do you mean?',
     'Can you clarify?',
     'I\'m confused',
-    'That doesn\'t make sense'
+    'That doesn\'t make sense',
+    'I didn\'t get that',
+    'Could you rephrase that?',
+    'I\'m not sure what you\'re asking for',
+    'I don\'t know how to respond to that',
+    'I\'m not programmed to understand that request',
+    'That\'s outside my capabilities',
+    'I\'m having trouble understanding your request',
+    'Could you try asking in a different way?',
+    'I\'m not familiar with that command',
+    'That request is ambiguous to me'
   ]
 };

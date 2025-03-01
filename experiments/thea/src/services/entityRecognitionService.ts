@@ -3,6 +3,7 @@ import * as tf from '@tensorflow/tfjs';
 import { ContextState } from './contextService';
 import { EntityType, Entity } from '../types/intents';
 import { entityTrainingData } from '../training';
+import { extractEntities, EntityExtractionResult } from './ruleBasedEntityRecognition';
 
 // Define storage keys
 const ENTITY_MODEL_INFO_KEY = 'thea-entity-model-info';
@@ -11,30 +12,44 @@ const ENTITY_VOCAB_KEY = 'thea-entity-vocab';
 const ENTITY_TAGMAP_KEY = 'thea-entity-tagmap';
 const ENTITY_VOCABSIZE_KEY = 'thea-entity-vocabsize';
 
-// Define BIO tagging scheme
-export enum TagType {
+// Define tag types for BIO tagging
+enum TagType {
+  O = 'O',           // Outside any entity
   B_PERSON = 'B-PERSON',   // Beginning of person entity
   I_PERSON = 'I-PERSON',   // Inside of person entity
   B_TEMPORAL = 'B-TEMPORAL', // Beginning of temporal entity
-  I_TEMPORAL = 'I-TEMPORAL', // Inside of temporal entity
-  O = 'O'                  // Outside any entity (none)
+  I_TEMPORAL = 'I-TEMPORAL'  // Inside of temporal entity
 }
 
-// Map TagType to EntityType
+// Map from tag to entity type
 const tagToEntityTypeMap: Record<TagType, EntityType> = {
+  [TagType.O]: EntityType.NONE,
   [TagType.B_PERSON]: EntityType.PERSON,
   [TagType.I_PERSON]: EntityType.PERSON,
   [TagType.B_TEMPORAL]: EntityType.TEMPORAL,
-  [TagType.I_TEMPORAL]: EntityType.TEMPORAL,
-  [TagType.O]: EntityType.NONE
+  [TagType.I_TEMPORAL]: EntityType.TEMPORAL
 };
 
-// Define entity extraction result
-export interface EntityExtractionResult {
-  text: string;
-  entities: Entity[];
-  context: ContextState;
+// Status callback type
+type StatusCallback = (status: { message: string, percentage: number }) => void;
+
+// Status callback
+let statusCallback: StatusCallback | null = null;
+
+// Set status callback
+export function setStatusCallback(callback: StatusCallback): void {
+  statusCallback = callback;
 }
+
+// Helper function to update status
+function updateStatus(message: string, percentage: number): void {
+  if (statusCallback) {
+    statusCallback({ message, percentage });
+  }
+}
+
+// Define entity extraction result
+export type { EntityExtractionResult };
 
 // Internal state
 interface EntityModelState {
@@ -50,7 +65,7 @@ interface EntityModelState {
 const state: EntityModelState = {
   vocab: {},
   vocabSize: 0,
-  maxSequenceLength: 20,
+  maxSequenceLength: 50,
   model: null,
   isLoaded: false,
   tagMap: {}
@@ -262,6 +277,7 @@ export async function trainEntityModel(): Promise<tf.History> {
       callbacks: {
         onEpochEnd: (epoch, logs) => {
           console.log(`Epoch ${epoch + 1}: loss = ${logs?.loss.toFixed(4)}, accuracy = ${logs?.acc.toFixed(4)}`);
+          updateStatus(`Training epoch ${epoch + 1}`, (epoch + 1) / 50 * 100);
         }
       }
     });
@@ -379,86 +395,8 @@ export function checkEntityModelStatus(): boolean {
   return state.isLoaded && !!state.model;
 }
 
-/**
- * Extract entities from text using rule-based approach
- * @param text - Text to extract entities from
- * @param context - Current application context
- * @returns Entity extraction result
- */
-export function extractEntities(text: string, context: ContextState): EntityExtractionResult {
-  const entities: Entity[] = [];
-  const lowerText = text.toLowerCase();
-  
-  // Person entity patterns (simplified for demo)
-  const personPatterns = [
-    /(?:for|of|from|by|about)\s+([a-z]+\s+[a-z]+)/i,  // "for John Doe"
-    /([a-z]+\s+[a-z]+)'s/i,                           // "John Doe's"
-    /patient\s+([a-z]+\s+[a-z]+)/i,                   // "patient John Doe"
-    /\b(mr\.|mrs\.|ms\.|dr\.)\s+([a-z]+)/i            // "Mr. Smith"
-  ];
-  
-  // Try each person pattern
-  for (const pattern of personPatterns) {
-    const match = lowerText.match(pattern);
-    if (match && match[1]) {
-      let value = match[1];
-      
-      // Handle titles
-      if (/\b(mr\.|mrs\.|ms\.|dr\.)/i.test(value)) {
-        value = `${match[1]} ${match[2]}`;
-      }
-      
-      const startIndex = lowerText.indexOf(value);
-      const endIndex = startIndex + value.length;
-      
-      entities.push({
-        type: EntityType.PERSON,
-        value,
-        startIndex,
-        endIndex,
-        confidence: 0.85 // Placeholder for rule-based confidence
-      });
-      
-      // Only extract one person entity per pattern type
-      break;
-    }
-  }
-  
-  // Temporal entity patterns
-  const temporalPatterns = [
-    { pattern: /\b(latest|recent|current)\b/i, confidence: 0.9 },
-    { pattern: /\b(yesterday|today|tomorrow)\b/i, confidence: 0.9 },
-    { pattern: /\b(last|next)\s+(week|month|year|visit|appointment)\b/i, confidence: 0.85 },
-    { pattern: /\b(this)\s+(week|month|year)\b/i, confidence: 0.8 },
-    { pattern: /\b(\d+)\s+(days?|weeks?|months?|years?)\s+(ago|from now)\b/i, confidence: 0.8 }
-  ];
-  
-  // Try each temporal pattern
-  for (const { pattern, confidence } of temporalPatterns) {
-    const match = lowerText.match(pattern);
-    if (match) {
-      const value = match[0];
-      const startIndex = match.index!;
-      const endIndex = startIndex + value.length;
-      
-      entities.push({
-        type: EntityType.TEMPORAL,
-        value: value.toLowerCase(),
-        startIndex,
-        endIndex,
-        confidence
-      });
-      
-      // Allow multiple temporal entities
-    }
-  }
-  
-  return {
-    text,
-    entities,
-    context
-  };
-}
+// Re-export the rule-based entity extraction function
+export { extractEntities };
 
 /**
  * Convert model predictions to entities

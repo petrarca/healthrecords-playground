@@ -127,42 +127,58 @@ const IntentExplorer: React.FC = () => {
       
       {/* Main content */}
       <div className="flex-1 grid grid-cols-2 gap-4 overflow-hidden">
-        {/* Left Column: Available Intents */}
+        {/* Left Column: Last Intent Recognition */}
         <div className="flex flex-col h-full overflow-hidden">
-          <h3 className="font-medium mb-2">Available Intents</h3>
-          <div className="border border-gray-200 rounded-lg p-3 overflow-y-auto" style={{ height: 'calc(100vh - 250px)' }}>
-            <div className="space-y-1">
-              {intents.map(intent => {
-                const isContextRelevant = isIntentRelevantToContext(intent.name);
-                return (
-                  <button
-                    key={intent.name}
-                    onClick={() => handleIntentSelect(intent.name)}
-                    className={`w-full text-left px-3 py-2 rounded ${
-                      selectedIntent === intent.name
-                        ? 'bg-blue-100 text-blue-700'
-                        : isContextRelevant
-                        ? 'bg-blue-50 hover:bg-blue-100'
-                        : 'hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span>{intent.name}</span>
-                      {isContextRelevant && (
-                        <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full">
-                          Context
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+          <h3 className="font-medium mb-2 text-xs">Last Intent Recognition</h3>
+          <div className="border border-gray-200 rounded-lg p-3 overflow-y-auto flex-1" style={{ height: 'calc(100vh - 250px)' }}>
+            {lastResult ? (
+              <pre className="text-xs overflow-auto whitespace-pre-wrap">
+                {JSON.stringify(lastResult, null, 2)}
+              </pre>
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-500">
+                No recognition results yet. Try using the chat to test intents.
+              </div>
+            )}
           </div>
         </div>
         
-        {/* Right Column: Examples and Last Result */}
+        {/* Right Column: Available Intents and Examples */}
         <div className="flex flex-col gap-4 h-full overflow-hidden">
+          {/* Available Intents Section */}
+          <div className="flex flex-col h-1/2 overflow-hidden">
+            <h3 className="font-medium mb-2">Available Intents</h3>
+            <div className="border border-gray-200 rounded-lg p-3 overflow-y-auto flex-1">
+              <div className="space-y-1">
+                {intents.map(intent => {
+                  const isContextRelevant = isIntentRelevantToContext(intent.name);
+                  return (
+                    <button
+                      key={intent.name}
+                      onClick={() => handleIntentSelect(intent.name)}
+                      className={`w-full text-left px-3 py-2 rounded ${
+                        selectedIntent === intent.name
+                          ? 'bg-blue-100 text-blue-700'
+                          : isContextRelevant
+                          ? 'bg-blue-50 hover:bg-blue-100'
+                          : 'hover:bg-gray-100'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{intent.name}</span>
+                        {isContextRelevant && (
+                          <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full">
+                            Context
+                          </span>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          
           {/* Examples Section */}
           <div className="flex flex-col h-1/2 overflow-hidden">
             <h3 className="font-medium mb-2">Examples</h3>
@@ -181,22 +197,6 @@ const IntentExplorer: React.FC = () => {
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-500">
                   Select an intent to see examples
-                </div>
-              )}
-            </div>
-          </div>
-          
-          {/* Last Recognition Result Section */}
-          <div className="flex flex-col h-1/2 overflow-hidden">
-            <h3 className="font-medium mb-2 text-xs">Last Intent Recognition</h3>
-            <div className="border border-gray-200 rounded-lg p-3 overflow-y-auto flex-1">
-              {lastResult ? (
-                <pre className="text-xs overflow-auto whitespace-pre-wrap">
-                  {JSON.stringify(lastResult, null, 2)}
-                </pre>
-              ) : (
-                <div className="flex items-center justify-center h-full text-gray-500">
-                  No recognition results yet. Try using the chat to test intents.
                 </div>
               )}
             </div>
