@@ -1017,6 +1017,7 @@ export function Vitals({ patient }: VitalsProps) {
                         dot={HeartRateDotWithClickRenderer}
                         activeDot={{ r: 8, style: { cursor: 'pointer' } }}
                         style={{ cursor: 'pointer' }}
+                        isAnimationActive={false}
                       />
                     </LineChart>
                   </ResponsiveContainer>
@@ -1319,6 +1320,7 @@ export function Vitals({ patient }: VitalsProps) {
                         dot={TemperatureDotWithClickRenderer}
                         activeDot={{ r: 8, style: { cursor: 'pointer' } }}
                         style={{ cursor: 'pointer' }}
+                        isAnimationActive={false}
                       />
                     </LineChart>
                   </ResponsiveContainer>
@@ -1473,6 +1475,7 @@ export function Vitals({ patient }: VitalsProps) {
                       dataKey="respiratoryRate"
                       stroke="#9c27b0"
                       activeDot={{ r: 8, style: { cursor: 'pointer' } }}
+                      isAnimationActive={false}
                       dot={RespiratoryRateDotWithClickRenderer}
                     />
                   </LineChart>
