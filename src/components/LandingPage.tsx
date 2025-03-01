@@ -19,23 +19,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onAssistantClick }) =>
           Welcome to HealthRecords
         </h1>
         <p className="text-lg text-gray-600 mb-8">
-          Powerful search capabilities at your fingertips
+          Advanced healthcare management with AI-powered assistance
         </p>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {/* Voice Search */}
+          {/* Medical Professional UI */}
           <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
             <div className="flex justify-center mb-4 text-blue-600">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold mb-2">Voice Search</h3>
-            <p className="text-gray-600">Use voice commands to search for patients and navigate records</p>
+            <h3 className="text-lg font-semibold mb-2">Intuitive Interface</h3>
+            <p className="text-gray-600">Designed specifically for medical professionals with clarity and efficiency in mind</p>
           </div>
 
-          {/* Natural Language */}
+          {/* AI Medical Assistant */}
           <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
             <div className="flex justify-center mb-4 text-blue-600">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,20 +43,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onAssistantClick }) =>
                   d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold mb-2">Natural Language</h3>
-            <p className="text-gray-600">Search using everyday language and get intelligent results</p>
+            <h3 className="text-lg font-semibold mb-2">AI Medical Assistant</h3>
+            <p className="text-gray-600">Integrated AI assistant <b>Thea</b> to help analyze records, suggest actions, support on tasks, and answer questions</p>
           </div>
 
-          {/* Advanced Filters */}
+          {/* Flexible System */}
           <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
             <div className="flex justify-center mb-4 text-blue-600">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                  d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold mb-2">Advanced Filters</h3>
-            <p className="text-gray-600">Filter by date, department, status and more</p>
+            <h3 className="text-lg font-semibold mb-2">Flexible Workflow</h3>
+            <p className="text-gray-600">Adapts to your needs and preferences with customizable views and personalized workflows</p>
           </div>
         </div>
 

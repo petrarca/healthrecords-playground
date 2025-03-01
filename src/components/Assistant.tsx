@@ -76,7 +76,7 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
   const { messages, isProcessing, sendMessage } = useAssistant();
   const navigate = useNavigate();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Set up navigation service with router's navigate function
   useEffect(() => {
@@ -108,6 +108,16 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  // Handle Enter key to submit the form, but allow Shift+Enter for new line
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (message.trim()) {
+        handleSubmit(e);
+      }
+    }
+  };
+
   const formatTime = (date: Date) => {
     return format(date, 'HH:mm');
   };
@@ -130,7 +140,7 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
             </svg>
           </div>
           <div>
-            <h2 className="font-semibold text-gray-900">Medical Assistant</h2>
+            <h2 className="font-semibold text-gray-900">Thea</h2>
             <div className="flex items-center">
               <span className="text-xs text-gray-500">Press Shift+Space to toggle</span>
             </div>
@@ -209,15 +219,16 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
 
       {/* Chat Input */}
       <div className="border-t border-gray-200 p-3 bg-white">
-        <form className="flex gap-2 h-full" onSubmit={handleSubmit}>
+        <form className="flex gap-2 h-full items-end" onSubmit={handleSubmit}>
           <div className="relative flex-1">
-            <input
+            <textarea
               ref={inputRef}
-              type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your medical question..."
-              className="w-full h-full px-4 pr-12 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              onKeyDown={handleKeyDown}
+              placeholder="Please enter your question"
+              className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm resize-none block"
+              style={{ minHeight: '60px', maxHeight: '120px' }}
               disabled={isProcessing}
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -236,11 +247,12 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
           <button
             type="submit"
             disabled={!message.trim() || isProcessing}
-            className={`px-5 rounded-xl flex items-center justify-center transition-all duration-150 ${
+            className={`px-5 py-3 rounded-xl flex items-center justify-center transition-all duration-150 ${
               message.trim() && !isProcessing
                 ? 'bg-blue-600 text-white hover:bg-blue-700'
                 : 'bg-gray-100 text-gray-400 cursor-not-allowed'
             }`}
+            style={{ height: '60px' }}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

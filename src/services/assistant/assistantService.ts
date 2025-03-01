@@ -144,7 +144,7 @@ class AssistantService {
 
   // Get the welcome message
   private getWelcomeMessage(): string {
-    return "👋 Welcome to HealthRecords Assistant! Type \"help\" to see examples of what I can do.";
+    return "👋 Welcome to <b>Thea</b>, your AI-powered assistant! Type \"help\" to see examples of what I can do.";
   }
 
   // Get current state

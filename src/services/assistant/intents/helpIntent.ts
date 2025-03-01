@@ -35,7 +35,6 @@ export class HelpIntentHandler implements IntentHandler {
 • "/..."
 • "/Anderson"
 
-
 <strong>Patient List:</strong>
 • "show recent patients"
 • "patient list"
