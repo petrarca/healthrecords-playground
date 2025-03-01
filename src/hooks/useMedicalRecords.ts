@@ -1,11 +1,25 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { MedicalRecord } from '../types/types';
+import { MedicalRecord, MedicalRecordType } from '../types/medicalRecord';
 import { medicalRecordService } from '../services/medicalRecordService';
 
 export const useMedicalRecords = (patientId: string) => {
   return useQuery<MedicalRecord[]>({
     queryKey: ['medicalRecords', patientId],
     queryFn: () => medicalRecordService.getPatientRecords(patientId),
+    //gcTime: 0,
+  });
+};
+
+/**
+ * Hook to retrieve medical records of a specific type for a patient
+ * @param patientId The ID of the patient
+ * @param recordType The type of medical record to retrieve
+ * @returns Query result containing filtered medical records
+ */
+export const useMedicalRecordsByType = (patientId: string, recordType: MedicalRecordType) => {
+  return useQuery<MedicalRecord[]>({
+    queryKey: ['medicalRecords', patientId, recordType],
+    queryFn: () => medicalRecordService.getPatientRecordsByType(patientId, recordType),
     //gcTime: 0,
   });
 };

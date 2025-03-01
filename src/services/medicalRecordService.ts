@@ -1,4 +1,4 @@
-import { MedicalRecord, MedicalRecordType } from '../types/types';
+import { MedicalRecord, MedicalRecordType } from '../types/medicalRecord';
 import { generateShortId } from '../lib/utils';
 import { getClient } from '../lib/supabase';
 import { MedicalRecordTable } from '../models/databaseModel';
@@ -18,6 +18,29 @@ class MedicalRecordService {
       .from('medical_records')
       .select()
       .eq('patient_id', patientId) as { data: MedicalRecordTable[] | null, error: Error | null };
+
+    if (error) {
+      throw new Error(`Failed to fetch medical records: ${error.message}`);
+    }
+
+    return (data || []).map(record => ({
+      id: record.record_id,
+      recordId: record.record_id,
+      patientId: record.patient_id,
+      recordType: record.record_type as MedicalRecordType,
+      recordedAt: new Date(record.recorded_at),
+      title: record.title,
+      description: record.description,
+      details: record.details
+    }));
+  }
+
+  async getPatientRecordsByType(patientId: string, recordType: MedicalRecordType): Promise<MedicalRecord[]> {
+    const { data, error } = await getClient()
+      .from('medical_records')
+      .select()
+      .eq('patient_id', patientId)
+      .eq('record_type', recordType) as { data: MedicalRecordTable[] | null, error: Error | null };
 
     if (error) {
       throw new Error(`Failed to fetch medical records: ${error.message}`);

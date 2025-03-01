@@ -6,6 +6,7 @@ export interface CardProps {
   children: React.ReactNode;
   variant: 'blue' | 'green' | 'purple' | 'amber';
   headerContent?: React.ReactNode;
+  onClick?: () => void;
 }
 
 const cardStyles = {
@@ -29,8 +30,11 @@ const iconStyles = {
   amber: 'text-amber-600'
 } as const;
 
-export const Card: React.FC<CardProps> = ({ title, icon, children, variant, headerContent }) => (
-  <div className={`bg-white rounded shadow-sm border ${cardStyles[variant]}`}>
+export const Card: React.FC<CardProps> = ({ title, icon, children, variant, headerContent, onClick }) => (
+  <div 
+    className={`bg-white rounded shadow-sm border ${cardStyles[variant]} ${onClick ? 'cursor-pointer' : ''}`}
+    onClick={onClick}
+  >
     <div className={`border-b px-3 py-2 ${headerStyles[variant]} relative`}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
