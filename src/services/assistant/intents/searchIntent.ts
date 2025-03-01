@@ -12,7 +12,7 @@ export class SearchIntentHandler implements IntentHandler {
    */
   canHandle(content: string): boolean {
     const lowerContent = content.toLowerCase();
-    return lowerContent.includes('search') || lowerContent.includes('find') || lowerContent.startsWith('/');
+    return lowerContent.includes('patient') || lowerContent.includes('search') || lowerContent.includes('find') || lowerContent.startsWith('/');
   }
 
   /**
@@ -48,9 +48,8 @@ export class SearchIntentHandler implements IntentHandler {
         } else {
           // If multiple items are found, show list
           const result = searchResults.map(result => {
-  // TODO: Resolve URL            return `- <a href="/patients/${result.id}/timeline" class="text-blue-600 font-semibold hover:underline">${result.title}</a> ${result.subtitle ? `(${result.subtitle})` : ''}`;
             const subtitle = result.subtitle ? `(${result.subtitle})` : '';
-            return `- ${result.title} ${subtitle}`;
+            return `- <a href="/patients/${result.id}/timeline" class="text-blue-600 font-semibold hover:underline">${result.title}</a> ${subtitle}`;
           }).join('\n');
           
           return `I found multiple matches for "${searchQuery}":\n${result}`;
