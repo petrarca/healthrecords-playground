@@ -1,0 +1,163 @@
+/* Thea - HealthRecords Assistant Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles that complement Tailwind CSS */
+@layer components {
+  @keyframes pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+  }
+
+  .status-loading {
+    animation: pulse 1.5s infinite;
+  }
+
+  /* Preserve any specific styles that might not be easily replaced with Tailwind */
+  .messages-container {
+    height: 400px;
+    overflow-y: auto;
+  }
+
+  /* TensorFlow related styles */
+  .progress-bar {
+    transition: width 0.3s ease;
+  }
+}
+
+body {
+  @apply font-sans;
+  margin: 0;
+  padding: 20px;
+  background-color: #f5f8fa;
+  color: #333;
+}
+
+.app-container {
+  @apply max-w-lg mx-auto relative;
+}
+
+.header {
+  @apply flex justify-between items-center mb-5 pb-2 border-b border-gray-300;
+}
+
+.header h1 {
+  @apply m-0 text-2xl text-blue-600;
+}
+
+.chat-container {
+  @apply bg-white rounded-lg shadow-sm p-5 mb-5 flex flex-col h-96;
+}
+
+.chat-header {
+  @apply flex justify-between items-center mb-3;
+}
+
+.chat-header h2 {
+  @apply m-0 text-lg;
+}
+
+.model-status {
+  @apply flex items-center text-sm;
+}
+
+.status-indicator {
+  @apply w-2 h-2 rounded-full mr-1;
+}
+
+.status-loaded {
+  @apply bg-green-500;
+}
+
+.messages-container {
+  @apply flex-1 overflow-y-auto mb-3 p-2 border border-gray-300 rounded-lg;
+}
+
+.message {
+  @apply mb-3 p-2 rounded-lg max-w-md;
+}
+
+.user-message {
+  @apply bg-blue-100 self-end ml-auto;
+}
+
+.assistant-message {
+  @apply bg-gray-100 self-start;
+}
+
+.message-content {
+  @apply mb-1;
+}
+
+.message-metadata {
+  @apply text-sm text-gray-600 flex justify-between;
+}
+
+.input-form {
+  @apply flex gap-2;
+}
+
+.input-form input {
+  @apply flex-1 p-2 border border-gray-300 rounded-lg text-sm;
+}
+
+.input-form button {
+  @apply p-2 bg-blue-600 text-white border-none rounded-lg cursor-pointer text-sm;
+}
+
+.input-form button:hover {
+  @apply bg-blue-500;
+}
+
+.input-form button:disabled {
+  @apply bg-gray-300 cursor-not-allowed;
+}
+
+/* TensorFlow related styles */
+.loading-status {
+  @apply mb-3 p-2 bg-yellow-100 rounded-lg;
+}
+
+.progress-container {
+  @apply w-full bg-gray-300 rounded-lg;
+}
+
+.progress-bar {
+  @apply h-5 bg-green-500 rounded-lg text-center text-sm text-white;
+}
+
+.debug-panel {
+  @apply mt-3 p-3 bg-gray-100 rounded-lg text-sm;
+}
+
+.debug-panel h3 {
+  @apply mt-0 text-lg text-gray-900;
+}
+
+/* Loading indicator in header */
+.loading-indicator {
+  @apply bg-yellow-100 p-1 rounded-lg text-sm text-yellow-600;
+}
+
+/* Context display */
+.context-display {
+  @apply fixed bottom-5 right-5 bg-white border border-gray-300 rounded-lg p-3 shadow-sm text-sm max-w-md z-10;
+}
+
+.context-display h3 {
+  @apply mt-0 mb-2 text-lg text-blue-600;
+}
+
+.context-display p {
+  @apply my-1;
+}
+
+.intent-badge {
+  @apply inline-block bg-gray-200 text-gray-900 rounded-full px-2 py-1 text-xs mr-1 mb-1;
+}
+
+.intent-badge.active {
+  @apply bg-blue-600 text-white;
+}

@@ -5,7 +5,10 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(), 
+    tailwindcss()
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -28,6 +31,10 @@ export default defineConfig({
           ],
         },
       },
+      // Exclude experiments directory from build
+      external: [
+        /^\/experiments\//
+      ]
     },
   },
   server: {
@@ -47,6 +54,8 @@ export default defineConfig({
     },
     watch: {
       usePolling: true,
+      // Exclude experiments directory from file watching
+      ignored: ['**/node_modules/**', '**/experiments/**']
     },
   },
   preview: {

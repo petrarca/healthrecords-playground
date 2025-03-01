@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TensorFlow.js Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+</head>
+<body>
+    <h1>TensorFlow.js Test</h1>
+    <div id="status">Loading TensorFlow.js...</div>
+    <div id="model-status">Loading Universal Sentence Encoder...</div>
+    
+    <script>
+        // Check if TensorFlow.js is loaded
+        document.getElementById('status').textContent = 
+            window.tf ? `TensorFlow.js loaded (version ${tf.version.tfjs})` : 'TensorFlow.js not loaded';
+        
+        // Load Universal Sentence Encoder model
+        async function loadModel() {
+            try {
+                const model = await use.load();
+                document.getElementById('model-status').textContent = 'Universal Sentence Encoder loaded successfully!';
+                
+                // Test the model with a simple sentence
+                const embeddings = await model.embed(['Hello world']);
+                const data = await embeddings.array();
+                console.log('Embedding shape:', data.length, data[0].length);
+                console.log('First few values:', data[0].slice(0, 5));
+            } catch (error) {
+                document.getElementById('model-status').textContent = `Error loading model: ${error.message}`;
+                console.error('Error loading model:', error);
+            }
+        }
+        
+        // Run the test
+        loadModel();
+    </script>
+</body>
+</html>
