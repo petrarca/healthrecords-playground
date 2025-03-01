@@ -28,6 +28,11 @@ const ContextDisplay: React.FC = () => {
     };
   }, []);
   
+  // Toggle debug mode
+  const toggleDebugMode = () => {
+    contextService.toggleDebugMode();
+  };
+  
   if (!visible) return null;
   
   return (
@@ -59,16 +64,26 @@ const ContextDisplay: React.FC = () => {
           <span className="font-medium">Record ID:</span>{' '}
           {context.currentRecordId || <em className="text-gray-500">None</em>}
         </div>
-        <div>
+        <div className="flex justify-between items-center">
           <span className="font-medium">Debug Mode:</span>{' '}
-          <span className={`px-1.5 py-0.5 rounded text-xs ${context.debugMode ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+          <button
+            onClick={toggleDebugMode}
+            className={`px-2 py-0.5 rounded text-xs transition-colors ${
+              context.debugMode 
+                ? 'bg-green-100 text-green-800 hover:bg-green-200' 
+                : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+            }`}
+          >
             {context.debugMode ? 'ON' : 'OFF'}
-          </span>
+          </button>
         </div>
       </div>
       
       <div className="mt-2 text-xs text-gray-500">
-        Press Cmd+Shift+C to toggle
+        Press Cmd+Shift+C to toggle display
+      </div>
+      <div className="mt-1 text-xs text-gray-500">
+        TensorFlow debug mode is {context.debugMode ? 'enabled' : 'disabled'}
       </div>
     </div>
   );

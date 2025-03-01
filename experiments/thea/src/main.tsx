@@ -14,11 +14,7 @@ console.log('TensorFlow.js initialization started');
 try {
   console.log('TensorFlow.js version:', tf.version);
   
-  // Set up TensorFlow.js logging
-  tf.enableDebugMode();
-  tf.env().set('DEBUG', true);
-  
-  // Log that TensorFlow.js initialized successfully
+  // TensorFlow debug mode is managed by the contextService
   console.log('TensorFlow.js initialized successfully');
 } catch (error) {
   console.error('Error initializing TensorFlow.js:', error);
