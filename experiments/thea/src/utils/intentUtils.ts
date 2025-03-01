@@ -199,7 +199,7 @@ export function getResponseForIntent(intentName: string, context: ContextState):
   // Default responses for other intents
   switch (intentName) {
     case 'greeting':
-      return "Hello! I'm your HealthRecords Assistant. How can I help you today?";
+      return "Hello! I'm Thea, your Assistant. How can I help you today?";
     
     case 'help':
       return "I can help you with:\n- Viewing patient information\n- Checking medications, allergies, and conditions\n- Viewing lab results and medical records\n- Navigating between different views\n\nTry asking me something like 'Show medications' or 'What are the patient's allergies?'";
