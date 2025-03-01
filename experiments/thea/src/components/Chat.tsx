@@ -75,7 +75,7 @@ const Chat: React.FC = () => {
   useEffect(() => {
     // Compare with previous values to prevent duplicate messages
     const patientChanged = 
-      (prevContextRef.current.patient?.id !== appContext.currentPatient?.id);
+      (prevContextRef.current.patient?.patientId !== appContext.currentPatient?.patientId);
     const viewChanged = 
       (prevContextRef.current.view !== appContext.currentView);
     
@@ -133,13 +133,6 @@ const Chat: React.FC = () => {
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
-  };
-  
-  // Helper function to navigate between views
-  const navigateTo = (view: string) => {
-    // In a real app, this would use a router
-    // For this demo, we'll just update the context
-    contextService.navigateTo(view as any);
   };
   
   // Handle form submission
@@ -203,60 +196,63 @@ const Chat: React.FC = () => {
       </div>
       
       <div 
-        className="flex-1 overflow-y-auto p-4 space-y-4"
         ref={messagesContainerRef}
+        className="flex-1 overflow-y-auto p-4 space-y-4"
+        style={{ maxHeight: 'calc(100vh - 200px)' }}
       >
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`mb-4 ${
-              message.sender === 'user'
-                ? 'text-right'
-                : message.sender === 'debug'
-                ? 'text-left'
-                : 'text-left'
-            }`}
+        {messages.map(message => (
+          <div 
+            key={message.id} 
+            className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <div
-              className={`inline-block rounded-lg px-4 py-2 max-w-[80%] ${
-                message.sender === 'user'
-                  ? 'bg-blue-100 text-blue-900'
+            <div 
+              className={`max-w-3/4 rounded-lg px-4 py-2 ${
+                message.sender === 'user' 
+                  ? 'bg-blue-100 text-blue-900' 
                   : message.sender === 'debug'
-                  ? 'bg-gray-800 text-green-300 font-mono text-xs overflow-x-auto'
-                  : 'bg-gray-100 text-gray-900'
+                    ? 'bg-gray-100 text-gray-800 font-mono text-xs whitespace-pre overflow-x-auto w-full'
+                    : 'bg-gray-100 text-gray-800'
               }`}
             >
-              {message.sender === 'debug' ? (
-                <pre className="whitespace-pre-wrap break-words">{message.text}</pre>
-              ) : (
-                message.text
-              )}
-            </div>
-            <div className="text-base text-gray-500 mt-1">
-              {message.timestamp}
+              <div className="whitespace-pre-wrap">{message.text}</div>
+              <div className="text-xs text-gray-500 mt-1">{message.timestamp}</div>
             </div>
           </div>
         ))}
         <div ref={messagesEndRef} />
       </div>
       
-      <div className="border-t border-gray-200 p-4">
-        <form onSubmit={handleSubmit} className="flex space-x-2">
+      <form 
+        onSubmit={handleSubmit}
+        className="border-t border-gray-200 p-4 bg-gray-50"
+      >
+        <div className="flex items-center">
           <input
             type="text"
             value={input}
             onChange={handleInputChange}
-            placeholder="Type a message..."
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
+            placeholder="Type your message..."
+            className="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={!isModelLoaded}
           />
           <button
             type="submit"
-            className="px-4 py-3 bg-blue-600 text-white rounded-r font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`px-4 py-2 rounded-r-lg ${
+              isModelLoaded
+                ? 'bg-blue-500 text-white hover:bg-blue-600'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+            disabled={!isModelLoaded}
           >
             Send
           </button>
-        </form>
-      </div>
+        </div>
+        {!isModelLoaded && (
+          <div className="text-xs text-orange-600 mt-2">
+            {loadingStatus.message || 'Loading TensorFlow model...'}
+          </div>
+        )}
+      </form>
     </div>
   );
 };

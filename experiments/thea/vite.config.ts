@@ -20,25 +20,28 @@ export default defineConfig({
     },
   },
   server: {
+    host: '0.0.0.0', // Listen on all addresses
     port: 5174,
-    open: true,
     strictPort: true,
     cors: true,
-    fs: {
-      // Allow serving files from one level up to the project root
-      allow: [
-        path.resolve(__dirname),
-        path.resolve(__dirname, '../../'),
-        path.resolve(__dirname, '../../node_modules')
-      ]
-    }
+    allowedHosts: [
+      'localhost',
+      '.local'  // This will match any subdomain ending with .local
+    ],
+    hmr: {
+      // Allow any host ending with .local to connect for HMR
+      host: 'localhost',
+      clientPort: 5174,
+      protocol: 'ws',
+    },
+    watch: {
+      usePolling: true,
+      ignored: ['**/node_modules/**']
+    },
   },
-  build: {
-    outDir: 'dist',
-    emptyOutDir: true,
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    }
+  preview: {
+    host: '0.0.0.0',
+    port: 4173,
   },
   optimizeDeps: {
     include: ['@tensorflow/tfjs', '@tensorflow-models/universal-sentence-encoder']

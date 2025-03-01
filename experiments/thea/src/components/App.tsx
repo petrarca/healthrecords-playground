@@ -84,12 +84,10 @@ const App = () => {
         )}
       </main>
        
-      {/* Context display (toggle with Cmd+Shift+C) */}
       <ContextDisplay />
       
       <footer className="mt-4 pt-4 border-t border-gray-200 text-center text-sm text-gray-500">
-        <p>Thea - HealthRecords Assistant Intent Recognition</p>
-        <p className="mt-1">Press Cmd+Shift+C to toggle context display</p>
+        <p>Thea - Experimental</p>
       </footer>
     </div>
   );

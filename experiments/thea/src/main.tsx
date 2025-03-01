@@ -6,6 +6,9 @@ import App from './components/App';
 // Import TensorFlow.js and Universal Sentence Encoder
 import * as tf from '@tensorflow/tfjs';
 
+// Import services
+import { initTensorFlowDebugService } from './services/tensorflowDebugService';
+
 // Import Tailwind CSS
 import './styles/tailwind.css';
 
@@ -14,7 +17,10 @@ console.log('TensorFlow.js initialization started');
 try {
   console.log('TensorFlow.js version:', tf.version);
   
-  // TensorFlow debug mode is managed by the contextService
+  // Initialize TensorFlow debug service
+  initTensorFlowDebugService();
+  console.log('TensorFlow debug service initialized');
+  
   console.log('TensorFlow.js initialized successfully');
 } catch (error) {
   console.error('Error initializing TensorFlow.js:', error);

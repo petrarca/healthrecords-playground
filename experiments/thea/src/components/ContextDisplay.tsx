@@ -83,7 +83,7 @@ const ContextDisplay: React.FC = () => {
         Press Cmd+Shift+C to toggle display
       </div>
       <div className="mt-1 text-xs text-gray-500">
-        TensorFlow debug mode is {context.debugMode ? 'enabled' : 'disabled'}
+        TensorFlow debug mode is managed by tensorflowDebugService
       </div>
     </div>
   );

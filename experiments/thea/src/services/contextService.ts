@@ -3,11 +3,11 @@
 
 import { BehaviorSubject } from 'rxjs';
 import { useState, useEffect } from 'react';
-import * as tf from '@tensorflow/tfjs';
 
 // Define the patient type
 export interface Patient {
   patientId: string;
+  id?: string; 
   firstName: string;
   lastName: string;
   dateOfBirth?: string;
@@ -35,15 +35,8 @@ const initialState: ContextState = {
 class ContextService {
   // Use BehaviorSubject to allow components to subscribe to context changes
   private readonly contextState = new BehaviorSubject<ContextState>(initialState);
-  // Flag to prevent multiple debug mode updates during initialization
-  private isInitializing = true;
   
   constructor() {
-    // Initialize TensorFlow debug mode based on initial context state
-    this.updateTensorFlowDebugMode(initialState.debugMode);
-    
-    // Set initialization complete
-    this.isInitializing = false;
   }
   
   // Method to get the current state as a snapshot
@@ -91,9 +84,6 @@ class ContextService {
     const currentState = this.getState();
     const newDebugMode = !currentState.debugMode;
     
-    // Update TensorFlow debug mode
-    this.updateTensorFlowDebugMode(newDebugMode);
-    
     // Update context state
     this.contextState.next({
       ...currentState,
@@ -107,27 +97,11 @@ class ContextService {
     
     // Only update if the value is changing
     if (currentState.debugMode !== enabled) {
-      // Update TensorFlow debug mode
-      this.updateTensorFlowDebugMode(enabled);
-      
       // Update context state
       this.contextState.next({
         ...currentState,
         debugMode: enabled,
       });
-    }
-  }
-  
-  // Private method to update TensorFlow debug mode
-  private updateTensorFlowDebugMode(debugMode: boolean) {
-    try {
-      // Enable or disable TensorFlow debug mode
-      tf.enableDebugMode(debugMode);
-      tf.env().set('DEBUG', debugMode);
-      
-      console.log(`TensorFlow debug mode ${debugMode ? 'enabled' : 'disabled'}`);
-    } catch (error) {
-      console.error('Error updating TensorFlow debug mode:', error);
     }
   }
   
@@ -176,7 +150,7 @@ class ContextService {
     const patient = currentState.currentPatient;
     const id = patientId ?? patient?.patientId;
     
-    if (!id && view !== 'landing') {
+    if (!id) {
       console.error('Cannot navigate: No patient ID available');
       return;
     }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../services/contextService';
 import { intents } from '../utils/intentUtils';
-import { recognizeIntent, setStatusCallback, getLoadingStatus, getLastIntentResult } from '../services/tensorflowService';
+import { setStatusCallback, getLoadingStatus, getLastIntentResult } from '../services/tensorflowService';
 
 /**
  * IntentExplorer component for exploring and testing intents
