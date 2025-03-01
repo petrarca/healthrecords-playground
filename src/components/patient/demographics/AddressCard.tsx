@@ -1,6 +1,6 @@
 import React from 'react';
 import { Home, Plus, Check, X, Pencil, Pin, PinOff } from 'lucide-react';
-import { Card } from '../../ui/Card';
+import { Card } from '../../ui/card';
 import { CardDropdown } from '../../ui/cardDropdown';
 import { Select } from '../../ui/select';
 import { Badge } from '../../ui/badge';

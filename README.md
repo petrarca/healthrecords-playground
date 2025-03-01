@@ -175,6 +175,12 @@ healthrecords-playground/
 ├── src/
 │   ├── assets/          # Application assets
 │   ├── components/      # React components
+│   │   ├── patient/     # Patient-related components
+│   │   │   ├── demographics/  # Patient demographic information
+│   │   │   └── vitals/  # Vital signs components and charts
+│   │   ├── timeline/    # Timeline view components
+│   │   └── ui/          # Reusable UI components
+│   │       └── fieldRenderers/  # Custom field rendering components
 │   ├── constants/       # Application constants
 │   ├── context/         # Context providers
 │   ├── hooks/           # Custom React hooks
@@ -182,6 +188,7 @@ healthrecords-playground/
 │   ├── models/          # Data models
 │   ├── services/        # Application services
 │   │   ├── assistant/   # Natural language assistant
+│   │   │   └── intents/ # Intent handlers for assistant
 │   │   ├── mappers/     # Data mappers
 │   │   └── search/      # Search functionality
 │   ├── styles/          # Global styles

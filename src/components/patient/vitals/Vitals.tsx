@@ -12,10 +12,10 @@ import {
   ReferenceArea,
   TooltipProps
 } from 'recharts';
-import { Patient } from '../../types/types';
-import { Card } from '../ui/Card';
-import { useVitalSigns } from '../../hooks/useVitalSigns';
-import { useAppContext } from '../../hooks/useAppContext';
+import { Patient } from '../../../types/types';
+import { Card } from '../../ui/card';
+import { useVitalSigns } from '../../../hooks/useVitalSigns';
+import { useAppContext } from '../../../hooks/useAppContext';
 import { 
   Heart, 
   Activity, 
@@ -24,7 +24,7 @@ import {
   Info
 } from 'lucide-react';
 import * as Popover from '@radix-ui/react-popover';
-import { QuantityValue } from '../../types/medicalRecord';
+import { QuantityValue } from '../../../types/medicalRecord';
 
 interface VitalsProps {
   readonly patient: Patient;

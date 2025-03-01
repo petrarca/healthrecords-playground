@@ -5,7 +5,7 @@ import { PatientHeader } from './PatientHeader';
 import { PatientDemographics } from './demographics/PatientDemographics';
 import { PatientSummary } from './PatientSummary';
 import { MedicalProfile } from './MedicalProfile';
-import { Vitals } from './Vitals';
+import { Vitals } from './vitals/Vitals';
 import { usePatient, useUpdatePatient } from '../../hooks/usePatient';
 import { useMedicalRecords } from '../../hooks/useMedicalRecords';
 import { contextService } from '../../services/contextService';

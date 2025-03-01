@@ -5,7 +5,7 @@ import {
   AlertCircle,
   Activity
 } from 'lucide-react';
-import { Card } from '../ui/Card';
+import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
 
 interface MedicalProfileProps {
