@@ -144,7 +144,7 @@ class AssistantService {
 
   // Get the welcome message
   private getWelcomeMessage(): string {
-    return "👋 Welcome to <b>Thea</b>, your AI-powered assistant! Type \"help\" to see examples of what I can do.<p>PS: A more powerful version will be available soon.";
+    return "👋 Welcome to <b>Thea</b>, your AI-powered assistant! Type \"help\" to see examples of what I can do.<p>PS: A more powerful version is just around the corner.";
   }
 
   // Get current state
