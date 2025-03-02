@@ -99,10 +99,18 @@ const ObjectArrayRenderer: React.FC<{
   
   return (
     <div className={`ml-1 ${className}`}>
-      <button 
-        className={`flex items-center cursor-pointer ${isExpanded ? '' : 'ml-4'} bg-transparent border-0 p-0 text-left`} 
+      <div 
+        className={`flex items-center cursor-pointer ${isExpanded ? '' : 'ml-4'} bg-transparent p-0 text-left`} 
         onClick={toggleExpand}
+        role="button"
+        tabIndex={0}
         aria-expanded={isExpanded}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleExpand();
+          }
+        }}
       >
         {isExpanded ? 
           <ChevronDown className="h-3 w-3 text-gray-500" /> : 
@@ -112,7 +120,7 @@ const ObjectArrayRenderer: React.FC<{
           {isArray ? `Array(${parsedData.length})` : `Object(${Object.keys(parsedData).length})`}
         </span>
         {renderCopyButton()}
-      </button>
+      </div>
       
       {isExpanded && (
         <div className="pl-4 border-l border-gray-200 ml-1">
