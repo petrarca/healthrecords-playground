@@ -1,0 +1,28 @@
+{
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/developer/(.*)", "destination": "/developer/$1" }
+  ],
+  "builds": [
+    { 
+      "src": "/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    { 
+      "src": "developer/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "developer/dist"
+      }
+    }
+  ],
+  "github": {
+    "silent": true,
+    "autoJobCancelation": true
+  },
+  "ignoreCommand": "node -e \"const { execSync } = require('child_process'); const mainChanged = execSync('git diff --quiet HEAD^ HEAD ./ && echo false || echo true').toString().trim() === 'true'; const devChanged = execSync('git diff --quiet HEAD^ HEAD ./developer && echo false || echo true').toString().trim() === 'true'; process.exit(mainChanged || devChanged ? 1 : 0);\""
+}
