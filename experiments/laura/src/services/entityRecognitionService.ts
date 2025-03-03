@@ -1,4 +1,4 @@
-// Entity recognition service for Thea
+// Entity recognition service for Laura
 import * as tf from '@tensorflow/tfjs';
 import { ContextState } from './contextService';
 import { EntityType, Entity } from '../types/intents';
@@ -6,11 +6,11 @@ import { entityTrainingData } from '../training';
 import { extractEntities, EntityExtractionResult } from './ruleBasedEntityRecognition';
 
 // Define storage keys
-const ENTITY_MODEL_INFO_KEY = 'thea-entity-model-info';
-const ENTITY_INDEXEDDB_MODEL_KEY = 'thea-entity-model';
-const ENTITY_VOCAB_KEY = 'thea-entity-vocab';
-const ENTITY_TAGMAP_KEY = 'thea-entity-tagmap';
-const ENTITY_VOCABSIZE_KEY = 'thea-entity-vocabsize';
+const ENTITY_MODEL_INFO_KEY = 'laura-entity-model-info';
+const ENTITY_INDEXEDDB_MODEL_KEY = 'laura-entity-model';
+const ENTITY_VOCAB_KEY = 'laura-entity-vocab';
+const ENTITY_TAGMAP_KEY = 'laura-entity-tagmap';
+const ENTITY_VOCABSIZE_KEY = 'laura-entity-vocabsize';
 
 // Define tag types for BIO tagging
 enum TagType {

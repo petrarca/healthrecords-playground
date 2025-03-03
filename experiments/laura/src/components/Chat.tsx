@@ -13,7 +13,7 @@ interface ChatMessage {
 
 // Get welcome message
 const getWelcomeMessage = (): string => {
-  return "Welcome to the HealthRecords Assistant! I can help you navigate and find information in your health records.\n\n" +
+  return "Welcome to the Sonnet Assistant! I can help you navigate and find information in your health records.\n\n" +
          "Try these commands:\n" +
          "- Show patient summary\n" +
          "- Show timeline\n" +
@@ -178,7 +178,7 @@ const Chat: React.FC = () => {
   return (
     <div className="flex flex-col h-full bg-white rounded-lg shadow-md overflow-hidden">
       <div className="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
-        <h2 className="text-lg font-medium">HealthRecords Assistant</h2>
+        <h2 className="text-lg font-medium">Sonnet Assistant</h2>
         <div className="flex items-center gap-4">
           {appContext.currentPatient ? (
             <div className="text-xs text-blue-600">

@@ -1,6 +1,6 @@
-# Thea - HealthRecords Assistant Intent Recognition
+# Laura Assistant Intent Recognition
 
-This is an experimental application for intent recognition in the HealthRecords Assistant using TensorFlow.js and the Universal Sentence Encoder.
+This is an experimental application for intent recognition for the Laura Assistant using TensorFlow.js and the Universal Sentence Encoder.
 
 ## Features
 
@@ -21,7 +21,7 @@ This is an experimental application for intent recognition in the HealthRecords 
 1. Clone the repository
 2. Navigate to the experiment directory:
    ```bash
-   cd experiments/thea
+   cd experiments/laura
    ```
 3. Install dependencies:
    ```bash
@@ -49,7 +49,7 @@ The application will start on port 5174 and can be accessed at http://localhost:
 ### Project Structure
 
 ```
-thea/
+laura/
 ├── public/            # Static assets
 ├── src/               # Source code
 │   ├── components/    # React components

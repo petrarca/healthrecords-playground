@@ -1,4 +1,4 @@
-// Context Service for Thea
+// Context Service for Laura
 // This service tracks the current application context using RxJS BehaviorSubject
 
 import { BehaviorSubject } from 'rxjs';

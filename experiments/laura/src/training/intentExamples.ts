@@ -9,7 +9,7 @@ export const intentExamples: Record<string, string[]> = {
     'Good evening',
     'How are you?',
     'What\'s up?',
-    'Hi Thea',
+    'Hi Laura',
     'Hello assistant',
     'Hey health assistant',
     'Greetings',

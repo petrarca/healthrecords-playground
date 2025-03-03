@@ -16,7 +16,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onAssistantClick }) =>
     <div className="landing-page-container h-full flex flex-col items-center justify-center py-8 px-4 overflow-hidden w-full">
       <div className="text-center max-w-3xl">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Welcome to HealthRecords
+          Welcome to Sonnet
         </h1>
         <p className="text-lg text-gray-600 mb-8">
           Advanced healthcare management with AI-powered assistance
@@ -44,7 +44,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onAssistantClick }) =>
               </svg>
             </div>
             <h3 className="text-lg font-semibold mb-2">AI Medical Assistant</h3>
-            <p className="text-gray-600">Integrated AI assistant <b>Thea</b> to help analyze records, suggest actions, support on tasks, and answer questions</p>
+            <p className="text-gray-600">Integrated AI assistant <b>Laura</b> to help analyze records, suggest actions, support on tasks, and answer questions</p>
           </div>
 
           {/* Flexible System */}
@@ -66,7 +66,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onAssistantClick }) =>
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                 d="M21 21l-6-6m2-5a7 7 0 01-14 0 7 7 0 0114 0z" />
             </svg>
-            <span>Search by name, ID, or condition</span>
+            <span>Smart patient search</span>
           </div>
           <div className="flex items-center text-gray-500">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

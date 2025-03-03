@@ -140,7 +140,7 @@ export const Assistant: React.FC<ChatProps> = ({ isOpen, onClose }) => {
             </svg>
           </div>
           <div>
-            <h2 className="font-semibold text-gray-900">Thea</h2>
+            <h2 className="font-semibold text-gray-900">Laura</h2>
             <div className="flex items-center">
               <span className="text-xs text-gray-500">Press Shift+Space to toggle</span>
             </div>

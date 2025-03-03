@@ -62,8 +62,11 @@ export const ShellHeader: React.FC<ShellHeaderProps> = ({
               </svg>
             </button>
             <div className="text-xl font-semibold text-gray-900 tracking-tight hidden sm:block">
-              <span className="text-blue-700">Health</span>
-              <span className="text-gray-900">Records</span>
+              <div>
+                <span className="text-blue-700">Son</span>
+                <span className="text-gray-900">net</span>
+              </div>
+              <div className="text-xs text-gray-600 -mt-1">by Petrarca Labs</div>
             </div>
           </div>
 

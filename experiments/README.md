@@ -1,24 +1,24 @@
-# HealthRecords Playground Experiments
+# Sonnet Experiments
 
-This directory contains experimental features and standalone applications that are part of the HealthRecords Playground project.
+This directory contains experimental features and standalone applications that are part of the Sonnet project.
 
 ## Available Experiments
 
-### Thea - HealthRecords Assistant Intent Recognition
+### Laura Assistant Intent Recognition
 
-A prototype for intent recognition in the HealthRecords Assistant using TensorFlow.js and the Universal Sentence Encoder.
+A prototype for intent recognition in the Sonnet Assistant using TensorFlow.js and the Universal Sentence Encoder.
 
 **To run this experiment:**
 
 ```bash
-cd thea
+cd laura
 npm run dev
 ```
 
 Or use the provided script:
 
 ```bash
-./thea/run.sh
+./laura/run.sh
 ```
 
 The application will start on port 5174 and can be accessed at http://localhost:5174

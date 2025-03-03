@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Run the Thea experiment as a separate Vite application
+# Run the Laura experiment as a separate Vite application
 cd "$(dirname "$0")"
 
 # Check if node_modules exists, if not install dependencies

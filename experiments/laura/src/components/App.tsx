@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from '../../$node_modules/.pnpm/@types+react@18.3.18/$node_modules/@types/react/index.js';
 import { contextService, Patient, ViewType, useAppContext } from '../services/contextService';
 import ContextDisplay from './ContextDisplay';
 import Chat from './Chat';
@@ -44,7 +44,7 @@ const App = () => {
   return (
     <div className="max-w-7xl mx-auto px-2 py-4 h-screen flex flex-col">
       <header className="flex justify-between items-center mb-6 pb-2 border-b border-gray-200">
-        <h1 className="text-2xl font-semibold text-blue-600">Thea - HealthRecords Assistant</h1>
+        <h1 className="text-2xl font-semibold text-blue-600">Laura Assistant</h1>
         <div className="flex gap-2">
           <select 
             className="px-3 py-2 bg-white border border-gray-300 rounded text-sm"
@@ -87,7 +87,7 @@ const App = () => {
       <ContextDisplay />
       
       <footer className="mt-4 pt-4 border-t border-gray-200 text-center text-sm text-gray-500">
-        <p>Thea - Experimental</p>
+        <p>Laura - Experimental</p>
       </footer>
     </div>
   );

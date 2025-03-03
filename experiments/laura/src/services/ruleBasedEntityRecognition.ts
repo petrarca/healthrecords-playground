@@ -1,4 +1,4 @@
-// Rule-based entity recognition for Thea
+// Rule-based entity recognition for Laura
 import { Entity, EntityType } from '../types/intents';
 import { ContextState } from './contextService';
 

@@ -1,4 +1,4 @@
-// Main entry point for the Thea application
+// Main entry point for the Laura experiment application
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './components/App';

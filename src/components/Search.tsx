@@ -244,7 +244,7 @@ export function Search({ onResultSelect, className = '' }: SearchProps) {
         <div className="flex-1 relative">
           <input
             type="search"
-            placeholder="Search patients, ..."
+            placeholder="Smart patient search"
             className="w-full px-5 py-2.5 pr-12 border-2 border-gray-200 rounded-lg bg-blue-50 focus:outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-300 text-base"
             value={searchTerm}
             onChange={handleSearch}
