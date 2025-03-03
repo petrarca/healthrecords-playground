@@ -56,9 +56,9 @@ const jsonData = {
  * Demo component for showcasing field renderers
  */
 export const FieldRenderersDemo: React.FC = () => {
-  const [selectedRenderer, setSelectedRenderer] = useState<string>('json');
-  const [parsedData, setParsedData] = useState<Record<string, unknown>>(jsonData);
-  const [customData, setCustomData] = useState<string>(JSON.stringify(jsonData, null, 2));
+  const [selectedRenderer, setSelectedRenderer] = useState<string>('labComponents');
+  const [parsedData, setParsedData] = useState<Record<string, unknown>>(labComponentsData as unknown as Record<string, unknown>);
+  const [customData, setCustomData] = useState<string>(JSON.stringify(labComponentsData, null, 2));
   const [isValidJson, setIsValidJson] = useState<boolean>(true);
   const [events, setEvents] = useState<EventLog[]>([]);
   const [codeExample, setCodeExample] = useState<string>('');
