@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { FieldRenderer } from '../ui/fieldRenderers';
 import { FieldMetaData } from '../../types/medicalRecord';
-import { registerRenderer } from '../ui/rendererRegistry';
-import { LabComponentsRenderer } from '../ui/fieldRenderers/LabComponentsRenderer';
 import { CodeExample } from '../ui/codeExample';
 
 interface EventLog {
