@@ -9,11 +9,6 @@ import './services/search/patientSearchProviders'; // Import to register provide
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { contextService } from './services/contextService';
 import { ContextProvider } from './components/ContextProvider';
-import { QuantityInputDemo } from './components/demo/QuantityInputDemo';
-import { JsonRendererDemo } from './components/demo/JsonRendererDemo';
-import { FieldRenderersDemo } from './components/demo/FieldRenderersDemo';
-import { AddressCardDemo } from './components/demo/AddressCardDemo';
-import { DeveloperPage } from './components/DeveloperPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,11 +49,6 @@ function AppContent() {
         <Route path="/patients/:id/summary" element={<Patient />} />
         <Route path="/patients/:id/profile" element={<Patient />} />
         <Route path="/patients/:id/vitals" element={<Patient />} />
-        <Route path="/developer" element={<DeveloperPage />} />
-        <Route path="/demo/quantity-input" element={<QuantityInputDemo />} />
-        <Route path="/demo/json-renderer" element={<JsonRendererDemo />} />
-        <Route path="/demo/field-renderers" element={<FieldRenderersDemo />} />
-        <Route path="/demo/address-card" element={<AddressCardDemo />} />
       </Routes>
     </Shell>
   );

@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { QuantityInput } from '../ui/quantityInput';
-import { CodeExample } from '../ui/codeExample';
-import { FieldMetaData, QuantityValue } from '../../types/medicalRecord';
+import React, { useState } from 'react';
+import { QuantityInput } from '@src/components/ui/quantityInput';
+import { FieldMetaData, QuantityValue } from '@src/types/medicalRecord';
 
 interface EventLog {
   type: string;
@@ -14,7 +13,6 @@ export const QuantityInputDemo: React.FC = () => {
   const [heartRate, setHeartRate] = useState<QuantityValue>({ value: 72, unit: 'bpm' });
   const [bloodPressure, setBloodPressure] = useState<QuantityValue>({ value: 120, unit: 'mmHg' });
   const [events, setEvents] = useState<EventLog[]>([]);
-  const [codeExample, setCodeExample] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>('temperature');
 
   // Create field metadata for each input
@@ -48,123 +46,6 @@ export const QuantityInputDemo: React.FC = () => {
       { unit: 'mmHg', display_name: 'mmHg', default: true }
     ]
   };
-
-  // Generate code example
-  const generateCodeExample = useCallback((): string => {
-    let codeExample = `import { QuantityInput, QuantityValue } from './components/ui/quantityInput';
-import { FieldMetaData } from './types/medicalRecord';
-
-const MyComponent = () => {`;
-
-    if (activeTab === 'temperature') {
-      codeExample += `
-  // Define field metadata
-  const temperatureFieldMeta: FieldMetaData = {
-    label: 'Temperature',
-    description: 'Body temperature measurement',
-    type: 'quantity',
-    quantityType: 'number',
-    quantityUnits: [
-      { unit: '°F', display_name: '°F', default: true },
-      { unit: '°C', display_name: '°C' }
-    ]
-  };
-
-  const [temperature, setTemperature] = useState<QuantityValue>({ 
-    value: ${temperature.value}, 
-    unit: '${temperature.unit}' 
-  });
-
-  const handleTemperatureChange = (newValue: QuantityValue) => {
-    setTemperature(newValue);
-    console.log('Temperature updated:', newValue);
-  };
-
-  return (
-    <div className="space-y-4">
-      <QuantityInput 
-        fieldMetadata={temperatureFieldMeta}
-        value={temperature} 
-        onChange={handleTemperatureChange}
-      />
-    </div>
-  );`;
-    } else if (activeTab === 'heartRate') {
-      codeExample += `
-  // Define field metadata
-  const heartRateFieldMeta: FieldMetaData = {
-    label: 'Heart Rate',
-    description: 'Heart rate measurement',
-    type: 'quantity',
-    quantityType: 'number',
-    quantityUnits: [
-      { unit: 'bpm', display_name: 'bpm', default: true }
-    ]
-  };
-
-  const [heartRate, setHeartRate] = useState<QuantityValue>({ 
-    value: ${heartRate.value}, 
-    unit: '${heartRate.unit}' 
-  });
-
-  const handleHeartRateChange = (newValue: QuantityValue) => {
-    setHeartRate(newValue);
-    console.log('Heart rate updated:', newValue);
-  };
-
-  return (
-    <div className="space-y-4">
-      <QuantityInput 
-        fieldMetadata={heartRateFieldMeta}
-        value={heartRate} 
-        onChange={handleHeartRateChange}
-      />
-    </div>
-  );`;
-    } else if (activeTab === 'bloodPressure') {
-      codeExample += `
-  // Define field metadata
-  const bloodPressureFieldMeta: FieldMetaData = {
-    label: 'Blood Pressure',
-    description: 'Blood pressure measurement (systolic)',
-    type: 'quantity',
-    quantityType: 'number',
-    quantityUnits: [
-      { unit: 'mmHg', display_name: 'mmHg', default: true }
-    ]
-  };
-
-  const [bloodPressure, setBloodPressure] = useState<QuantityValue>({ 
-    value: ${bloodPressure.value}, 
-    unit: '${bloodPressure.unit}' 
-  });
-
-  const handleBloodPressureChange = (newValue: QuantityValue) => {
-    setBloodPressure(newValue);
-    console.log('Blood pressure updated:', newValue);
-  };
-
-  return (
-    <div className="space-y-4">
-      <QuantityInput 
-        fieldMetadata={bloodPressureFieldMeta}
-        value={bloodPressure} 
-        onChange={handleBloodPressureChange}
-      />
-    </div>
-  );`;
-    }
-
-    codeExample += `
-};`;
-
-    return codeExample;
-  }, [activeTab, temperature, heartRate, bloodPressure]);
-
-  useEffect(() => {
-    // Update code example when values change or active tab changes
-    setCodeExample(generateCodeExample());
-  }, [generateCodeExample, activeTab]);
 
   const logEvent = (type: string, message: Record<string, unknown>): void => {
     setEvents(prev => [
@@ -312,13 +193,17 @@ const MyComponent = () => {`;
         
         <div className="mt-6 bg-white p-4 rounded-lg shadow-sm">
           <h3 className="text-md font-semibold mb-3">Usage Example</h3>
-          <CodeExample 
-            code={codeExample} 
-            language="tsx" 
-            className="text-xs w-full" 
-            showLineNumbers={true}
-            maxHeight="none"
-          />
+          <p className="mb-4">
+            View the source code for this demo component on GitHub: 
+            <a 
+              href="https://github.com/petrarca/healthrecords-playground/blob/main/developer/src/components/demo/QuantityInputDemo.tsx" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline ml-1"
+            >
+              QuantityInputDemo.tsx
+            </a>
+          </p>
         </div>
       </div>
     </div>

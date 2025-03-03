@@ -85,26 +85,6 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
       <footer className="bg-white border-t border-gray-200 py-2 px-4 flex-shrink-0 w-full ipad-footer-fix">
         <div className="max-w-[1600px] mx-auto w-full flex justify-end items-center space-x-4">
           <a 
-            href="#/developer" 
-            className="text-sm text-gray-600 hover:text-blue-600 flex items-center"
-          >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="16" 
-              height="16" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              className="mr-1"
-            >
-              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-            </svg>
-            Developer
-          </a>
-          <a 
             href="https://github.com/petrarca/healthrecords-playground" 
             target="_blank" 
             rel="noopener noreferrer"

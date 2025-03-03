@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { JsonDisplay } from '../ui/jsonRenderer';
-import { CodeExample } from '../ui/codeExample';
+import React, { useState } from 'react';
+import { JsonDisplay } from '@src/components/ui/jsonRenderer';
 
 // Sample JSON data for demonstration
 const sampleData = {
@@ -78,31 +77,6 @@ export const JsonRendererDemo: React.FC = () => {
   const [showCopyButton, setShowCopyButton] = useState<boolean>(true);
   const [compact, setCompact] = useState<boolean>(false);
   const [events, setEvents] = useState<EventLog[]>([]);
-  const [codeExample, setCodeExample] = useState<string>('');
-
-  // Generate code example
-  const generateCodeExample = useCallback((): string => {
-    return `import { JsonDisplay } from './components/ui/jsonRenderer';
-
-const MyComponent = () => {
-  const data = ${JSON.stringify(customJson, null, 2)};
-  
-  return (
-    <JsonDisplay 
-      data={data}
-      initialExpanded={${initialExpanded}}
-      maxDepth={${maxDepth}}
-      showCopyButton={${showCopyButton}}
-      compact={${compact}}
-    />
-  );
-};`;
-  }, [compact, customJson, initialExpanded, maxDepth, showCopyButton]);
-
-  useEffect(() => {
-    // Update code example when configuration changes
-    setCodeExample(generateCodeExample());
-  }, [generateCodeExample]);
 
   const logEvent = (type: string, message: Record<string, unknown>): void => {
     setEvents(prev => [...prev, { type, message, timestamp: new Date() }]);
@@ -323,13 +297,17 @@ const MyComponent = () => {
             
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <h3 className="text-md font-semibold mb-3">Usage Example</h3>
-              <CodeExample 
-                code={codeExample} 
-                language="tsx" 
-                className="text-xs w-full" 
-                showLineNumbers={true}
-                maxHeight="none"
-              />
+              <p className="mb-4">
+                View the source code for this demo component on GitHub: 
+                <a 
+                  href="https://github.com/petrarca/healthrecords-playground/blob/main/developer/src/components/demo/JsonRendererDemo.tsx" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline ml-1"
+                >
+                  JsonRendererDemo.tsx
+                </a>
+              </p>
             </div>
           </div>
           

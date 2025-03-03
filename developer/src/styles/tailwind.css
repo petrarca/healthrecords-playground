@@ -1,0 +1,26 @@
+/* Thea - HealthRecords Assistant Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles that complement Tailwind */
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+.status-loading {
+  animation: pulse 1.5s infinite;
+}
+
+/* Preserve any specific styles that might not be easily replaced with Tailwind */
+.messages-container {
+  height: 400px;
+  overflow-y: auto;
+}
+
+/* TensorFlow related styles */
+.progress-bar {
+  transition: width 0.3s ease;
+}

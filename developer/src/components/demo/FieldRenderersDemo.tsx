@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { FieldRenderer } from '../ui/fieldRenderers';
-import { FieldMetaData } from '../../types/medicalRecord';
-import { CodeExample } from '../ui/codeExample';
+import React, { useState, useEffect, useMemo } from 'react';
+import { FieldRenderer } from '@src/components/ui/fieldRenderers';
+import { FieldMetaData } from '@src/types/medicalRecord';
 
 interface EventLog {
   type: string;
@@ -61,7 +60,6 @@ export const FieldRenderersDemo: React.FC = () => {
   const [customData, setCustomData] = useState<string>(JSON.stringify(labComponentsData, null, 2));
   const [isValidJson, setIsValidJson] = useState<boolean>(true);
   const [events, setEvents] = useState<EventLog[]>([]);
-  const [codeExample, setCodeExample] = useState<string>('');
 
   // Sample field metadata
   const fieldMetadata = useMemo<Record<string, FieldMetaData>>(() => ({
@@ -79,28 +77,6 @@ export const FieldRenderersDemo: React.FC = () => {
     }
   }), []);
 
-  // Generate code example
-  const generateCodeExample = useCallback((): string => {
-    return `import { FieldRenderer } from './components/ui/fieldRenderers';
-import { FieldMetaData } from './types/medicalRecord';
-
-const MyComponent = () => {
-  // Field metadata
-  const fieldMeta: FieldMetaData = ${JSON.stringify(fieldMetadata[selectedRenderer], null, 2)};
-  
-  // Field data
-  const data = ${JSON.stringify(parsedData, null, 2)};
-  
-  return (
-    <FieldRenderer 
-      data={data}
-      fieldName="${selectedRenderer}"
-      fieldMeta={fieldMeta}
-    />
-  );
-};`;
-  }, [selectedRenderer, parsedData, fieldMetadata]);
-
   useEffect(() => {
     // Log initial state
     logEvent('INITIALIZE', {
@@ -108,10 +84,7 @@ const MyComponent = () => {
       data: parsedData,
       metadata: fieldMetadata[selectedRenderer]
     });
-    
-    // Update code example
-    setCodeExample(generateCodeExample());
-  }, [generateCodeExample, selectedRenderer, parsedData, fieldMetadata]);
+  }, [selectedRenderer, parsedData, fieldMetadata]);
 
   const logEvent = (type: string, message: Record<string, unknown>): void => {
     setEvents(prev => [
@@ -182,10 +155,6 @@ const MyComponent = () => {
   // Data to render based on selected renderer
   const renderData = parsedData;
   const currentFieldMeta = fieldMetadata[selectedRenderer];
-
-  useEffect(() => {
-    // This would typically be done at app initialization, but for demo purposes we do it here
-  }, []);
 
   return (
     <div className="h-screen overflow-auto p-4">
@@ -312,60 +281,35 @@ const MyComponent = () => {
             
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <h3 className="text-md font-semibold mb-3">Usage Example</h3>
-              <CodeExample 
-                code={codeExample} 
-                language="tsx" 
-                className="text-xs w-full" 
-                showLineNumbers={true}
-                maxHeight="none"
-              />
+              <p className="mb-4">
+                View the source code for this demo component on GitHub: 
+                <a 
+                  href="https://github.com/petrarca/healthrecords-playground/blob/main/developer/src/components/demo/FieldRenderersDemo.tsx" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline ml-1"
+                >
+                  FieldRenderersDemo.tsx
+                </a>
+              </p>
             </div>
             
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <h3 className="text-md font-semibold mb-3">Creating Custom Renderers</h3>
               <p className="text-sm text-gray-700 mb-3">
-                To create a custom renderer, implement a React component that accepts FieldRendererProps and register it:
+                To create a custom renderer, implement a React component that accepts FieldRendererProps and register it.
+                See the example in the GitHub repository for a complete implementation:
               </p>
-              <CodeExample 
-                code={`// 1. Import necessary types and functions
-import React from 'react';
-import { FieldRendererProps } from './components/ui/fieldRenderers/types';
-import { registerRenderer } from './components/ui/rendererRegistry';
-
-// 2. Create your custom renderer component
-export const MyCustomRenderer: React.FC<FieldRendererProps> = ({ 
-  data, 
-  fieldName,
-  fieldMeta
-}) => {
-  // Your custom rendering logic here
-  return (
-    <div className="my-custom-renderer">
-      <h3>{fieldMeta.label}</h3>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
-  );
-};
-
-// 3. Register your renderer (do this once at app initialization)
-registerRenderer('myCustomType', MyCustomRenderer);
-
-// 4. Use it in your components with the registered type
-<FieldRenderer
-  data={myData}
-  fieldName="myField"
-  fieldMeta={{
-    label: "My Custom Field",
-    description: "Field with custom rendering",
-    type: "json",
-    rendererType: "myCustomType"  // This matches the name used in registerRenderer
-  }}
-/>`} 
-                language="tsx" 
-                className="text-xs w-full" 
-                showLineNumbers={true}
-                maxHeight="none"
-              />
+              <p className="mb-4">
+                <a 
+                  href="https://github.com/petrarca/healthrecords-playground/blob/main/developer/src/components/demo/FieldRenderersDemo.tsx#L67-L103" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View Custom Renderer Example
+                </a>
+              </p>
             </div>
           </div>
           

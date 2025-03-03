@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { AddressCard } from '../patient/demographics/AddressCard';
-import { Address } from '../../types/address';
-import { CodeExample } from '../ui/codeExample';
+import React, { useState, useEffect } from 'react';
+import { AddressCard } from '@src/components/patient/demographics/AddressCard';
+import { Address } from '@src/types/address';
 
 interface EventLog {
   type: string;
@@ -36,61 +35,11 @@ export const AddressCardDemo: React.FC = () => {
   const [addresses, setAddresses] = useState<Address[]>(sampleAddresses);
   const [primaryAddress, setPrimaryAddress] = useState<string | undefined>(sampleAddresses[0].id);
   const [events, setEvents] = useState<EventLog[]>([]);
-  const [codeExample, setCodeExample] = useState<string>('');
-
-  // Generate code example
-  const generateCodeExample = useCallback((): string => {
-    return `import { AddressCard } from './components/patient/demographics/AddressCard';
-import { Address } from './types/address';
-
-const MyComponent = () => {
-  const [addresses, setAddresses] = useState<Address[]>(${JSON.stringify(addresses, null, 2)});
-  const [primaryAddress, setPrimaryAddress] = useState<string | undefined>(${JSON.stringify(primaryAddress)});
-
-  const handleCreateAddress = async (address: Address) => {
-    // Add new address to the list
-    setAddresses(prev => [...prev, address]);
-    console.log('Created address:', address);
-  };
-
-  const handleUpdateAddress = async (id: string, address: Address) => {
-    // Update address in the list
-    setAddresses(prev => prev.map(a => a.id === id ? address : a));
-    console.log('Updated address:', address);
-  };
-
-  const handleDeleteAddress = async (id: string) => {
-    // Remove address from the list
-    setAddresses(prev => prev.filter(a => a.id !== id));
-    console.log('Deleted address with id:', id);
-  };
-
-  const handleUpdatePrimaryAddress = (addressId: string | null) => {
-    // Update primary address
-    setPrimaryAddress(addressId || undefined);
-    console.log('Set primary address to:', addressId);
-  };
-
-  return (
-    <AddressCard 
-      addresses={addresses}
-      primaryAddress={primaryAddress}
-      onCreateAddress={handleCreateAddress}
-      onUpdateAddress={handleUpdateAddress}
-      onDeleteAddress={handleDeleteAddress}
-      onUpdatePrimaryAddress={handleUpdatePrimaryAddress}
-    />
-  );
-};`;
-  }, [addresses, primaryAddress]);
 
   useEffect(() => {
     // Log initial state
     logEvent('INITIALIZE', { addresses, primaryAddress });
-    
-    // Update code example when addresses or primaryAddress changes
-    setCodeExample(generateCodeExample());
-  }, [addresses, primaryAddress, generateCodeExample]);
+  }, [addresses, primaryAddress]);
 
   const logEvent = (type: string, message: Record<string, unknown>): void => {
     setEvents(prev => [
@@ -194,13 +143,17 @@ const MyComponent = () => {
 
         <div className="mt-6 bg-white p-4 rounded-lg shadow-sm">
           <h3 className="text-md font-semibold mb-3">Usage Example</h3>
-          <CodeExample 
-            code={codeExample}
-            language="tsx" 
-            className="text-xs w-full" 
-            showLineNumbers={true}
-            maxHeight="none"
-          />
+          <p className="mb-4">
+            View the source code for this demo component on GitHub: 
+            <a 
+              href="https://github.com/petrarca/healthrecords-playground/blob/main/developer/src/components/demo/AddressCardDemo.tsx" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline ml-1"
+            >
+              AddressCardDemo.tsx
+            </a>
+          </p>
         </div>
       </div>
     </div>
