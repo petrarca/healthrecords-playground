@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "clean": "rm -rf node_modules dist .turbo .next .cache .vite coverage build",
+    "clean-all": "pnpm clean && pnpm -C developer clean && pnpm -C experiments/laura clean",
     "prepare": "husky install",
     "generate-medical-events": "tsx scripts/generate_medical_event.ts",
     "generate-sql-test-data": "tsx scripts/generate_sql_test_data.ts"
