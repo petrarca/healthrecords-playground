@@ -11,6 +11,9 @@
     "preview": "vite preview",
     "clean": "rm -rf node_modules dist .turbo .next .cache .vite coverage build",
     "clean-all": "pnpm clean && pnpm -C developer clean && pnpm -C experiments/laura clean",
+    "install-all": "pnpm install && pnpm -C developer install && pnpm -C experiments/laura install",
+    "compile-all": "pnpm compile && pnpm -C developer compile && pnpm -C experiments/laura build",
+    "build-all": "pnpm build && pnpm -C developer build && pnpm -C experiments/laura build",
     "prepare": "husky install",
     "generate-medical-events": "tsx scripts/generate_medical_event.ts",
     "generate-sql-test-data": "tsx scripts/generate_sql_test_data.ts"
