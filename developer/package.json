@@ -1,5 +1,5 @@
 {
-  "name": "thea",
+  "name": "developer",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,23 +7,24 @@
     "dev": "vite",
     "dev:debug": "vite --debug",
     "debug": "vite --debug --force",
-    "build": "tsc && vite build",
+    "compile": "tsc -b",
+    "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-router-dom": "^7.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
-    "@vitejs/plugin-react": "^4.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.0.0",
     "eslint-plugin-react-hooks": "^5.0.0",
@@ -31,7 +32,7 @@
     "postcss": "^8.5.3",
     "prettier": "^3.0.3",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.0.2",
+    "typescript": "^5.7.3",
     "vite": "^4.4.5"
   }
 }

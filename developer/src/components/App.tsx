@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBrowserRouter, RouterProvider, Route, createRoutesFromElements } from 'react-router-dom';
 import { DeveloperPage } from '@components/DeveloperPage';
 import { JsonRendererDemo } from '@components/demo/JsonRendererDemo';
