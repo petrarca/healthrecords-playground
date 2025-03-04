@@ -21,6 +21,9 @@
     }
   ],
   "rewrites": [
+    { "source": "/developer", "destination": "/developer/index.html" },
+    { "source": "/developer/", "destination": "/developer/index.html" },
+    { "source": "/developer/assets/:path*", "destination": "/developer/assets/:path*" },
     { "source": "/developer/:path*", "destination": "/developer/:path*" }
   ],
   "github": {
