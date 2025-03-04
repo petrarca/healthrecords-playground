@@ -1,0 +1,27 @@
+{
+    "buildCommand": "pnpm build",
+    "outputDirectory": "dist",
+    "rewrites": [
+      { "source": "/developer/(.*)", "destination": "/developer/$1" }
+    ],
+    "builds": [
+      { 
+        "src": "/package.json",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "dist"
+        }
+      },
+      { 
+        "src": "developer/package.json",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "developer/dist"
+        }
+      }
+    ],
+    "github": {
+      "silent": true,
+      "autoJobCancelation": true
+    },
+   
