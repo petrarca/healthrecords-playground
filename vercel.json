@@ -15,7 +15,7 @@
       "src": "developer/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "buildCommand": "cd developer && pnpm install && pnpm build && cd .. && mkdir -p dist/developer && cp -r developer/dist/* dist/developer/",
+        "buildCommand": "cd developer && pnpm install && NODE_ENV=production pnpm build && cd .. && mkdir -p dist/developer && cp -r developer/dist/* dist/developer/",
         "outputDirectory": "dist"
       }
     }

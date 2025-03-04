@@ -8,7 +8,7 @@ export default defineConfig({
     react()
   ],
   root: path.resolve(__dirname),
-  base: './',
+  base: process.env.NODE_ENV === 'production' ? '/developer/' : './',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
