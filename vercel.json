@@ -1,7 +1,25 @@
 {
   "version": 2,
-  "buildCommand": "pnpm build && cd developer && pnpm install && pnpm build && cd .. && mkdir -p dist/developer && cp -r developer/dist/* dist/developer/",
+  "installCommand": "pnpm install",
   "outputDirectory": "dist",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "pnpm build",
+        "outputDirectory": "dist"
+      }
+    },
+    {
+      "src": "developer/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "cd developer && pnpm install && pnpm build && cd .. && mkdir -p dist/developer && cp -r developer/dist/* dist/developer/",
+        "outputDirectory": "dist/developer"
+      }
+    }
+  ],
   "rewrites": [
     { "source": "/developer/:path*", "destination": "/developer/:path*" }
   ],
