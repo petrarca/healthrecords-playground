@@ -17,7 +17,7 @@ interface AddressCardProps {
 
 export const AddressCard: React.FC<AddressCardProps> = ({
   addresses = [],
-  primaryAddress,
+  primaryAddress = undefined,
   onCreateAddress,
   onUpdateAddress,
   onDeleteAddress,
