@@ -7,7 +7,7 @@ export default defineConfig({
         react()
     ],
     root: path.resolve(__dirname),
-    base: './',
+    base: './developer',
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),

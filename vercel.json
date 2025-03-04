@@ -10,7 +10,20 @@
         "buildCommand": "pnpm build",
         "outputDirectory": "dist"
       }
+    },
+    {
+      "src": "developer/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "cd developer && pnpm install && NODE_ENV=production pnpm build && cd .. && mkdir -p dist/developer && cp -r developer/dist/* dist/developer/",
+        "outputDirectory": "dist"
+      }
     }
+  ],
+  "rewrites": [
+    { "source": "/developer", "destination": "/developer/index.html" },
+    { "source": "/developer/assets/:path*", "destination": "/developer/assets/:path*" },
+    { "source": "/developer/:path*", "destination": "/developer/index.html" }
   ],
   "github": {
     "silent": true,
