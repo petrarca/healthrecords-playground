@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "pnpm build && cd developer && pnpm build && cd .. && mkdir -p dist/developer && cp -r developer/dist/* dist/developer/",
+  "buildCommand": "pnpm build && cd developer && pnpm install && pnpm build && cd .. && mkdir -p dist/developer && cp -r developer/dist/* dist/developer/",
   "outputDirectory": "dist",
   "rewrites": [
     { "source": "/developer/:path*", "destination": "/developer/:path*" }
