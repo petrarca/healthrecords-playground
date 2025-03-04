@@ -16,7 +16,7 @@
       "use": "@vercel/static-build",
       "config": {
         "buildCommand": "cd developer && pnpm install && pnpm build && cd .. && mkdir -p dist/developer && cp -r developer/dist/* dist/developer/",
-        "outputDirectory": "dist/developer"
+        "outputDirectory": "dist"
       }
     }
   ],
