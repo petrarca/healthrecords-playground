@@ -1,8 +1,9 @@
 {
-    "buildCommand": "pnpm build",
+    "version": 2,
+    "buildCommand": "pnpm build-all",
     "outputDirectory": "dist",
     "rewrites": [
-      { "source": "/developer/(.*)", "destination": "/developer/$1" }
+      { "source": "/developer/(.*)", "destination": "/developer/dist/$1" }
     ],
     "builds": [
       { 
