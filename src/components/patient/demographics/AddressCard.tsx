@@ -21,7 +21,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
   onCreateAddress,
   onUpdateAddress,
   onDeleteAddress,
-  onUpdatePrimaryAddress
+  onUpdatePrimaryAddress = undefined
 }) => {
   const [editingAddressId, setEditingAddressId] = React.useState<string | null>(null);
   const [editedAddresses, setEditedAddresses] = React.useState<Address[]>(addresses);
