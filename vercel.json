@@ -1,28 +1,12 @@
 {
-    "version": 2,
-    "buildCommand": "pnpm build-all",
-    "outputDirectory": "dist",
-    "rewrites": [
-      { "source": "/developer/(.*)", "destination": "/developer/dist/$1" }
-    ],
-    "builds": [
-      { 
-        "src": "/package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "dist"
-        }
-      },
-      { 
-        "src": "developer/package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "developer/dist"
-        }
-      }
-    ],
-    "github": {
-      "silent": true,
-      "autoJobCancelation": true
-    }
+  "version": 2,
+  "buildCommand": "pnpm build && cd developer && pnpm build && cd .. && mkdir -p dist/developer && cp -r developer/dist/* dist/developer/",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/developer/:path*", "destination": "/developer/:path*" }
+  ],
+  "github": {
+    "silent": true,
+    "autoJobCancelation": true
+  }
 }
