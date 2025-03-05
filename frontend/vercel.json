@@ -2,17 +2,5 @@
   "framework": "vite",
   "buildCommand": "pnpm install && pnpm build",
   "installCommand": "pnpm install",
-  "outputDirectory": "dist",
-  "routes": [
-    {
-      "src": "/assets/(.*)",
-      "headers": { "cache-control": "public, max-age=31536000, immutable" },
-      "continue": true
-    },
-    {
-      "src": "/(.*)",
-      "headers": { "cache-control": "public, max-age=0, must-revalidate" },
-      "dest": "/index.html"
-    }
-  ]
+  "outputDirectory": "dist"
 }
