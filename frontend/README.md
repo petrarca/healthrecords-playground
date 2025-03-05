@@ -167,31 +167,31 @@ export BUILD_TARGET=developer
 ./build.sh
 ```
 
+### Optimizing CI/CD with Selective Builds
+
+The `build.sh` script includes built-in optimizations to selectively build only when relevant files have changed. It automatically checks the git history to determine if a build is necessary based on the build type:
+
+```bash
+# Will only build if frontend files have changed (excluding developer and experiments)
+./build.sh frontend
+
+# Will only build if frontend or developer files have changed (excluding experiments)
+./build.sh developer
+```
+
+If no relevant changes are detected for the specified build type, the script will exit early with a message indicating why the build was skipped. This optimization helps reduce unnecessary builds in CI/CD pipelines.
+
 ### Vercel Deployment Configuration
 
 For Vercel deployments, the build configuration is already set up in the `vercel.json` files. The build script is configured to:
 
 1. Install all dependencies
-2. Build the appropriate application(s)
+2. Build the appropriate application(s) only if necessary
 3. Move the build output to the expected location (`./frontend/dist`)
 
 The `vercel.json` configuration specifies `"outputDirectory": "dist"`, which means Vercel will look for the build output in the `./frontend/dist` directory. This is consistent with where the `build.sh` script places the output for both the frontend app and developer portal.
 
 For Vercel projects deploying the developer portal, simply set `BUILD_TARGET=developer` in the project environment variables.
-
-### Optimizing CI/CD with Selective Builds
-
-To optimize CI/CD pipelines, you can use the `ignore-build.sh` script to selectively build only when relevant files have changed:
-
-```bash
-# Check if frontend files have changed (excluding developer and experiments)
-./ignore-build.sh frontend
-
-# Check if frontend or developer files have changed (excluding experiments)
-./ignore-build.sh developer
-```
-
-The script returns exit code 1 if a build should proceed, and exit code 0 if the build can be skipped.
 
 ### Example GitHub Actions Workflow
 
@@ -210,7 +210,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 2  # Need history for ignore-build.sh
+          fetch-depth: 2  # Need history for build.sh to check changes
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -222,28 +222,12 @@ jobs:
         with:
           version: 8
 
-      - name: Check if frontend build is needed
-        id: check-frontend
-        run: |
-          cd frontend
-          ./ignore-build.sh frontend
-          echo "::set-output name=should_build::$?"
-
       - name: Build frontend
-        if: steps.check-frontend.outputs.should_build == '1'
         run: |
           cd frontend
           ./build.sh frontend
 
-      - name: Check if developer build is needed
-        id: check-developer
-        run: |
-          cd frontend
-          ./ignore-build.sh developer
-          echo "::set-output name=should_build::$?"
-
       - name: Build developer portal
-        if: steps.check-developer.outputs.should_build == '1'
         run: |
           cd frontend
           ./build.sh developer

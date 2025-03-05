@@ -4,7 +4,6 @@ echo "---- Start building using built script"
 
 # Print basic environment info
 echo "Current directory: $(pwd)"
-echo "Directory contents: $(ls -la)"
 
 # Check for specific build target
 echo "Build target: $BUILD_TARGET"
@@ -24,6 +23,49 @@ if [ -z "$BUILD_TYPE" ] && [ ! -z "$BUILD_TARGET" ]; then
 fi
 
 echo "Building with type: ${BUILD_TYPE:-default}"
+
+# Get the list of changed files from the latest commit
+# Only if we're in a git repository
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+
+  echo "Changed files:"
+  echo $CHANGED_FILES
+  echo "--- end of changed files"
+  
+  # Check if we should skip the build based on changed files
+  if [ "$BUILD_TYPE" = "frontend" ]; then
+    # For frontend build, check if there are changes in frontend excluding developer and experiments
+    if ! echo "$CHANGED_FILES" | grep -v "^frontend/developer/" | grep -v "^frontend/experiments/" | grep "^frontend/" | grep -q .; then
+      # No relevant changes for frontend build, skip the build
+      echo " No changes in frontend (excluding developer and experiments), skipping build"
+      exit 0
+    else
+      echo " Changes detected in frontend (excluding developer and experiments), proceeding with build"
+    fi
+  elif [ "$BUILD_TYPE" = "developer" ]; then
+    # For developer build, check if there are changes in frontend or developer (excluding experiments)
+    if ! echo "$CHANGED_FILES" | grep -v "^frontend/experiments/" | grep "^frontend/" | grep -q .; then
+      # No relevant changes for developer build, skip the build
+      echo " No changes in frontend or developer (excluding experiments), skipping build"
+      exit 0
+    else
+      echo " Changes detected in frontend or developer (excluding experiments), proceeding with build"
+    fi
+  else
+    # Default behavior (no argument or unknown argument)
+    # Check if there are any changes outside the developer or experiments directories
+    if ! echo "$CHANGED_FILES" | grep -v "^frontend/developer/" | grep -v "^frontend/experiments/" | grep -q .; then
+      # All changes are within developer or experiments directories, skip the build
+      echo " Changes only in developer and/or experiments directories, skipping build"
+      exit 0
+    else
+      echo " Changes detected outside the developer and experiments directories, proceeding with build"
+    fi
+  fi
+else
+  echo " Not in a git repository or unable to determine changes, proceeding with full build"
+fi
 
 # Install dependencies
 pnpm install
