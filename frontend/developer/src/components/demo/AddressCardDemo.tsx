@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { AddressCard } from '@src/components/patient/demographics/AddressCard';
-import { Address } from '@src/types/address';
+import { AddressCard } from '@petrarca-sonnet/frontend/src/components/patient/demographics/AddressCard';
+import { Address } from '@petrarca-sonnet/frontend/src/types';
 
 interface EventLog {
   type: string;

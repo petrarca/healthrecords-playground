@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { QuantityInput } from '@src/components/ui/quantityInput';
-import { FieldMetaData, QuantityValue } from '@src/types/medicalRecord';
+import { QuantityInput } from '@petrarca-sonnet/frontend/src/components/ui/quantityInput';
+import { FieldMetaData, QuantityValue } from '@petrarca-sonnet/frontend/src/types';
 
 interface EventLog {
   type: string;

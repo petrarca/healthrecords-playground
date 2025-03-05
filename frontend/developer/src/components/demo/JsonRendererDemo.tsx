@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { JsonDisplay } from '@src/components/ui/jsonRenderer';
+import { JsonDisplay } from '@petrarca-sonnet/frontend/src/components/ui/jsonRenderer';
 
 // Sample JSON data for demonstration
 const sampleData = {
@@ -145,13 +145,12 @@ export const JsonRendererDemo: React.FC = () => {
     }
   };
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', { 
-      hour12: false, 
-      hour: '2-digit', 
+  const formatTimestamp = (timestamp: number): string => {
+    return new Date(timestamp).toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      fractionalSecondDigits: 3
+      hour12: false
     });
   };
 
@@ -328,7 +327,7 @@ export const JsonRendererDemo: React.FC = () => {
                   <div key={index} className="text-xs border-b pb-2 mb-2 last:border-0">
                     <div className="flex justify-between">
                       <span className="font-medium">{log.type}</span>
-                      <span className="text-gray-500">{formatTime(log.timestamp)}</span>
+                      <span className="text-gray-500">{formatTimestamp(log.timestamp.getTime())}</span>
                     </div>
                     <pre className="mt-1 text-gray-600 whitespace-pre-wrap">
                       {typeof log.message === 'string' ? log.message : JSON.stringify(log.message, null, 2)}

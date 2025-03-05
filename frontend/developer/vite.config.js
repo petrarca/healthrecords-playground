@@ -13,13 +13,26 @@ export default defineConfig({
     base: process.env.NODE_ENV === 'production' ? '/developer/' : './',
     resolve: {
         alias: {
+            // Local paths
             '@': path.resolve(__dirname, './src'),
             '@components': path.resolve(__dirname, './src/components'),
             '@services': path.resolve(__dirname, './src/services'),
             '@styles': path.resolve(__dirname, './src/styles'),
             '@types': path.resolve(__dirname, './src/types'),
-            '@src': path.resolve(__dirname, '../src'),
+            
+            // Frontend package reference
+            '@petrarca-sonnet/frontend': path.resolve(__dirname, '../'),
+            '@src': path.resolve(__dirname, 'node_modules/@petrarca-sonnet/frontend/src'),
         },
+    },
+    build: {
+        rollupOptions: {
+            external: [
+                '@petrarca-sonnet/frontend',
+                '@petrarca-sonnet/frontend/components/*',
+                '@petrarca-sonnet/frontend/types/*'
+            ]
+        }
     },
     server: {
         host: '0.0.0.0', // Listen on all addresses

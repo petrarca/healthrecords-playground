@@ -9,18 +9,16 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
     "isolatedModules": true,
-    "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-    "resolveJsonModule": true,
 
     /* Linting */
-    "strict": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
 
     /* Path aliases */
     "baseUrl": ".",
@@ -30,10 +28,10 @@
       "@services/*": ["./src/services/*"],
       "@styles/*": ["./src/styles/*"],
       "@types/*": ["./src/types/*"],
-      "@src/*": ["../src/*"]
+      "@petrarca-sonnet/frontend/*": ["../src/*"],
+      "@petrarca-sonnet/frontend/src/*": ["../src/*"]
     }
   },
-  "include": ["src", "../src"],
-  "exclude": ["**/node_modules", "**/.*/"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src"],
+  "exclude": ["**/node_modules", "**/.*/"]
 }

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { FieldRenderer } from '@src/components/ui/fieldRenderers';
-import { FieldMetaData } from '@src/types/medicalRecord';
+import React from 'react';
+import { FieldRenderer } from '@petrarca-sonnet/frontend/src/components/ui/fieldRenderers';
+import { FieldMetaData } from '@petrarca-sonnet/frontend/src/types';
 
 interface EventLog {
   type: string;
@@ -55,14 +55,14 @@ const jsonData = {
  * Demo component for showcasing field renderers
  */
 export const FieldRenderersDemo: React.FC = () => {
-  const [selectedRenderer, setSelectedRenderer] = useState<string>('labComponents');
-  const [parsedData, setParsedData] = useState<Record<string, unknown>>(labComponentsData as unknown as Record<string, unknown>);
-  const [customData, setCustomData] = useState<string>(JSON.stringify(labComponentsData, null, 2));
-  const [isValidJson, setIsValidJson] = useState<boolean>(true);
-  const [events, setEvents] = useState<EventLog[]>([]);
+  const [selectedRenderer, setSelectedRenderer] = React.useState<string>('labComponents');
+  const [parsedData, setParsedData] = React.useState<Record<string, unknown>>(labComponentsData as unknown as Record<string, unknown>);
+  const [customData, setCustomData] = React.useState<string>(JSON.stringify(labComponentsData, null, 2));
+  const [isValidJson, setIsValidJson] = React.useState<boolean>(true);
+  const [events, setEvents] = React.useState<EventLog[]>([]);
 
   // Sample field metadata
-  const fieldMetadata = useMemo<Record<string, FieldMetaData>>(() => ({
+  const fieldMetadata = React.useMemo<Record<string, FieldMetaData>>(() => ({
     'labComponents': {
       label: 'Lab Components',
       description: 'Lab test results',
@@ -77,7 +77,7 @@ export const FieldRenderersDemo: React.FC = () => {
     }
   }), []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     // Log initial state
     logEvent('INITIALIZE', {
       renderer: selectedRenderer,
@@ -134,13 +134,12 @@ export const FieldRenderersDemo: React.FC = () => {
     }
   };
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', { 
-      hour12: false, 
-      hour: '2-digit', 
+  const formatTimestamp = (timestamp: number): string => {
+    return new Date(timestamp).toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      fractionalSecondDigits: 3
+      hour12: false
     });
   };
 
@@ -330,7 +329,7 @@ export const FieldRenderersDemo: React.FC = () => {
                   <div key={index} className="text-xs border-b pb-2 mb-2 last:border-0">
                     <div className="flex justify-between">
                       <span className="font-medium">{log.type}</span>
-                      <span className="text-gray-500">{formatTime(log.timestamp)}</span>
+                      <span className="text-gray-500">{formatTimestamp(log.timestamp.getTime())}</span>
                     </div>
                     <pre className="mt-1 text-gray-600 whitespace-pre-wrap">
                       {typeof log.message === 'string' ? log.message : JSON.stringify(log.message, null, 2)}

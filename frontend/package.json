@@ -1,8 +1,14 @@
 {
-  "name": "tailwind-playground",
+  "name": "@petrarca-sonnet/frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./src/*": "./src/*",
+    "./components/*": "./src/components/*",
+    "./types/*": "./src/types/*"
+  },
   "scripts": {
     "dev": "vite",
     "compile": "tsc -b",
@@ -55,6 +61,9 @@
     "vite": "^6.1.0"
   },
   "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ],
     "onlyBuiltDependencies": [
       "esbuild"
     ]

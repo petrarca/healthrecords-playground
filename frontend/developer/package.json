@@ -1,5 +1,5 @@
 {
-  "name": "developer",
+  "name": "@petrarca-sonnet/developer",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,11 +10,12 @@
     "compile": "tsc -b",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "clean": "rm -rf node_modules dist .vite .cache coverage"
   },
   "dependencies": {
+    "@petrarca-sonnet/frontend": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.2.0",
@@ -35,13 +36,5 @@
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3",
     "vite": "^6.1.0"
-  },
-  "pnpm": {
-    "ignoredBuiltDependencies": [
-      "esbuild"
-    ],
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
   }
 }

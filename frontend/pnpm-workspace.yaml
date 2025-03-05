@@ -1,0 +1,3 @@
+packages:
+  - '.'  # The root frontend package
+  - 'developer'
