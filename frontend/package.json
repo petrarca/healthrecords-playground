@@ -1,7 +1,7 @@
 {
   "name": "@petrarca-sonnet/frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
@@ -12,7 +12,8 @@
   "scripts": {
     "dev": "vite",
     "compile": "tsc -b",
-    "build": "tsc -b && vite build",
+    "generate-build-metadata": "tsx scripts/generate-build-metadata.ts",
+    "build": "npm run generate-build-metadata && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "clean": "rm -rf node_modules dist .turbo .next .cache .vite coverage build",

@@ -6,6 +6,7 @@ import { Assistant } from './Assistant';
 import { ContextDisplay } from './ContextDisplay';
 import { ConnectionStatus } from './ConnectionStatus';
 import { ShellContext } from '../context/ShellContext';
+import { fetchBuildMetadata, getBuildMetadata } from '../utils/buildMetadata';
 import '../styles/ipad-fixes.css';
 
 interface ShellProps {
@@ -16,6 +17,7 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [showContextDisplay, setShowContextDisplay] = useState(true);
+  const [buildMetadata, setBuildMetadata] = useState(getBuildMetadata());
 
   const handleSearchResult = (result: SearchResult) => {
     navigationService.navigateTo(result.type, result.id);
@@ -45,6 +47,13 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
+  }, []);
+
+  // Fetch build metadata when component mounts
+  useEffect(() => {
+    fetchBuildMetadata().then(metadata => {
+      setBuildMetadata(metadata);
+    });
   }, []);
 
   // Memoize the context value to prevent unnecessary re-renders
@@ -86,6 +95,11 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
         <div className="max-w-[1600px] mx-auto w-full flex justify-between items-center">
           <div className="text-sm text-gray-600">
             &copy; Petrarca Labs 2025
+            <span className="ml-3 text-xs text-gray-400">
+              {buildMetadata.buildTimestamp 
+                ? `v${buildMetadata.version} (${buildMetadata.buildTimestamp})` 
+                : `v${buildMetadata.version}`}
+            </span>
           </div>
           <div className="flex items-center space-x-4">
             <a 

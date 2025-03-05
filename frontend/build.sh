@@ -47,7 +47,16 @@ if [ "$BUILD_TYPE" = "developer" ]; then
   echo "Developer app build completed"
 elif [ "$BUILD_TYPE" = "frontend" ] || [ -z "$BUILD_TYPE" ]; then
   echo "Building frontend app only..."
-  # Just build the frontend
+  
+  # Generate build metadata before building
+  echo "Generating build metadata..."
+  
+  # Set production environment for build metadata
+  export NODE_ENV=production
+  
+  pnpm run generate-build-metadata
+  
+  # Build the frontend
   pnpm build
   echo "Frontend build completed"
 fi

@@ -110,6 +110,35 @@ Visit the demo routes (`#/demo/json-renderer` and `#/demo/field-renderers`) to s
 
 The frontend repository is structured as a monorepo containing both the main frontend application and a developer portal. To facilitate CI/CD pipelines, we provide a unified build script that can build either or both applications.
 
+### Build Metadata
+
+The application includes build metadata that is displayed in the footer of the application. This metadata includes:
+
+- **Version**: Extracted from the `version` field in `package.json`
+- **Build Timestamp**: 
+  - For production builds: The date and time when the application was built (in UTC format)
+  - For development builds: The date and time with a "Development build" suffix
+  - If metadata file is missing: Only "vunknown" is displayed
+
+The build metadata is generated during the build process by the `generate-build-metadata.ts` script (written in TypeScript), which creates a `build-metadata.json` file in the `public` directory. This file is then loaded by the application at runtime.
+
+To manually generate the build metadata:
+
+```bash
+# Generate build metadata for development
+pnpm run generate-build-metadata
+
+# Generate build metadata for production
+NODE_ENV=production pnpm run generate-build-metadata
+```
+
+The metadata is automatically generated when running the build command:
+
+```bash
+# Build the application (includes generating metadata with production timestamp)
+pnpm run build
+```
+
 ### Build Script Usage
 
 The `build.sh` script in the root of the frontend directory can be used to build the main frontend app, the developer portal, or both:
@@ -295,4 +324,3 @@ frontend/
 │   ├── types/           # TypeScript type definitions
 │   └── utils/           # Utility functions
 └── vite.config.ts       # Vite configuration
-```
