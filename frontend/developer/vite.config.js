@@ -4,7 +4,10 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        react()
+        react({
+            // Enable React 19 features
+            include: '**/*.{jsx,tsx}',
+        })
     ],
     root: path.resolve(__dirname),
     base: process.env.NODE_ENV === 'production' ? '/developer/' : './',
