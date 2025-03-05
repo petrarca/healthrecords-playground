@@ -1,7 +1,7 @@
 {
   "framework": "vite",
   "buildCommand": "pnpm build",
-  "installCommand": "pnpm install",
+  "installCommand": "cd frontend pnpm install",
   "outputDirectory": "dist",
   "ignoreCommand": "bash ./ignore-build.sh",
   "routes": [

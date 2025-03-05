@@ -1,9 +1,0 @@
-{
-  "buildCommand": "cd frontend && pnpm install && cd developer && pnpm install && NODE_ENV=production pnpm build",
-  "outputDirectory": "frontend/developer/dist",
-  "rewrites": [
-    { "source": "/developer", "destination": "/developer/index.html" },
-    { "source": "/developer/", "destination": "/developer/index.html" },
-    { "source": "/developer/:path*", "destination": "/developer/:path*" }
-  ]
-}
