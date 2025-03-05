@@ -106,6 +106,122 @@ A modular system for rendering different types of medical data:
 
 Visit the demo routes (`#/demo/json-renderer` and `#/demo/field-renderers`) to see these systems in action.
 
+## CI/CD Pipeline Integration
+
+The frontend repository is structured as a monorepo containing both the main frontend application and a developer portal. To facilitate CI/CD pipelines, we provide a unified build script that can build either or both applications.
+
+### Build Script Usage
+
+The `build.sh` script in the root of the frontend directory can be used to build the main frontend app, the developer portal, or both:
+
+```bash
+# Build just the main frontend app
+./build.sh frontend
+
+# Build the developer portal
+./build.sh developer
+```
+
+If no argument is provided, the script will build only the main frontend app by default.
+
+**Important**: The target output directory for both build types is always `./frontend/dist`. When building the developer portal, the script automatically moves the output from `./frontend/developer/dist` to `./frontend/dist`.
+
+### Automatic Build Type Detection
+
+When running in CI/CD environments, the build script can automatically detect which app to build based on the `BUILD_TARGET` environment variable:
+
+```bash
+# Set the build target
+export BUILD_TARGET=developer
+
+# Run the build script (will detect the target)
+./build.sh
+```
+
+### Vercel Deployment Configuration
+
+For Vercel deployments, the build configuration is already set up in the `vercel.json` files. The build script is configured to:
+
+1. Install all dependencies
+2. Build the appropriate application(s)
+3. Move the build output to the expected location (`./frontend/dist`)
+
+The `vercel.json` configuration specifies `"outputDirectory": "dist"`, which means Vercel will look for the build output in the `./frontend/dist` directory. This is consistent with where the `build.sh` script places the output for both the frontend app and developer portal.
+
+For Vercel projects deploying the developer portal, simply set `BUILD_TARGET=developer` in the project environment variables.
+
+### Optimizing CI/CD with Selective Builds
+
+To optimize CI/CD pipelines, you can use the `ignore-build.sh` script to selectively build only when relevant files have changed:
+
+```bash
+# Check if frontend files have changed (excluding developer and experiments)
+./ignore-build.sh frontend
+
+# Check if frontend or developer files have changed (excluding experiments)
+./ignore-build.sh developer
+```
+
+The script returns exit code 1 if a build should proceed, and exit code 0 if the build can be skipped.
+
+### Example GitHub Actions Workflow
+
+```yaml
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2  # Need history for ignore-build.sh
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Check if frontend build is needed
+        id: check-frontend
+        run: |
+          cd frontend
+          ./ignore-build.sh frontend
+          echo "::set-output name=should_build::$?"
+
+      - name: Build frontend
+        if: steps.check-frontend.outputs.should_build == '1'
+        run: |
+          cd frontend
+          ./build.sh frontend
+
+      - name: Check if developer build is needed
+        id: check-developer
+        run: |
+          cd frontend
+          ./ignore-build.sh developer
+          echo "::set-output name=should_build::$?"
+
+      - name: Build developer portal
+        if: steps.check-developer.outputs.should_build == '1'
+        run: |
+          cd frontend
+          ./build.sh developer
+```
+
+This setup ensures efficient CI/CD pipelines by only building the parts of the application that have changed.
+
 ## Development Setup
 
 ### Installation
