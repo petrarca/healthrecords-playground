@@ -1,6 +1,6 @@
 {
   "framework": "vite",
-  "buildCommand": "pnpm build",
+  "buildCommand": "bash ./build.sh",
   "installCommand": "pnpm install",
   "outputDirectory": "dist",
   "routes": [
