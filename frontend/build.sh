@@ -33,6 +33,10 @@ if [ "$BUILD_TYPE" = "developer" ]; then
   # Build developer app
   cd ./developer
   pnpm install
+  
+  # Set the correct base path for production
+  export NODE_ENV=production
+  
   pnpm build
   cd ..
 

@@ -10,7 +10,7 @@ export default defineConfig({
         })
     ],
     root: path.resolve(__dirname),
-    base: process.env.NODE_ENV === 'production' ? '/developer/' : './',
+    base: process.env.NODE_ENV === 'production' ? '/' : './',
     resolve: {
         alias: {
             // Local paths
