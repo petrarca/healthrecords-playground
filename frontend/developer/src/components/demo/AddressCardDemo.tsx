@@ -36,10 +36,12 @@ export const AddressCardDemo: React.FC = () => {
   const [primaryAddress, setPrimaryAddress] = useState<string | undefined>(sampleAddresses[0].id);
   const [events, setEvents] = useState<EventLog[]>([]);
 
+  // Separate useEffect for initial logging only
   useEffect(() => {
-    // Log initial state
+    // Log initial state only once when component mounts
     logEvent('INITIALIZE', { addresses, primaryAddress });
-  }, [addresses, primaryAddress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const logEvent = (type: string, message: Record<string, unknown>): void => {
     setEvents(prev => [
