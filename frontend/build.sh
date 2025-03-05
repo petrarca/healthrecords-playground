@@ -6,20 +6,19 @@ echo "---- Start building using built script"
 echo "Current directory: $(pwd)"
 echo "Directory contents: $(ls -la)"
 
-# Check for Vercel-specific environment variables
-echo "Vercel project name: $VERCEL_PROJECT_NAME"
-echo "Deployment URL: $VERCEL_URL"
+# Check for specific build target
+echo "Build target: $BUILD_TARGET"
 
 # Get the first argument (build type)
 BUILD_TYPE=$1
 
-# If BUILD_TYPE is not specified, try to determine from VERCEL_PROJECT_NAME
-if [ -z "$BUILD_TYPE" ] && [ ! -z "$VERCEL_PROJECT_NAME" ]; then
-  if [[ "$VERCEL_PROJECT_NAME" == *-developer ]]; then
-    echo "Detected developer build from project name: $VERCEL_PROJECT_NAME"
+# If BUILD_TYPE is not specified, try to determine from BUILD_TARGET
+if [ -z "$BUILD_TYPE" ] && [ ! -z "$BUILD_TARGET" ]; then
+  if [[ "$BUILD_TARGET" == developer ]]; then
+    echo "Detected developer build from project name: $BUILD_TARGET"
     BUILD_TYPE="developer"
   else
-    echo "Detected frontend build from project name: $VERCEL_PROJECT_NAME"
+    echo "Detected frontend build from project name: $BUILD_TARGET"
     BUILD_TYPE="frontend"
   fi
 fi
