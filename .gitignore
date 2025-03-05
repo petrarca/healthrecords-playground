@@ -13,3 +13,5 @@
 
 # Can be re-created by fixtures
 db/test_data.sql
+
+.env.local

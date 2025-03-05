@@ -2,7 +2,9 @@
 
 ## Overview
 
-The Sonnet frontend is a modern electronic health records (EHR) application built with React 19 and TypeScript. It demonstrates state-of-the-art frontend development practices, focusing on modularity, maintainability, and user experience.
+This is the frontend part of the Sonnet application. For a complete overview of the entire Sonnet electronic health records (EHR) and practice management system, please refer to the [main project README](../README.md).
+
+The frontend is built with React 19 and TypeScript, demonstrating state-of-the-art frontend development practices, focusing on modularity, maintainability, and user experience.
 
 The application adheres to accessibility standards through proper implementation of ARIA (Accessible Rich Internet Applications) attributes and patterns, ensuring the interface is usable by people with disabilities who use assistive technologies.
 
