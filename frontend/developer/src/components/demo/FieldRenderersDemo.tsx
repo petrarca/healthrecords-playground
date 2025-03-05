@@ -57,7 +57,9 @@ const jsonData = {
 export const FieldRenderersDemo: React.FC = () => {
   const [selectedRenderer, setSelectedRenderer] = React.useState<string>('labComponents');
   const [parsedData, setParsedData] = React.useState<Record<string, unknown>>(labComponentsData as unknown as Record<string, unknown>);
+  const [previewData, setPreviewData] = React.useState<Record<string, unknown>>(labComponentsData as unknown as Record<string, unknown>);
   const [customData, setCustomData] = React.useState<string>(JSON.stringify(labComponentsData, null, 2));
+  const [hasDataChanged, setHasDataChanged] = React.useState<boolean>(false);
   const [isValidJson, setIsValidJson] = React.useState<boolean>(true);
   const [events, setEvents] = React.useState<EventLog[]>([]);
 
@@ -78,13 +80,14 @@ export const FieldRenderersDemo: React.FC = () => {
   }), []);
 
   React.useEffect(() => {
-    // Log initial state
+    // Log initial state only once when component mounts
     logEvent('INITIALIZE', {
       renderer: selectedRenderer,
       data: parsedData,
       metadata: fieldMetadata[selectedRenderer]
     });
-  }, [selectedRenderer, parsedData, fieldMetadata]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const logEvent = (type: string, message: Record<string, unknown>): void => {
     setEvents(prev => [
@@ -111,7 +114,9 @@ export const FieldRenderersDemo: React.FC = () => {
     const jsonString = JSON.stringify(newData, null, 2);
     setCustomData(jsonString);
     setParsedData(newData as Record<string, unknown>);
+    setPreviewData(newData as Record<string, unknown>);
     setIsValidJson(true);
+    setHasDataChanged(false);
     
     logEvent('RENDERER_CHANGED', { 
       renderer: newRenderer, 
@@ -123,14 +128,28 @@ export const FieldRenderersDemo: React.FC = () => {
   const handleDataChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newData = e.target.value;
     setCustomData(newData);
+    
     try {
-      const parsed = JSON.parse(newData);
-      setParsedData(parsed);
+      JSON.parse(newData);
       setIsValidJson(true);
-      logEvent('DATA_UPDATED', { data: parsed });
-    } catch (error) {
+      // Once data is changed, keep the button enabled
+      setHasDataChanged(true);
+    } catch (_error) {
       setIsValidJson(false);
-      logEvent('DATA_INVALID', { data: newData, error: (error as Error).message });
+    }
+  };
+
+  const handleUpdateData = () => {
+    try {
+      const parsed = JSON.parse(customData);
+      setParsedData(parsed);
+      setPreviewData(parsed);
+      setIsValidJson(true);
+      setHasDataChanged(false);
+      logEvent('DATA_UPDATED', { data: parsed });
+    } catch (_error) {
+      setIsValidJson(false);
+      logEvent('DATA_INVALID', { data: customData, error: (_error as Error).message });
     }
   };
 
@@ -152,7 +171,6 @@ export const FieldRenderersDemo: React.FC = () => {
   };
 
   // Data to render based on selected renderer
-  const renderData = parsedData;
   const currentFieldMeta = fieldMetadata[selectedRenderer];
 
   return (
@@ -241,9 +259,18 @@ export const FieldRenderersDemo: React.FC = () => {
                     value={customData}
                     onChange={handleDataChange}
                   />
-                  {!isValidJson && (
-                    <p className="text-red-500 text-sm mt-1">Invalid JSON format</p>
-                  )}
+                  <div className="mt-2 flex justify-between items-center">
+                    {!isValidJson && (
+                      <p className="text-red-500 text-sm">Invalid JSON format</p>
+                    )}
+                    <button
+                      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300 ml-auto"
+                      onClick={handleUpdateData}
+                      disabled={!isValidJson || !hasDataChanged}
+                    >
+                      Update Data
+                    </button>
+                  </div>
                 </div>
                 
                 <div>
@@ -262,7 +289,7 @@ export const FieldRenderersDemo: React.FC = () => {
                       </div>
                       <div className="p-4">
                         <FieldRenderer
-                          data={renderData}
+                          data={previewData}
                           fieldName={selectedRenderer}
                           fieldMeta={currentFieldMeta}
                           rendererType={currentFieldMeta.rendererType}
