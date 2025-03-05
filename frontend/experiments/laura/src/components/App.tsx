@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from '../../$node_modules/.pnpm/@types+react@18.3.18/$node_modules/@types/react/index.js';
+import React, { useState, useEffect } from 'react';
 import { contextService, Patient, ViewType, useAppContext } from '../services/contextService';
 import ContextDisplay from './ContextDisplay';
 import Chat from './Chat';

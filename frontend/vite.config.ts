@@ -6,9 +6,13 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react(), 
+    react({
+      // Enable React 19 features
+      include: '**/*.{jsx,tsx}',
+    }), 
     tailwindcss()
   ],
+  envDir: path.resolve(__dirname, '..'), // Look for .env files in the parent (root) directory
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

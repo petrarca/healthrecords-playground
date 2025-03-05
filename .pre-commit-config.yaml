@@ -1,0 +1,21 @@
+repos:
+  - repo: local
+    hooks:
+      - id: frontend-commit-lint-compile
+        name: Frontend Linting and compile
+        entry: bash -c 'cd frontend && pnpm lint && pnpm compile'
+        language: system
+        pass_filenames: false
+        #files: ^frontend/
+        files: ^frontend/.*\.(js|jsx|ts|tsx|css|scss)$
+        always_run: true
+        # Only run this hook when files in the frontend directory change
+
+        # Pre-push hooks
+      - id: frontend-push-lint-compile
+        name: Frontend Type Checking
+        entry: bash -c 'cd frontend && pnpm lint && pnpm compile'
+        language: system
+        pass_filenames: false
+        files: ^frontend/
+        stages: [pre-push]

@@ -20,4 +20,9 @@ module.exports = {
       'caughtErrorsIgnorePattern': '^_'
     }],
   },
+  settings: {
+    react: {
+      version: '19.0.0',
+    },
+  },
 }

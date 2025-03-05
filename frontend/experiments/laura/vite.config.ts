@@ -5,24 +5,26 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react()
+    react({
+      // Enable React 19 features
+      include: '**/*.{jsx,tsx}',
+    })
   ],
   root: path.resolve(__dirname),
-  base: process.env.NODE_ENV === 'production' ? '/developer/' : './',
+  base: './',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@components': path.resolve(__dirname, './src/components'),
       '@services': path.resolve(__dirname, './src/services'),
+      '@utils': path.resolve(__dirname, './src/utils'),
       '@styles': path.resolve(__dirname, './src/styles'),
       '@types': path.resolve(__dirname, './src/types'),
-      '@src': path.resolve(__dirname, '../src'),
     },
   },
   server: {
     host: '0.0.0.0', // Listen on all addresses
-    port: 5174,
-    strictPort: true,
+    strictPort: false,
     cors: true,
     allowedHosts: [
       'localhost',
@@ -43,4 +45,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 4173,
   },
+  optimizeDeps: {
+    include: ['@tensorflow/tfjs', '@tensorflow-models/universal-sentence-encoder']
+  }
 })
