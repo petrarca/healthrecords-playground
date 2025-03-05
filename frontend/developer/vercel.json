@@ -3,6 +3,7 @@
   "buildCommand": "pnpm install && pnpm --filter @petrarca-sonnet/developer build",
   "installCommand": "pnpm install",
   "outputDirectory": "developer/dist",
+  "ignoreCommand": "bash ./ignore-build.sh developer",
   "routes": [
     {
       "src": "/favicon.svg",
