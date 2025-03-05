@@ -1,6 +1,6 @@
 {
   "framework": "vite",
-  "buildCommand": "pnpm install && pnpm --filter @petrarca-sonnet/developer build",
+  "buildCommand": "pnpm install && cd developer && pnpm build && mkdir -p ../.vercel/output && echo '{\"version\":2}' > ../.vercel/output/config.json && mkdir -p ../.vercel/output/static && cp -r dist/* ../.vercel/output/static/",
   "installCommand": "cd developer && pnpm install",
   "outputDirectory": "developer/dist",
   "routes": [
