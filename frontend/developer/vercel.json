@@ -1,8 +1,8 @@
 {
   "framework": "vite",
-  "buildCommand": "cd ../.. && pnpm install && pnpm --filter @petrarca-sonnet/developer build",
-  "installCommand": "cd ../.. && pnpm install",
-  "outputDirectory": "dist",
+  "buildCommand": "pnpm install && pnpm --filter @petrarca-sonnet/developer build",
+  "installCommand": "pnpm install",
+  "outputDirectory": "developer/dist",
   "routes": [
     {
       "src": "/favicon.svg",
