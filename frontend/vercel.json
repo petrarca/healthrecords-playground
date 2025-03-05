@@ -3,7 +3,7 @@
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install",
   "outputDirectory": "dist",
-  "ignoreCommand": "./ignore-build.sh",
+  "ignoreCommand": "bash ./ignore-build.sh",
   "routes": [
     {
       "src": "/assets/(.*)\\.js$",
