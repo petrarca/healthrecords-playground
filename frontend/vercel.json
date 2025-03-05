@@ -1,6 +1,26 @@
 {
   "framework": "vite",
-  "buildCommand": "pnpm install && pnpm build",
+  "buildCommand": "pnpm build",
   "installCommand": "pnpm install",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "routes": [
+    {
+      "src": "/assets/(.*)\\.js$",
+      "headers": { 
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-type": "application/javascript; charset=utf-8"
+      },
+      "continue": true
+    },
+    {
+      "src": "/assets/(.*)",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" },
+      "continue": true
+    },
+    {
+      "src": "/(.*)",
+      "headers": { "cache-control": "public, max-age=0, must-revalidate" },
+      "dest": "/index.html"
+    }
+  ]
 }
