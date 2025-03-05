@@ -5,7 +5,6 @@
 The Sonnet Developer Portal provides a comprehensive set of resources for developers working with the Sonnet platform. This portal serves as a centralized location for component documentation, interactive examples, and development resources.
 
 ## Features
-
 ### Component Documentation
 
 The Developer Portal includes detailed documentation for various UI components used throughout the Sonnet application:
