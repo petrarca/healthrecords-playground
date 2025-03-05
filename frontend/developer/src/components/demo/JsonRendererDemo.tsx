@@ -300,7 +300,7 @@ export const JsonRendererDemo: React.FC = () => {
               <p className="mb-4">
                 View the source code for this demo component on GitHub: 
                 <a 
-                  href="https://github.com/petrarca/healthrecords-playground/blob/main/developer/src/components/demo/JsonRendererDemo.tsx" 
+                  href="https://github.com/petrarca/sonnet/blob/main/frontend/developer/src/components/demo/JsonRendererDemo.tsx" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline ml-1"

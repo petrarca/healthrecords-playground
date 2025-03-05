@@ -18,10 +18,10 @@ interface AddressCardProps {
 export const AddressCard: React.FC<AddressCardProps> = ({
   addresses = [],
   primaryAddress = undefined,
-  onCreateAddress,
-  onUpdateAddress,
-  onDeleteAddress,
-  onUpdatePrimaryAddress = undefined
+  onCreateAddress = () => Promise.resolve(),
+  onUpdateAddress = () => Promise.resolve(),
+  onDeleteAddress = () => Promise.resolve(),
+  onUpdatePrimaryAddress = undefined,
 }) => {
   const [editingAddressId, setEditingAddressId] = React.useState<string | null>(null);
   const [editedAddresses, setEditedAddresses] = React.useState<Address[]>(addresses);

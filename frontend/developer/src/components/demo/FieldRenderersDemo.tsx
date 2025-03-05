@@ -284,7 +284,7 @@ export const FieldRenderersDemo: React.FC = () => {
               <p className="mb-4">
                 View the source code for this demo component on GitHub: 
                 <a 
-                  href="https://github.com/petrarca/healthrecords-playground/blob/main/developer/src/components/demo/FieldRenderersDemo.tsx" 
+                  href="https://github.com/petrarca/sonnet/blob/main/frontend/developer/src/components/demo/FieldRenderersDemo.tsx" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline ml-1"
@@ -302,7 +302,7 @@ export const FieldRenderersDemo: React.FC = () => {
               </p>
               <p className="mb-4">
                 <a 
-                  href="https://github.com/petrarca/healthrecords-playground/blob/main/developer/src/components/demo/FieldRenderersDemo.tsx#L67-L103" 
+                  href="https://github.com/petrarca/sonnet/blob/main/frontend/developer/src/components/demo/FieldRenderersDemo.tsx#L67-L103" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
