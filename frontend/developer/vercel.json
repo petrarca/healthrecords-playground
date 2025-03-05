@@ -1,7 +1,7 @@
 {
   "framework": "vite",
-  "buildCommand": "pnpm build",
-  "installCommand": "pnpm install",
+  "buildCommand": "cd ../.. && pnpm install && pnpm --filter @petrarca-sonnet/developer build",
+  "installCommand": "cd ../.. && pnpm install",
   "outputDirectory": "dist",
   "routes": [
     {
@@ -41,30 +41,6 @@
       "headers": { 
         "cache-control": "public, max-age=31536000, immutable",
         "content-type": "image/svg+xml"
-      },
-      "continue": true
-    },
-    {
-      "src": "/assets/(.*)\\.png$",
-      "headers": { 
-        "cache-control": "public, max-age=31536000, immutable",
-        "content-type": "image/png"
-      },
-      "continue": true
-    },
-    {
-      "src": "/assets/(.*)\\.jpg$",
-      "headers": { 
-        "cache-control": "public, max-age=31536000, immutable",
-        "content-type": "image/jpeg"
-      },
-      "continue": true
-    },
-    {
-      "src": "/assets/(.*)\\.woff2$",
-      "headers": { 
-        "cache-control": "public, max-age=31536000, immutable",
-        "content-type": "font/woff2"
       },
       "continue": true
     },
