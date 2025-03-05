@@ -22,15 +22,18 @@ export function extractPersonEntities(text: string): Entity[] {
   
   // Person entity patterns (simplified for demo)
   const personPatterns = [
-    /(?:for|of|from|by|about)\s+([a-z]+\s+[a-z]+)/i,  // "for John Doe"
-    /([a-z]+\s+[a-z]+)'s/i,                           // "John Doe's"
-    /patient\s+([a-z]+\s+[a-z]+)/i,                   // "patient John Doe"
-    /\b(mr\.|mrs\.|ms\.|dr\.)\s+([a-z]+)/i            // "Mr. Smith"
+    /(?:for|of|from|by|about)\s+([a-z]+\s+[a-z]+)/gi,  // "for John Doe"
+    /([a-z]+\s+[a-z]+)'s/gi,                           // "John Doe's"
+    /patient\s+([a-z]+\s+[a-z]+)/gi,                   // "patient John Doe"
+    /\b(mr\.|mrs\.|ms\.|dr\.)\s+([a-z]+)/gi            // "Mr. Smith"
   ];
   
   // Try each person pattern
   for (const pattern of personPatterns) {
-    const match = lowerText.match(pattern);
+    // Reset the pattern's lastIndex to ensure we start from the beginning
+    pattern.lastIndex = 0;
+    
+    const match = pattern.exec(lowerText);
     if (match && match[1]) {
       let value = match[1];
       
@@ -39,7 +42,8 @@ export function extractPersonEntities(text: string): Entity[] {
         value = `${match[1]} ${match[2]}`;
       }
       
-      const startIndex = lowerText.indexOf(value);
+      // Use the actual match indices instead of searching again
+      const startIndex = match.index + match[0].indexOf(match[1]);
       const endIndex = startIndex + value.length;
       
       entities.push({

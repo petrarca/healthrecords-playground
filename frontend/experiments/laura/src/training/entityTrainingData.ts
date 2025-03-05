@@ -3,7 +3,7 @@ import { EntityType } from '../types/intents';
 // Define entity training data
 export const entityTrainingData = [
   // Person entity examples
-  { text: "Show lab results for John Doe", entities: [{ type: EntityType.PERSON, value: "John Doe", startIndex: 20, endIndex: 28, confidence: 1.0 }] },
+  { text: "Show lab results for John Smith", entities: [{ type: EntityType.PERSON, value: "John Smith", startIndex: 20, endIndex: 30, confidence: 1.0 }] },
   { text: "What are Mary Smith's vitals", entities: [{ type: EntityType.PERSON, value: "Mary Smith", startIndex: 9, endIndex: 20, confidence: 1.0 }] },
   { text: "Show allergies for patient James Wilson", entities: [{ type: EntityType.PERSON, value: "James Wilson", startIndex: 26, endIndex: 38, confidence: 1.0 }] },
   { text: "Display medications for Sarah Johnson", entities: [{ type: EntityType.PERSON, value: "Sarah Johnson", startIndex: 24, endIndex: 37, confidence: 1.0 }] },
@@ -32,8 +32,8 @@ export const entityTrainingData = [
   { text: "Show me the recent changes in medication", entities: [{ type: EntityType.TEMPORAL, value: "recent", startIndex: 8, endIndex: 14, confidence: 1.0 }] },
   
   // Mixed entity examples
-  { text: "Show John Doe's lab results from yesterday", entities: [
-    { type: EntityType.PERSON, value: "John Doe", startIndex: 5, endIndex: 13, confidence: 1.0 },
+  { text: "Show John Smith's lab results from yesterday", entities: [
+    { type: EntityType.PERSON, value: "John Smith", startIndex: 5, endIndex: 14, confidence: 1.0 },
     { type: EntityType.TEMPORAL, value: "yesterday", startIndex: 30, endIndex: 39, confidence: 1.0 }
   ]},
   { text: "What were Mary Smith's vitals last week", entities: [

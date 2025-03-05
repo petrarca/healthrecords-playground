@@ -43,7 +43,7 @@ export const intentExamples: Record<string, string[]> = {
     'Patient info',
     'Show patient {patientId}',
     'Tell me about {patientName}',
-    'Show patient John Doe',
+    'Show patient John Smith',
     'Tell me about Mary Smith',
     'Display information for patient James Wilson',
     'Who is the current patient?',

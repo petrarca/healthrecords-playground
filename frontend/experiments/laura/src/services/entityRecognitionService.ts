@@ -572,13 +572,28 @@ export async function extractEntitiesWithModel(text: string, context: ContextSta
  */
 export async function analyzeText(text: string, context: ContextState): Promise<EntityExtractionResult> {
   try {
+    console.debug('Entity recognition: Attempting to use model-based approach first');
     // Try to use the model-based approach
-    return await extractEntitiesWithModel(text, context);
+    const modelResult = await extractEntitiesWithModel(text, context);
+    console.debug('Entity recognition: Model-based result', modelResult);
+    
+    // If the model didn't find any entities, try the rule-based approach as a fallback
+    if (modelResult.entities.length === 0) {
+      console.debug('Entity recognition: Model found no entities, trying rule-based approach');
+      const ruleResult = extractEntities(text, context);
+      console.debug('Entity recognition: Rule-based result', ruleResult);
+      return ruleResult;
+    }
+    
+    return modelResult;
   } catch (error) {
     console.error('Entity extraction error:', error);
     
     // Fall back to rule-based approach
-    return extractEntities(text, context);
+    console.debug('Entity recognition: Error occurred, falling back to rule-based approach');
+    const fallbackResult = extractEntities(text, context);
+    console.debug('Entity recognition: Fallback result', fallbackResult);
+    return fallbackResult;
   }
 }
 

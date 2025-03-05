@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../services/contextService';
 import { intents } from '../utils/intentUtils';
 import { setStatusCallback, getLoadingStatus, getLastIntentResult } from '../services/tensorflowService';
+import { IntentMatch, Entity } from '../types/intents';
 
 /**
  * IntentExplorer component for exploring and testing intents
@@ -11,7 +12,12 @@ const IntentExplorer: React.FC = () => {
   const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
   const [isModelLoaded, setIsModelLoaded] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState({ message: "Not started", percentage: 0 });
-  const [lastResult, setLastResult] = useState<any>(null);
+  const [lastResult, setLastResult] = useState<{
+    text: string;
+    intents: IntentMatch[];
+    topIntent: IntentMatch | null;
+    entities: Entity[];
+  } | null>(null);
 
   // Set up status callback and check model status
   useEffect(() => {
@@ -104,6 +110,11 @@ const IntentExplorer: React.FC = () => {
     });
   };
 
+  // Format confidence score as percentage
+  const formatConfidence = (score: number): string => {
+    return (score * 100).toFixed(1) + '%';
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md p-2 h-full flex flex-col text-xs">
       {/* Header */}
@@ -132,9 +143,57 @@ const IntentExplorer: React.FC = () => {
           <h3 className="font-medium mb-2 text-xs">Last Intent Recognition</h3>
           <div className="border border-gray-200 rounded-lg p-3 overflow-y-auto flex-1" style={{ height: 'calc(100vh - 250px)' }}>
             {lastResult ? (
-              <pre className="text-xs overflow-auto whitespace-pre-wrap">
-                {JSON.stringify(lastResult, null, 2)}
-              </pre>
+              <div>
+                <h4 className="font-medium text-sm text-gray-500">Text</h4>
+                <p className="text-gray-800">{lastResult.text}</p>
+                
+                <h4 className="font-medium text-sm text-gray-500">Top Intent</h4>
+                {lastResult.topIntent ? (
+                  <div className="flex items-center">
+                    <span className="font-medium">{lastResult.topIntent.intent}</span>
+                    <span className="ml-2 text-sm text-gray-600">
+                      ({formatConfidence(lastResult.topIntent.combinedScore)})
+                    </span>
+                  </div>
+                ) : (
+                  <p className="text-gray-600">No intent detected</p>
+                )}
+                
+                <h4 className="font-medium text-sm text-gray-500">Entities</h4>
+                {lastResult.entities.length > 0 ? (
+                  <ul className="list-disc list-inside">
+                    {lastResult.entities.map((entity, index) => (
+                      <li key={index} className="text-gray-800">
+                        <span className="font-medium">{entity.type}</span>: {entity.value}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-600">No entities detected</p>
+                )}
+                
+                <h4 className="font-medium text-sm text-gray-500">All Intents</h4>
+                <table className="min-w-full text-sm">
+                  <thead>
+                    <tr>
+                      <th className="text-left py-1">Intent</th>
+                      <th className="text-left py-1">Score</th>
+                      <th className="text-left py-1">Context</th>
+                      <th className="text-left py-1">Combined</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {lastResult.intents.map((intent, index) => (
+                      <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
+                        <td className="py-1">{intent.intent}</td>
+                        <td className="py-1">{formatConfidence(intent.score)}</td>
+                        <td className="py-1">{formatConfidence(intent.contextRelevance)}</td>
+                        <td className="py-1">{formatConfidence(intent.combinedScore)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             ) : (
               <div className="flex items-center justify-center h-full text-gray-500">
                 No recognition results yet. Try using the chat to test intents.

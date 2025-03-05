@@ -1,3 +1,4 @@
 packages:
   - '.'  # The root frontend package
   - 'developer'
+  - 'experiments/laura'

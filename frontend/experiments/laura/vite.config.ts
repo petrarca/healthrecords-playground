@@ -11,7 +11,7 @@ export default defineConfig({
     })
   ],
   root: path.resolve(__dirname),
-  base: './',
+  base: process.env.NODE_ENV === 'production' ? '/experiments/laura/' : './',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -20,11 +20,14 @@ export default defineConfig({
       '@utils': path.resolve(__dirname, './src/utils'),
       '@styles': path.resolve(__dirname, './src/styles'),
       '@types': path.resolve(__dirname, './src/types'),
+      '@petrarca-sonnet/frontend': path.resolve(__dirname, '../../src'),
+      '@petrarca-sonnet/frontend/src': path.resolve(__dirname, '../../src'),
     },
   },
   server: {
     host: '0.0.0.0', // Listen on all addresses
-    strictPort: false,
+    port: 5175,
+    strictPort: true,
     cors: true,
     allowedHosts: [
       'localhost',
@@ -33,17 +36,17 @@ export default defineConfig({
     hmr: {
       // Allow any host ending with .local to connect for HMR
       host: 'localhost',
-      clientPort: 5174,
+      clientPort: 5175,
       protocol: 'ws',
     },
     watch: {
       usePolling: true,
       ignored: ['**/node_modules/**']
-    },
+    }
   },
   preview: {
     host: '0.0.0.0',
-    port: 4173,
+    port: 4175,
   },
   optimizeDeps: {
     include: ['@tensorflow/tfjs', '@tensorflow-models/universal-sentence-encoder']

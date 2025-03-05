@@ -1,11 +1,10 @@
 // Export all services
 export * from './contextService';
 export * from './tensorflowService';
-export * from './tensorflowDebugService';
+export { initTensorFlowDebugService } from './tensorflowDebugService';
 export { 
   analyzeText,
   checkEntityModelStatus,
   extractEntities,
-  initializeEntityService,
-  setStatusCallback as setEntityStatusCallback
+  loadEntityModel
 } from './entityRecognitionService';

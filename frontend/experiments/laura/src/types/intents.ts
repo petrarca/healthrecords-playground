@@ -24,3 +24,11 @@ export interface Intent {
     requiresRecord?: boolean;
   };
 }
+
+// Define intent match interface for recognition results
+export interface IntentMatch {
+  intent: string;
+  score: number;
+  contextRelevance: number;
+  combinedScore: number;
+}

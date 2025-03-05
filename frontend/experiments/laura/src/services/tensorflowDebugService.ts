@@ -1,22 +1,21 @@
-// TensorFlow Debug Service
-// This service synchronizes TensorFlow debug mode with the application context
-
+/**
+ * TensorFlow Debug Service
+ */
 import * as tf from '@tensorflow/tfjs';
 import { contextService } from './contextService';
 import { reloadModel } from './tensorflowService';
 
 /**
  * Initialize the TensorFlow debug service
- * This subscribes to context changes and updates TensorFlow debug mode accordingly
+ * @returns Cleanup function to unsubscribe
  */
 export function initTensorFlowDebugService() {
   console.log('Initializing TensorFlow debug service');
   
   // Set initial debug mode based on context
   const initialDebugMode = contextService.getState().debugMode;
-
-  if(initialDebugMode) {
-    tf.enableDebugMode();
+  if (initialDebugMode) {
+    tf.env().set('DEBUG', true);
   }
 
   tf.env().set('DEBUG', initialDebugMode);
@@ -24,18 +23,14 @@ export function initTensorFlowDebugService() {
   
   // Subscribe to context changes
   const subscription = contextService.subscribe(state => {
-    // Update TensorFlow debug mode based on context
-    const debugMode = state.debugMode;
-
-    // No change in debug mode of Tensorflow
-    if(tensorFlowDebugMode() == debugMode) {
-      return 
-    }
-    
     try {
-      // Enable or disable TensorFlow debug mode
-      if(debugMode)
-        tf.enableDebugMode();
+      const debugMode = state.debugMode;
+      
+      // Skip if debug mode hasn't changed
+      const currentDebugMode = tf.ENV.getBool('DEBUG');
+      if (debugMode === currentDebugMode) {
+        return;
+      }
 
       tf.env().set('DEBUG', debugMode);
       
@@ -43,18 +38,18 @@ export function initTensorFlowDebugService() {
 
       // Reload model, since change in debug mode is only possible during model loading
       reloadModel()
+        .catch(error => console.error('Error reloading model after debug mode change:', error));
     } catch (error) {
       console.error('Error updating TensorFlow debug mode:', error);
     }
   });
   
-  // Return the subscription for cleanup if needed
-  return subscription;
+  // Return cleanup function
+  return () => subscription.unsubscribe();
 }
 
-export function tensorFlowDebugMode(): boolean {
+export function isDebugModeEnabled(): boolean {
   try {
-    // Use the tf.ENV.getBool method to check the DEBUG flag
     const isDebugMode = tf.ENV.getBool('DEBUG');
     return isDebugMode;
   } catch (error) {
